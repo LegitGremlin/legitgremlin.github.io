@@ -1,1 +1,1027 @@
-<!doctypehtml><html lang=en><meta charset=UTF-8><meta content="width=device-width,initial-scale=1"name=viewport><title>gremlinchat</title><style>#sidebar,.auth-card{background:var(--panel)}.nav-item,button{cursor:pointer}.auth-brand,.modal h3,.msg .meta,.sidebar-header .brand,.whoami .me{font-family:var(--font-mono)}.auth-card,.auth-submit,.modal,.modal .field input{width:100%}:root{--bg:#16151c;--panel:#1d1c25;--panel-alt:#262530;--input-bg:#2a2836;--border:#34323f;--text:#e8e6f0;--muted:#8b899b;--accent:#e8a33d;--accent-hi:#f4b656;--other-line:#4a4858;--danger:#e0576b;--font-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}*{box-sizing:border-box}body,html{margin:0;padding:0;height:100%;background:var(--bg);color:var(--text);font-family:var(--font-ui);font-size:14px;-webkit-font-smoothing:antialiased}button,input,textarea{font-family:inherit}::selection{background:var(--accent);color:#1a1a20}.auth-brand,.msg.own .meta .uname,a{color:var(--accent)}#app{height:100%;display:flex;flex-direction:column}.hidden{display:none!important}#auth-screen{height:100%;display:flex;align-items:center;justify-content:center;padding:24px}.auth-card{max-width:340px;border:1px solid var(--border);border-radius:6px;padding:28px 26px 24px}.auth-brand{font-size:15px;margin:0 0 4px;letter-spacing:.02em}.auth-sub,.auth-tab,.field label{color:var(--muted)}.auth-sub{margin:0 0 20px;font-size:12.5px}.auth-tabs{display:flex;gap:18px;border-bottom:1px solid var(--border);margin-bottom:18px}.field,.nav-item{display:flex;gap:6px}.auth-tab{background:0 0;border:none;padding:0 0 10px;font-size:13.5px;border-bottom:2px solid transparent;margin-bottom:-1px}.auth-tab.active{color:var(--text);border-bottom-color:var(--accent)}.dm-new input,.field input{border:1px solid var(--border);background:var(--input-bg);outline:0}.field{margin-bottom:14px;flex-direction:column}.field label{font-size:12px}.field input{border-radius:4px;color:var(--text);padding:9px 10px;font-size:13.5px}#composer textarea:focus,.dm-new input:focus,.field input:focus{border-color:var(--accent)}.auth-submit{background:var(--accent);border:none;border-radius:4px;color:#1a1509;font-weight:600;padding:10px;font-size:13.5px;margin-top:4px}.sidebar-header,.whoami{border-bottom:1px solid var(--border)}#composer button:hover,.auth-submit:hover{background:var(--accent-hi)}.auth-error{color:var(--danger);font-size:12.5px;margin-top:12px;min-height:1em}.nav-item,.nav-section,.whoami{color:var(--muted)}#main-screen{height:100%;display:flex}#sidebar{width:220px;flex:0 0 220px;border-right:1px solid var(--border);display:flex;flex-direction:column}.sidebar-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between}.sidebar-header .brand{color:var(--accent);font-size:13.5px}.whoami{padding:10px 16px;font-size:12px}.whoami .me{color:var(--text)}.nav-section{padding:12px 16px 4px;font-size:11px;letter-spacing:.03em}.nav-list{list-style:none;margin:0;padding:0 8px;overflow-y:auto}.nav-item{padding:7px 8px;border-radius:4px;font-size:13px;align-items:center}#chat-header .note,.msg .meta{font-size:11.5px;color:var(--muted)}#chat-col,#messages{flex:1;display:flex}.nav-item.active,.nav-item:hover{background:var(--panel-alt);color:var(--text)}#chat-header .hash,.nav-item .hash{color:var(--accent);font-family:var(--font-mono)}.dm-new{padding:10px 16px;margin-top:auto;border-top:1px solid var(--border)}.dm-new input{width:100%;border-radius:4px;color:var(--text);padding:7px 9px;font-size:12.5px}.admin-btn{margin:10px 16px 14px;background:0 0;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:6px 8px;font-size:11.5px}.admin-btn:hover{color:var(--accent);border-color:var(--accent)}#chat-col{flex-direction:column;min-width:0}#chat-header{padding:13px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:13.5px}#chat-header .note{margin-left:auto}#messages{overflow-y:auto;padding:18px 22px;flex-direction:column;gap:2px}.msg{border-left:2px solid var(--other-line);padding:5px 0 5px 12px;margin:5px 0}.msg.own{border-left-color:var(--accent)}.msg .meta{margin-bottom:2px}.msg .meta .uname{color:#9d9bd6}.msg .body{font-size:13.5px;line-height:1.5;white-space:pre-wrap;word-break:break-word}.sys-note{color:var(--muted);font-size:12px;font-style:italic;text-align:center;margin:10px 0}#composer{border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px}#composer textarea{flex:1;resize:none;background:var(--input-bg);border:1px solid var(--border);border-radius:5px;color:var(--text);padding:9px 11px;font-size:13.5px;outline:0;height:40px;max-height:120px}#composer button,.modal-actions button.primary{background:var(--accent);font-weight:600;color:#1a1509}#composer button{border:none;border-radius:5px;padding:0 18px;font-size:13px}.modal-backdrop{position:fixed;inset:0;background:rgba(10,9,13,.6);display:flex;align-items:center;justify-content:center;z-index:50}.modal{max-width:320px;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:20px}.modal h3{margin:0 0 14px;font-size:14px;color:var(--accent)}.modal-actions{display:flex;gap:8px;margin-top:16px}.modal-actions button{flex:1;border-radius:4px;padding:8px;font-size:13px;border:1px solid var(--border);background:var(--panel-alt);color:var(--text)}.modal-actions button.primary{border-color:var(--accent)}.modal-msg{font-size:12px;margin-top:10px;min-height:1em}.modal-msg.err{color:var(--danger)}.modal-msg.ok{color:#7fd18a}#conn-banner{position:fixed;bottom:0;left:0;right:0;background:var(--danger);color:#1a1509;text-align:center;font-size:12.5px;padding:6px;display:none}::-webkit-scrollbar{width:9px}::-webkit-scrollbar-thumb{background:var(--panel-alt);border-radius:5px}</style><div id=app><div id=auth-screen><div class=auth-card><p class=auth-brand>gremlinchat<p class=auth-sub>sign in to join the public chat and send DMs<div class=auth-tabs><button class="active auth-tab"id=tab-login>Log in</button> <button class=auth-tab id=tab-register>Create account</button></div><form id=login-form><div class=field><label for=login-id>Username or email</label> <input id=login-id autocomplete="username email"required name=identifier></div><div class=field><label for=login-pw>Password</label> <input id=login-pw autocomplete=current-password required type=password name=password></div><button class=auth-submit type=submit>Log in</button></form><form id=register-form class=hidden><div class=field><label for=reg-username>Username</label> <input id=reg-username autocomplete=username required minlength=3 maxlength=20 pattern=[A-Za-z0-9_]+ title="3-20 letters, numbers, or underscore"></div><div class=field><label for=reg-email>Email</label> <input id=reg-email autocomplete=email required type=email></div><div class=field><label for=reg-pw>Password</label> <input id=reg-pw autocomplete=new-password required type=password minlength=6></div><button class=auth-submit type=submit>Create account</button><p style=color:var(--muted);font-size:11.5px;margin-top:10px>Pick your username carefully - only an admin can change it later.</form><p class=auth-error id=auth-error></div></div><div class=hidden id=main-screen><div id=sidebar><div class=sidebar-header><span class=brand>gremlinchat</span></div><div class=whoami>signed in as <span class=me id=me-username></span></div><div class=nav-section>Channels</div><ul class=nav-list><li class="active nav-item"id=nav-public><span class=hash>#</span> public</ul><div class=nav-section>Direct messages</div><ul class=nav-list id=dm-list></ul><div class=dm-new><input id=dm-new-input placeholder="message a user by name + Enter"></div><button class="hidden admin-btn"id=admin-open-btn>admin: rename user</button></div><div id=chat-col><div id=chat-header><span class=hash id=chat-title-hash>#</span> <span id=chat-title>public</span> <span class=note id=chat-note>refreshes every 30 min</span></div><div id=messages></div><div id=composer><textarea id=composer-input placeholder="Message #public"rows=1></textarea> <button id=composer-send>Send</button></div></div></div><div id=conn-banner>reconnecting...</div><div class="hidden modal-backdrop"id=admin-modal><div class=modal><h3>Rename a user</h3><div class=field><label>Current username</label> <input id=admin-target></div><div class=field><label>New username</label> <input id=admin-new-name></div><div class=modal-actions><button id=admin-cancel>Cancel</button> <button class=primary id=admin-confirm>Rename</button></div><p class=modal-msg id=admin-modal-msg></div></div></div><script>function _0x52fe(_0x4a98ce,_0x3ffe8f){_0x4a98ce=_0x4a98ce-(0x258d+-0xd03+-0x17af);var _0x7f5b64=_0x171c();var _0x36fe9a=_0x7f5b64[_0x4a98ce];return _0x36fe9a;}(function(_0x244d6d,_0x583e4c){var _0x347aa4=_0x52fe,_0x168c20=_0x244d6d();while(!![]){try{var _0x42bec2=-parseInt(_0x347aa4(0x209))/(-0x15cd*-0x1+0x695*0x1+-0x1c61)+-parseInt(_0x347aa4(0x17a))/(0x1*0x742+-0x20fa+-0x1*-0x19ba)+parseInt(_0x347aa4(0xf7))/(0x54*-0x11+0x584*0x3+0xb*-0xff)*(parseInt(_0x347aa4(0x1a8))/(-0x25f2+0x214e+0x4a8))+-parseInt(_0x347aa4(0x1e5))/(0x1410+-0x1*-0x18c1+-0x2ccc)+parseInt(_0x347aa4(0xe0))/(-0x1*0xf02+-0x184f+0xd1d*0x3)*(-parseInt(_0x347aa4(0x16a))/(0xc99*0x1+0x1ce2+-0x2974))+-parseInt(_0x347aa4(0x12b))/(-0x4b8*0x1+-0x565+0x7*0x173)*(parseInt(_0x347aa4(0x16c))/(0x1*0x1797+-0x163b+-0x153))+parseInt(_0x347aa4(0x1b9))/(0x1e7d+-0x31*-0x8+0x1ffb*-0x1)*(parseInt(_0x347aa4(0x23a))/(-0x1bec+0x5ae*-0x1+0x21a5));if(_0x42bec2===_0x583e4c)break;else _0x168c20['push'](_0x168c20['shift']());}catch(_0x2db03d){_0x168c20['push'](_0x168c20['shift']());}}}(_0x171c,-0x6c50a+0xf89*0x3+0xa0357),!(function(){'use strict';var _0x459794=_0x52fe,_0x12ccaa={'YGjEr':function(_0x3a50bf,_0x260008){return _0x3a50bf===_0x260008;},'maRDJ':_0x459794(0x1d9),'xxzgf':_0x459794(0xe2),'YYnRM':function(_0x13d4a1){return _0x13d4a1();},'DHIXb':_0x459794(0x203)+_0x459794(0x189),'MMviP':_0x459794(0x141),'ebrNV':_0x459794(0xfa),'SXIbl':function(_0xebd4b7,_0x5f1f86){return _0xebd4b7+_0x5f1f86;},'DkFsI':_0x459794(0x136),'GlUbK':function(_0x28388d,_0xcc1c67){return _0x28388d*_0xcc1c67;},'ydZIE':function(_0x1caeca,_0x512025){return _0x1caeca<_0x512025;},'XFWNr':function(_0x40a483,_0x325e3b){return _0x40a483+_0x325e3b;},'WQKLN':function(_0x43e8b2,_0x5861d4){return _0x43e8b2<_0x5861d4;},'ZANCz':_0x459794(0xe5),'Qzaam':function(_0x402903,_0x5f374c){return _0x402903===_0x5f374c;},'seZec':_0x459794(0xf4),'QUevp':_0x459794(0x217),'UpkZO':_0x459794(0x153),'sVnbP':function(_0xc56764,_0x769737){return _0xc56764(_0x769737);},'vSgPG':function(_0x1ea809,_0x4d26bc){return _0x1ea809+_0x4d26bc;},'gKtVo':_0x459794(0x14d),'Zfhlu':_0x459794(0x1dd),'sBkeN':_0x459794(0x250),'ZYYCt':function(_0x48a814,_0x25a67f,_0x24dfd7,_0x29bdc6){return _0x48a814(_0x25a67f,_0x24dfd7,_0x29bdc6);},'mvYjS':_0x459794(0x251),'RNdGa':function(_0x44d081,_0x37b014){return _0x44d081===_0x37b014;},'bkggT':_0x459794(0x176),'vpHYw':function(_0x198fdd,_0x43303b){return _0x198fdd===_0x43303b;},'HiYDr':_0x459794(0x181)+_0x459794(0x156)+'in','bkqdc':_0x459794(0x138)+_0x459794(0x1d8),'Blerp':_0x459794(0x22d)+_0x459794(0x1ce)+_0x459794(0x221),'jBmhl':_0x459794(0x1aa),'XMtpD':function(_0x62a0e,_0x26cb67){return _0x62a0e(_0x26cb67);},'cDYTD':_0x459794(0x163),'vvdrH':function(_0x4274be,_0x4f5770,_0x1d0e2d,_0x357cd7){return _0x4274be(_0x4f5770,_0x1d0e2d,_0x357cd7);},'tnbis':function(_0x4028a5){return _0x4028a5();},'crVJx':function(_0x53f9b7,_0x7cfdf){return _0x53f9b7===_0x7cfdf;},'ubgaw':function(_0x41ec0a,_0x4214c8){return _0x41ec0a(_0x4214c8);},'ziMaV':_0x459794(0x1af),'MTllK':_0x459794(0x1f7),'eIHky':_0x459794(0x1b0),'HAmwR':_0x459794(0x15e),'waeoF':function(_0x33bca2,_0x270569){return _0x33bca2(_0x270569);},'IYxxZ':_0x459794(0x1d1),'xHGzS':_0x459794(0x13a),'hLrrR':_0x459794(0x220),'jfjzh':function(_0xd87a8d,_0x2e5a59){return _0xd87a8d(_0x2e5a59);},'FaORV':_0x459794(0x1f5),'mzccA':_0x459794(0x10c)+'me','QYMuP':_0x459794(0x1fb),'WsaTp':_0x459794(0x20e),'xtIYu':function(_0x1d4beb,_0x1c2929){return _0x1d4beb===_0x1c2929;},'BdlmO':_0x459794(0x24e),'Fgvih':function(_0x482951,_0x58eea6){return _0x482951!==_0x58eea6;},'CnzPS':function(_0x53b120,_0x1e3180){return _0x53b120+_0x1e3180;},'wzpft':_0x459794(0x18f),'wATLW':function(_0x197f1c,_0x4002b3){return _0x197f1c&&_0x4002b3;},'HjVfq':function(_0x3fc032,_0x4b9969){return _0x3fc032(_0x4b9969);},'DvCOE':_0x459794(0x1c3)+'me','dYgfk':_0x459794(0x1bd),'hPmfD':function(_0x40d8af,_0x3365d1){return _0x40d8af(_0x3365d1);},'nLSpV':_0x459794(0x19a),'jMVzB':_0x459794(0x230),'HWElp':function(_0x1af573,_0x1a0cef,_0x2246e5){return _0x1af573(_0x1a0cef,_0x2246e5);},'rpKwV':_0x459794(0x102),'LxFUt':_0x459794(0x21f),'qyieD':_0x459794(0x23b)+_0x459794(0x1ed),'siJPX':function(_0x37103d,_0x469afc){return _0x37103d===_0x469afc;},'kecCB':_0x459794(0x1e2)+_0x459794(0x1df),'INzJn':_0x459794(0x235)+_0x459794(0x21a)+_0x459794(0xf0)+_0x459794(0x1cd),'wmgRn':_0x459794(0x19d)+'s','gUozm':function(_0x1db662){return _0x1db662();},'xuCSn':function(_0x52c770,_0x2cac2f){return _0x52c770===_0x2cac2f;},'UIXtr':function(_0x41eedf,_0x3df954,_0x4458f0,_0x537538){return _0x41eedf(_0x3df954,_0x4458f0,_0x537538);},'IFVCN':_0x459794(0x11b),'hqruZ':_0x459794(0x239)+_0x459794(0x231)+_0x459794(0x24c)+_0x459794(0xf2),'yOkoc':_0x459794(0x1c3)+_0x459794(0x118),'gpshp':function(_0x4d8953,_0x4a2762){return _0x4d8953+_0x4a2762;},'RrcwF':function(_0xfb9151,_0x564b51){return _0xfb9151+_0x564b51;},'tfFPJ':function(_0x39d122,_0x3c680c){return _0x39d122+_0x3c680c;},'JxtLZ':_0x459794(0x193),'dghzN':_0x459794(0x208),'VWnEm':_0x459794(0x234)+'ok','Rtwie':_0x459794(0x148),'mYpof':_0x459794(0x234)+_0x459794(0x238),'Vipff':function(_0x541734){return _0x541734();},'PBQaI':_0x459794(0x244)+_0x459794(0x14c)+_0x459794(0x117),'cITNc':_0x459794(0xde)+_0x459794(0xf5),'nVaMk':_0x459794(0x108)+'n','vHtdE':_0x459794(0x1f1)+'n','FYvSZ':_0x459794(0x245),'QBFPS':_0x459794(0x100)+'er','rVJUd':_0x459794(0x24b),'HIRiM':_0x459794(0x23d)+_0x459794(0x1d6),'nxQwl':_0x459794(0x1a0),'tAlyw':_0x459794(0x121)+'e','adbCh':_0x459794(0x24f),'IETXC':_0x459794(0x1d7),'mYDLC':_0x459794(0x1a1)+'ut','YZADL':_0x459794(0x16b)+_0x459794(0x1c2),'uKqtk':_0x459794(0x112),'tBVHO':_0x459794(0x112)+_0x459794(0x11e),'rKcNZ':_0x459794(0xdc),'qFPlb':_0x459794(0x107),'kKcZL':_0x459794(0x15d)+_0x459794(0x1b7),'MNcgJ':_0x459794(0xe7)+_0x459794(0x113),'AONqE':_0x459794(0x145)+'r','CmcuZ':_0x459794(0x1fa)+'l','AauIQ':_0x459794(0x13d)+'et','ATsXa':_0x459794(0x16f)+_0x459794(0x18e),'VgAiJ':_0x459794(0x1f4)+_0x459794(0xe8),'ncEWb':_0x459794(0x1db)+'el','cuqNv':_0x459794(0x1fa)+_0x459794(0x168),'pMYXS':_0x459794(0x190),'RtETB':_0x459794(0xe3),'IciqG':_0x459794(0xe4)};var _0x189665=_0x12ccaa[_0x459794(0x236)],_0x5eb084=null,_0x3092b0=-0x2*-0xd73+0x50d*-0x5+0x243,_0x5de3b9=null,_0x34bc10={'username':null,'isAdmin':!(0x3*-0x547+-0x2354+0x332a),'activeChannel':_0x12ccaa[_0x459794(0x1a7)],'publicHistory':[],'dmContacts':[],'dmThreads':{},'dmLoaded':{}},_0x55a475={'authScreen':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x1b6)]),'mainScreen':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x11c)]),'tabLogin':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0xfd)]),'tabRegister':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x126)]),'loginForm':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x1c5)]),'registerForm':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x1ca)]),'authError':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x224)]),'meUsername':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x1f3)]),'navPublic':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x109)]),'dmList':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x130)]),'dmNewInput':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x1c7)]),'adminOpenBtn':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x223)]),'chatTitle':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x1dc)]),'chatTitleHash':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x1da)]),'chatNote':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x16e)]),'messages':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x17e)]),'composerInput':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x226)]),'composerSend':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x22b)]),'connBanner':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0xe1)]),'adminModal':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x13f)]),'adminTarget':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x228)]),'adminNewName':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x1b1)]),'adminConfirm':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x142)]),'adminCancel':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x198)]),'adminModalMsg':document[_0x459794(0xf3)+_0x459794(0x241)](_0x12ccaa[_0x459794(0x17b)])};function _0x378ced(_0x1722f1){var _0x543c18=_0x459794;_0x5eb084&&_0x12ccaa[_0x543c18(0x175)](_0x5eb084[_0x543c18(0xf1)],WebSocket[_0x543c18(0x1ea)])&&_0x5eb084[_0x543c18(0x1b5)](JSON[_0x543c18(0x1fd)](_0x1722f1));}function _0xf3b3ee(_0x35e749){var _0x30e7f0=_0x459794,_0x583fef=document[_0x30e7f0(0x1de)+_0x30e7f0(0x160)](_0x12ccaa[_0x30e7f0(0xee)]);_0x583fef[_0x30e7f0(0x1c8)]=_0x12ccaa[_0x30e7f0(0x1e9)],_0x583fef[_0x30e7f0(0x19c)+'t']=_0x35e749,_0x55a475[_0x30e7f0(0x107)][_0x30e7f0(0x1f0)+'d'](_0x583fef),_0x12ccaa[_0x30e7f0(0x1b4)](_0x24118);}function _0x5dd42f(_0x99a25a,_0x2e5dd4,_0x35fba1){var _0x413f71=_0x459794,_0xcc931a=_0x12ccaa[_0x413f71(0x248)][_0x413f71(0x101)]('|'),_0x1a32c5=-0xa*-0x1c7+0x5*-0x584+-0x1f6*-0x5;while(!![]){switch(_0xcc931a[_0x1a32c5++]){case'0':return _0x2db50e[_0x413f71(0x1c8)]=_0x12ccaa[_0x413f71(0x1b3)],_0x2db50e[_0x413f71(0x19c)+'t']=_0x2e5dd4,_0x2265a8[_0x413f71(0x1f0)+'d'](_0x116112),_0x2265a8[_0x413f71(0x1f0)+'d'](_0x2db50e),_0x2265a8;case'1':var _0x2265a8=document[_0x413f71(0x1de)+_0x413f71(0x160)](_0x12ccaa[_0x413f71(0xee)]);continue;case'2':_0x2db50e[_0x413f71(0x1c8)]=_0x12ccaa[_0x413f71(0x1f2)],_0x2db50e[_0x413f71(0x19c)+'t']=_0x99a25a,_0x116112[_0x413f71(0x1f0)+'d'](_0x2db50e),_0x116112[_0x413f71(0x1f0)+'d'](document[_0x413f71(0x242)+_0x413f71(0x225)](_0x12ccaa[_0x413f71(0x1e8)](_0x12ccaa[_0x413f71(0x152)],(_0x2db50e=new Date(_0x12ccaa[_0x413f71(0xdf)](-0x916+-0xfb5+0x1cb3,_0x35fba1)),_0x35fba1=_0x2db50e[_0x413f71(0x15f)](),_0x2db50e=_0x2db50e[_0x413f71(0x150)](),_0x12ccaa[_0x413f71(0x1e8)](_0x12ccaa[_0x413f71(0x1e8)](_0x12ccaa[_0x413f71(0x177)](_0x35fba1,-0xd70+-0x8e4+0x165e)?_0x12ccaa[_0x413f71(0x1d5)]('0',_0x35fba1):_0x35fba1,':'),_0x12ccaa[_0x413f71(0x212)](_0x2db50e,-0x1261+-0x35*-0x8d+-0xac6)?_0x12ccaa[_0x413f71(0x1e8)]('0',_0x2db50e):_0x2db50e)))));continue;case'3':_0x2265a8[_0x413f71(0x1c8)]=_0x12ccaa[_0x413f71(0x1d5)](_0x12ccaa[_0x413f71(0x19b)],_0x12ccaa[_0x413f71(0x1ad)](_0x99a25a,_0x34bc10[_0x413f71(0x1ae)])?_0x12ccaa[_0x413f71(0x207)]:'');continue;case'4':var _0x2db50e=document[_0x413f71(0x1de)+_0x413f71(0x160)](_0x12ccaa[_0x413f71(0x149)]);continue;case'5':var _0x116112=document[_0x413f71(0x1de)+_0x413f71(0x160)](_0x12ccaa[_0x413f71(0xee)]);continue;case'6':_0x116112[_0x413f71(0x1c8)]=_0x12ccaa[_0x413f71(0x210)];continue;case'7':_0x2db50e=document[_0x413f71(0x1de)+_0x413f71(0x160)](_0x12ccaa[_0x413f71(0xee)]);continue;}break;}}function _0x24118(){var _0x59f6f3=_0x459794;_0x55a475[_0x59f6f3(0x107)][_0x59f6f3(0x1ba)]=_0x55a475[_0x59f6f3(0x107)][_0x59f6f3(0xdb)+'ht'];}function _0x29fa72(){var _0x30d7c0=_0x459794,_0x58a3e2={'pGgfn':function(_0x5679cf,_0x31602b){var _0x26231e=_0x52fe;return _0x12ccaa[_0x26231e(0x169)](_0x5679cf,_0x31602b);},'eHayw':function(_0x20f400,_0x97d09c){var _0x505250=_0x52fe;return _0x12ccaa[_0x505250(0x161)](_0x20f400,_0x97d09c);},'vIGlC':_0x12ccaa[_0x30d7c0(0x1cf)],'EThHe':function(_0x777546,_0xa4d11d){var _0x2923ff=_0x30d7c0;return _0x12ccaa[_0x2923ff(0x1ad)](_0x777546,_0xa4d11d);},'FUDqg':_0x12ccaa[_0x30d7c0(0x227)],'mcAHe':_0x12ccaa[_0x30d7c0(0x10a)]};_0x55a475[_0x30d7c0(0xf9)][_0x30d7c0(0x1ff)]='',_0x34bc10[_0x30d7c0(0x151)][_0x30d7c0(0x127)](function(_0x1b38c8){var _0x579aa4=_0x30d7c0,_0x34642f=document[_0x579aa4(0x1de)+_0x579aa4(0x160)]('li');_0x34642f[_0x579aa4(0x1c8)]=_0x58a3e2[_0x579aa4(0x144)](_0x58a3e2[_0x579aa4(0x17c)],_0x58a3e2[_0x579aa4(0xea)](_0x34bc10[_0x579aa4(0x131)+_0x579aa4(0x1d3)],_0x1b38c8)?_0x58a3e2[_0x579aa4(0x13c)]:''),_0x34642f[_0x579aa4(0x19c)+'t']=_0x1b38c8,_0x34642f[_0x579aa4(0x197)+_0x579aa4(0x219)](_0x58a3e2[_0x579aa4(0x201)],function(){var _0x2b285e=_0x579aa4;_0x58a3e2[_0x2b285e(0x204)](_0x37ccfa,_0x1b38c8);}),_0x55a475[_0x579aa4(0xf9)][_0x579aa4(0x1f0)+'d'](_0x34642f);});}function _0x37ccfa(_0x35959c){var _0x54a60f=_0x459794,_0x36c409={'kwFOd':_0x12ccaa[_0x54a60f(0x222)],'cqqsC':function(_0x7fb8d9,_0xd31871){var _0x513dcb=_0x54a60f;return _0x12ccaa[_0x513dcb(0x175)](_0x7fb8d9,_0xd31871);}};_0x34bc10[_0x54a60f(0x131)+_0x54a60f(0x1d3)]=_0x35959c,_0x55a475[_0x54a60f(0x1ef)][_0x54a60f(0x12e)][_0x54a60f(0x1a9)](_0x12ccaa[_0x54a60f(0x222)],_0x12ccaa[_0x54a60f(0x1b2)](_0x12ccaa[_0x54a60f(0x1a7)],_0x35959c)),Array[_0x54a60f(0x182)][_0x54a60f(0x127)][_0x54a60f(0x1fe)](_0x55a475[_0x54a60f(0xf9)][_0x54a60f(0x12f)],function(_0x4367ab){var _0x2709f7=_0x54a60f;_0x4367ab[_0x2709f7(0x12e)][_0x2709f7(0x1a9)](_0x36c409[_0x2709f7(0x1bc)],_0x36c409[_0x2709f7(0x178)](_0x4367ab[_0x2709f7(0x19c)+'t'],_0x35959c));}),_0x12ccaa[_0x54a60f(0x1a2)](_0x12ccaa[_0x54a60f(0x1a7)],_0x35959c)?(_0x55a475[_0x54a60f(0xed)+_0x54a60f(0x199)][_0x54a60f(0x19c)+'t']='#',_0x55a475[_0x54a60f(0xec)][_0x54a60f(0x19c)+'t']=_0x12ccaa[_0x54a60f(0x1a7)],_0x55a475[_0x54a60f(0xef)][_0x54a60f(0x19c)+'t']=_0x12ccaa[_0x54a60f(0x147)],_0x55a475[_0x54a60f(0x246)+_0x54a60f(0x184)][_0x54a60f(0x1eb)+'r']=_0x12ccaa[_0x54a60f(0x164)],_0x55a475[_0x54a60f(0x107)][_0x54a60f(0x1ff)]='',_0x34bc10[_0x54a60f(0x211)+_0x54a60f(0x247)][_0x54a60f(0x127)](function(_0x39f256){var _0xf6578b=_0x54a60f;_0x55a475[_0xf6578b(0x107)][_0xf6578b(0x1f0)+'d'](_0x12ccaa[_0xf6578b(0x19f)](_0x5dd42f,_0x39f256[_0xf6578b(0x16d)],_0x39f256[_0xf6578b(0x1e1)],_0x39f256['ts']));}),_0x12ccaa[_0x54a60f(0x1b4)](_0x24118)):(_0x55a475[_0x54a60f(0xed)+_0x54a60f(0x199)][_0x54a60f(0x19c)+'t']='@',_0x55a475[_0x54a60f(0xec)][_0x54a60f(0x19c)+'t']=_0x35959c,_0x55a475[_0x54a60f(0xef)][_0x54a60f(0x19c)+'t']=_0x12ccaa[_0x54a60f(0x21e)],_0x55a475[_0x54a60f(0x246)+_0x54a60f(0x184)][_0x54a60f(0x1eb)+'r']=_0x12ccaa[_0x54a60f(0x1d5)](_0x12ccaa[_0x54a60f(0x22f)],_0x35959c),_0x55a475[_0x54a60f(0x107)][_0x54a60f(0x1ff)]='',_0x34bc10[_0x54a60f(0x1cc)][_0x35959c]?_0x12ccaa[_0x54a60f(0x1b4)](_0x1503e2):_0x12ccaa[_0x54a60f(0xf8)](_0x378ced,{'type':_0x12ccaa[_0x54a60f(0x188)],'with':_0x35959c}));}function _0x1503e2(){var _0x2e0e81=_0x459794,_0x4445e8=_0x34bc10[_0x2e0e81(0x123)][_0x34bc10[_0x2e0e81(0x131)+_0x2e0e81(0x1d3)]]||[];_0x55a475[_0x2e0e81(0x107)][_0x2e0e81(0x1ff)]='',_0x4445e8[_0x2e0e81(0x127)](function(_0x375c7c){var _0x222a89=_0x2e0e81;_0x55a475[_0x222a89(0x107)][_0x222a89(0x1f0)+'d'](_0x12ccaa[_0x222a89(0x155)](_0x5dd42f,_0x375c7c[_0x222a89(0x16d)],_0x375c7c[_0x222a89(0x1e1)],_0x375c7c['ts']));}),_0x12ccaa[_0x2e0e81(0x18a)](_0x24118);}function _0x731af2(){var _0x564a17=_0x459794,_0x273c43=_0x55a475[_0x564a17(0x246)+_0x564a17(0x184)][_0x564a17(0x105)];_0x273c43[_0x564a17(0x13e)]()&&(_0x12ccaa[_0x564a17(0x180)](_0x12ccaa[_0x564a17(0x1a7)],_0x34bc10[_0x564a17(0x131)+_0x564a17(0x1d3)])?_0x12ccaa[_0x564a17(0x1ac)](_0x378ced,{'type':_0x12ccaa[_0x564a17(0x174)],'text':_0x273c43}):_0x12ccaa[_0x564a17(0xf8)](_0x378ced,{'type':_0x12ccaa[_0x564a17(0x158)],'to':_0x34bc10[_0x564a17(0x131)+_0x564a17(0x1d3)],'text':_0x273c43}),_0x55a475[_0x564a17(0x246)+_0x564a17(0x184)][_0x564a17(0x105)]='',_0x55a475[_0x564a17(0x246)+_0x564a17(0x184)][_0x564a17(0x19e)][_0x564a17(0x137)]=_0x12ccaa[_0x564a17(0x1a3)]);}_0x55a475[_0x459794(0x229)][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x10a)],function(){var _0x3d71aa=_0x459794;_0x55a475[_0x3d71aa(0x229)][_0x3d71aa(0x12e)][_0x3d71aa(0x166)](_0x12ccaa[_0x3d71aa(0x222)]),_0x55a475[_0x3d71aa(0x215)+'r'][_0x3d71aa(0x12e)][_0x3d71aa(0xfe)](_0x12ccaa[_0x3d71aa(0x222)]),_0x55a475[_0x3d71aa(0x1d0)][_0x3d71aa(0x12e)][_0x3d71aa(0xfe)](_0x12ccaa[_0x3d71aa(0x1e7)]),_0x55a475[_0x3d71aa(0x139)+'rm'][_0x3d71aa(0x12e)][_0x3d71aa(0x166)](_0x12ccaa[_0x3d71aa(0x1e7)]),_0x55a475[_0x3d71aa(0x179)][_0x3d71aa(0x19c)+'t']='';}),_0x55a475[_0x459794(0x215)+'r'][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x10a)],function(){var _0x5361fe=_0x459794;_0x55a475[_0x5361fe(0x215)+'r'][_0x5361fe(0x12e)][_0x5361fe(0x166)](_0x12ccaa[_0x5361fe(0x222)]),_0x55a475[_0x5361fe(0x229)][_0x5361fe(0x12e)][_0x5361fe(0xfe)](_0x12ccaa[_0x5361fe(0x222)]),_0x55a475[_0x5361fe(0x139)+'rm'][_0x5361fe(0x12e)][_0x5361fe(0xfe)](_0x12ccaa[_0x5361fe(0x1e7)]),_0x55a475[_0x5361fe(0x1d0)][_0x5361fe(0x12e)][_0x5361fe(0x166)](_0x12ccaa[_0x5361fe(0x1e7)]),_0x55a475[_0x5361fe(0x179)][_0x5361fe(0x19c)+'t']='';}),_0x55a475[_0x459794(0x1d0)][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x1e6)],function(_0x54eda2){var _0x1d949d=_0x459794;_0x54eda2[_0x1d949d(0x1c4)+_0x1d949d(0x171)](),_0x55a475[_0x1d949d(0x179)][_0x1d949d(0x19c)+'t']='',_0x12ccaa[_0x1d949d(0xfc)](_0x378ced,{'type':_0x12ccaa[_0x1d949d(0x1c6)],'identifier':document[_0x1d949d(0xf3)+_0x1d949d(0x241)](_0x12ccaa[_0x1d949d(0x18c)])[_0x1d949d(0x105)][_0x1d949d(0x13e)](),'password':document[_0x1d949d(0xf3)+_0x1d949d(0x241)](_0x12ccaa[_0x1d949d(0x115)])[_0x1d949d(0x105)]});}),_0x55a475[_0x459794(0x139)+'rm'][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x1e6)],function(_0x5335cb){var _0x2c52b1=_0x459794;_0x5335cb[_0x2c52b1(0x1c4)+_0x2c52b1(0x171)](),_0x55a475[_0x2c52b1(0x179)][_0x2c52b1(0x19c)+'t']='',_0x12ccaa[_0x2c52b1(0x202)](_0x378ced,{'type':_0x12ccaa[_0x2c52b1(0x110)],'username':document[_0x2c52b1(0xf3)+_0x2c52b1(0x241)](_0x12ccaa[_0x2c52b1(0x233)])[_0x2c52b1(0x105)][_0x2c52b1(0x13e)](),'email':document[_0x2c52b1(0xf3)+_0x2c52b1(0x241)](_0x12ccaa[_0x2c52b1(0x200)])[_0x2c52b1(0x105)][_0x2c52b1(0x13e)](),'password':document[_0x2c52b1(0xf3)+_0x2c52b1(0x241)](_0x12ccaa[_0x2c52b1(0x173)])[_0x2c52b1(0x105)]});}),_0x55a475[_0x459794(0x1ef)][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x10a)],function(){var _0x1cdeed=_0x459794;_0x12ccaa[_0x1cdeed(0x1ac)](_0x37ccfa,_0x12ccaa[_0x1cdeed(0x1a7)]);}),_0x55a475[_0x459794(0x162)][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x213)],function(_0x4d3d70){var _0x43a0d2=_0x459794;_0x12ccaa[_0x43a0d2(0x11a)](_0x12ccaa[_0x43a0d2(0x128)],_0x4d3d70[_0x43a0d2(0x23c)])&&((_0x4d3d70=_0x55a475[_0x43a0d2(0x162)][_0x43a0d2(0x105)][_0x43a0d2(0x13e)]())&&_0x12ccaa[_0x43a0d2(0x237)](_0x4d3d70,_0x34bc10[_0x43a0d2(0x1ae)])&&_0x12ccaa[_0x43a0d2(0x202)](_0x37ccfa,_0x4d3d70),_0x55a475[_0x43a0d2(0x162)][_0x43a0d2(0x105)]='');}),_0x55a475[_0x459794(0x22e)+'nd'][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x10a)],_0x731af2),_0x55a475[_0x459794(0x246)+_0x459794(0x184)][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x213)],function(_0x263cb1){var _0x16ac1e=_0x459794;_0x12ccaa[_0x16ac1e(0x237)](_0x12ccaa[_0x16ac1e(0x128)],_0x263cb1[_0x16ac1e(0x23c)])||_0x263cb1[_0x16ac1e(0x192)]||(_0x263cb1[_0x16ac1e(0x1c4)+_0x16ac1e(0x171)](),_0x12ccaa[_0x16ac1e(0x1b4)](_0x731af2));}),_0x55a475[_0x459794(0x246)+_0x459794(0x184)][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x122)],function(){var _0x8666ee=_0x459794;_0x55a475[_0x8666ee(0x246)+_0x8666ee(0x184)][_0x8666ee(0x19e)][_0x8666ee(0x137)]=_0x12ccaa[_0x8666ee(0x1a3)],_0x55a475[_0x8666ee(0x246)+_0x8666ee(0x184)][_0x8666ee(0x19e)][_0x8666ee(0x137)]=_0x12ccaa[_0x8666ee(0x1e0)](Math[_0x8666ee(0x1d2)](_0x55a475[_0x8666ee(0x246)+_0x8666ee(0x184)][_0x8666ee(0xdb)+'ht'],0x3*0x397+0x1bce*0x1+-0x79f*0x5),'px');}),_0x55a475[_0x459794(0x1e4)+'tn'][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x10a)],function(){var _0x5f4ab8=_0x459794;_0x55a475[_0x5f4ab8(0x195)+'t'][_0x5f4ab8(0x105)]='',_0x55a475[_0x5f4ab8(0x1ab)+'me'][_0x5f4ab8(0x105)]='',_0x55a475[_0x5f4ab8(0x133)+_0x5f4ab8(0x14f)][_0x5f4ab8(0x19c)+'t']='',_0x55a475[_0x5f4ab8(0x133)+_0x5f4ab8(0x14f)][_0x5f4ab8(0x1c8)]=_0x12ccaa[_0x5f4ab8(0x10f)],_0x55a475[_0x5f4ab8(0x133)][_0x5f4ab8(0x12e)][_0x5f4ab8(0xfe)](_0x12ccaa[_0x5f4ab8(0x1e7)]);}),_0x55a475[_0x459794(0x205)+'l'][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x10a)],function(){var _0x50e0c2=_0x459794;_0x55a475[_0x50e0c2(0x133)][_0x50e0c2(0x12e)][_0x50e0c2(0x166)](_0x12ccaa[_0x50e0c2(0x1e7)]);}),_0x55a475[_0x459794(0x1f6)+'rm'][_0x459794(0x197)+_0x459794(0x219)](_0x12ccaa[_0x459794(0x10a)],function(){var _0x11fae8=_0x459794,_0x3f052a=_0x55a475[_0x11fae8(0x195)+'t'][_0x11fae8(0x105)][_0x11fae8(0x13e)](),_0x3c7c14=_0x55a475[_0x11fae8(0x1ab)+'me'][_0x11fae8(0x105)][_0x11fae8(0x13e)]();_0x12ccaa[_0x11fae8(0x135)](_0x3f052a,_0x3c7c14)&&_0x12ccaa[_0x11fae8(0x10b)](_0x378ced,{'type':_0x12ccaa[_0x11fae8(0x129)],'target':_0x3f052a,'new_username':_0x3c7c14});}),function _0x2909b9(){var _0x298d27=_0x459794,_0x3a9d3e={'OKGFw':function(_0x9d1251,_0x2b9892,_0x38d25f,_0x1341f2){var _0x2e2df6=_0x52fe;return _0x12ccaa[_0x2e2df6(0x19f)](_0x9d1251,_0x2b9892,_0x38d25f,_0x1341f2);},'ZcMMK':_0x12ccaa[_0x298d27(0xfb)],'jwAGj':_0x12ccaa[_0x298d27(0x1e7)],'NMnHb':function(_0x513ee5,_0x4be1d8){var _0x32123b=_0x298d27;return _0x12ccaa[_0x32123b(0x169)](_0x513ee5,_0x4be1d8);},'rBVIN':_0x12ccaa[_0x298d27(0x1a7)],'Yiupr':_0x12ccaa[_0x298d27(0x124)],'UohLc':_0x12ccaa[_0x298d27(0xdd)],'jqcPr':function(_0x59ff3c,_0x81b7b4){var _0x3ccf53=_0x298d27;return _0x12ccaa[_0x3ccf53(0x1a2)](_0x59ff3c,_0x81b7b4);},'gEfWD':function(_0x227dee){var _0x5e5343=_0x298d27;return _0x12ccaa[_0x5e5343(0x18a)](_0x227dee);},'BmIKG':_0x12ccaa[_0x298d27(0x174)],'XRILD':function(_0x5de356,_0x4a8b08){var _0x244e40=_0x298d27;return _0x12ccaa[_0x244e40(0x177)](_0x5de356,_0x4a8b08);},'RpnWh':function(_0x30dc74,_0x5fe43){var _0x4e533=_0x298d27;return _0x12ccaa[_0x4e533(0x185)](_0x30dc74,_0x5fe43);},'rRuXF':_0x12ccaa[_0x298d27(0x1cb)],'YRJks':function(_0x46597c,_0x223745){var _0x31d22f=_0x298d27;return _0x12ccaa[_0x31d22f(0xfc)](_0x46597c,_0x223745);},'KdwUo':_0x12ccaa[_0x298d27(0x17f)],'tAkdn':_0x12ccaa[_0x298d27(0x23e)],'PZaav':function(_0x1df3cb){var _0x4d1c76=_0x298d27;return _0x12ccaa[_0x4d1c76(0x11f)](_0x1df3cb);},'flTbe':_0x12ccaa[_0x298d27(0x188)],'kAtoc':function(_0x2ac08d,_0x20c0cd){var _0x1ca797=_0x298d27;return _0x12ccaa[_0x1ca797(0x106)](_0x2ac08d,_0x20c0cd);},'jwtjN':_0x12ccaa[_0x298d27(0x158)],'fJyXc':function(_0x88be3c,_0x123ebc){var _0x3bceab=_0x298d27;return _0x12ccaa[_0x3bceab(0x11a)](_0x88be3c,_0x123ebc);},'MxNIx':function(_0x1acef,_0x9b3b58){var _0x521fb5=_0x298d27;return _0x12ccaa[_0x521fb5(0x180)](_0x1acef,_0x9b3b58);},'oxTwS':function(_0x49d925,_0x534bf2,_0x2d017b,_0x1c9791){var _0x4e3cc6=_0x298d27;return _0x12ccaa[_0x4e3cc6(0x11d)](_0x49d925,_0x534bf2,_0x2d017b,_0x1c9791);},'kzwsO':_0x12ccaa[_0x298d27(0x22a)],'XcOlx':function(_0x4585bb,_0x7ad609){var _0x486c43=_0x298d27;return _0x12ccaa[_0x486c43(0x1d5)](_0x4585bb,_0x7ad609);},'WeiGL':_0x12ccaa[_0x298d27(0x132)],'DjEFC':_0x12ccaa[_0x298d27(0x134)],'fDhcS':function(_0x9190ab,_0x5d4f1a){var _0x2c90f9=_0x298d27;return _0x12ccaa[_0x2c90f9(0xeb)](_0x9190ab,_0x5d4f1a);},'aDOQl':function(_0x1ab88c,_0x41792c){var _0x47fa4f=_0x298d27;return _0x12ccaa[_0x47fa4f(0x1c1)](_0x1ab88c,_0x41792c);},'QlYmv':function(_0x590c83,_0x5d7824){var _0x294f4d=_0x298d27;return _0x12ccaa[_0x294f4d(0x18d)](_0x590c83,_0x5d7824);},'KErfc':_0x12ccaa[_0x298d27(0x10d)],'DDkZE':_0x12ccaa[_0x298d27(0x140)],'GSSFM':_0x12ccaa[_0x298d27(0x218)],'dJOfx':_0x12ccaa[_0x298d27(0x216)],'oDonE':_0x12ccaa[_0x298d27(0x249)],'pjRlW':function(_0x45f12c){var _0x34f156=_0x298d27;return _0x12ccaa[_0x34f156(0x12c)](_0x45f12c);}};(_0x5eb084=new WebSocket(_0x12ccaa[_0x298d27(0x1b8)]))[_0x298d27(0x23f)]=function(){var _0x4ad57b=_0x298d27;_0x3092b0=0x1f2a+-0x229c*-0x1+-0x1*0x3dde,_0x55a475[_0x4ad57b(0x111)][_0x4ad57b(0x19e)][_0x4ad57b(0x20a)]=_0x12ccaa[_0x4ad57b(0x243)];var _0xd44b8d=localStorage[_0x4ad57b(0x1bf)](_0x189665);_0xd44b8d&&_0x12ccaa[_0x4ad57b(0x1ec)](_0x378ced,{'type':_0x12ccaa[_0x4ad57b(0xe9)],'token':_0xd44b8d});},_0x5eb084[_0x298d27(0x1d4)]=function(_0x2999ac){var _0x1eaf9d=_0x298d27,_0x111dfb;try{_0x111dfb=JSON[_0x1eaf9d(0x157)](_0x2999ac[_0x1eaf9d(0x206)]);}catch(_0x1373d0){return;}!function(_0xfd1180){var _0x469d29=_0x1eaf9d,_0x1e1d78={'wwDls':function(_0x19c1d9,_0x5a9bfd,_0x1dafc2,_0x4e07e1){var _0x50b346=_0x52fe;return _0x3a9d3e[_0x50b346(0x1c9)](_0x19c1d9,_0x5a9bfd,_0x1dafc2,_0x4e07e1);}};switch(_0xfd1180[_0x469d29(0x194)]){case _0x3a9d3e[_0x469d29(0x22c)]:_0x1e7bd6=_0xfd1180,_0x34bc10[_0x469d29(0x1ae)]=_0x1e7bd6[_0x469d29(0x1ae)],_0x34bc10[_0x469d29(0x15c)]=!!_0x1e7bd6[_0x469d29(0x1a6)],localStorage[_0x469d29(0x146)](_0x189665,_0x1e7bd6[_0x469d29(0x119)]),_0x55a475[_0x469d29(0xff)][_0x469d29(0x19c)+'t']=_0x34bc10[_0x469d29(0x1ae)],_0x55a475[_0x469d29(0x1e4)+'tn'][_0x469d29(0x12e)][_0x469d29(0x1a9)](_0x3a9d3e[_0x469d29(0xf6)],!_0x34bc10[_0x469d29(0x15c)]),_0x55a475[_0x469d29(0x24a)][_0x469d29(0x12e)][_0x469d29(0x166)](_0x3a9d3e[_0x469d29(0xf6)]),_0x55a475[_0x469d29(0x1fc)][_0x469d29(0x12e)][_0x469d29(0xfe)](_0x3a9d3e[_0x469d29(0xf6)]),_0x3a9d3e[_0x469d29(0x183)](_0x37ccfa,_0x3a9d3e[_0x469d29(0x1a5)]);break;case _0x3a9d3e[_0x469d29(0x186)]:_0x55a475[_0x469d29(0x179)][_0x469d29(0x19c)+'t']=_0xfd1180[_0x469d29(0x1bb)];break;case _0x3a9d3e[_0x469d29(0x196)]:_0x1e7bd6=_0xfd1180[_0x469d29(0x107)],_0x34bc10[_0x469d29(0x211)+_0x469d29(0x247)]=_0x1e7bd6,_0x3a9d3e[_0x469d29(0x143)](_0x3a9d3e[_0x469d29(0x1a5)],_0x34bc10[_0x469d29(0x131)+_0x469d29(0x1d3)])&&(_0x55a475[_0x469d29(0x107)][_0x469d29(0x1ff)]='',_0x1e7bd6[_0x469d29(0x127)](function(_0x2088ee){var _0x96e8e=_0x469d29;_0x55a475[_0x96e8e(0x107)][_0x96e8e(0x1f0)+'d'](_0x1e1d78[_0x96e8e(0x21d)](_0x5dd42f,_0x2088ee[_0x96e8e(0x16d)],_0x2088ee[_0x96e8e(0x1e1)],_0x2088ee['ts']));}),_0x3a9d3e[_0x469d29(0x120)](_0x24118));break;case _0x3a9d3e[_0x469d29(0x116)]:_0x95a786=_0xfd1180,_0x34bc10[_0x469d29(0x211)+_0x469d29(0x247)][_0x469d29(0x125)](_0x95a786),_0x3a9d3e[_0x469d29(0x12d)](-0x2*0x11e0+0x239e+0x216,_0x34bc10[_0x469d29(0x211)+_0x469d29(0x247)][_0x469d29(0x10e)])&&_0x34bc10[_0x469d29(0x211)+_0x469d29(0x247)][_0x469d29(0x1a4)](),_0x3a9d3e[_0x469d29(0x1e3)](_0x3a9d3e[_0x469d29(0x1a5)],_0x34bc10[_0x469d29(0x131)+_0x469d29(0x1d3)])&&(_0x55a475[_0x469d29(0x107)][_0x469d29(0x1f0)+'d'](_0x3a9d3e[_0x469d29(0x1c9)](_0x5dd42f,_0x95a786[_0x469d29(0x16d)],_0x95a786[_0x469d29(0x1e1)],_0x95a786['ts'])),_0x3a9d3e[_0x469d29(0x120)](_0x24118));break;case _0x3a9d3e[_0x469d29(0x1be)]:_0x34bc10[_0x469d29(0x211)+_0x469d29(0x247)]=[],_0x3a9d3e[_0x469d29(0x143)](_0x3a9d3e[_0x469d29(0x1a5)],_0x34bc10[_0x469d29(0x131)+_0x469d29(0x1d3)])&&(_0x55a475[_0x469d29(0x107)][_0x469d29(0x1ff)]='',_0x3a9d3e[_0x469d29(0x154)](_0xf3b3ee,_0x3a9d3e[_0x469d29(0x187)]));break;case _0x3a9d3e[_0x469d29(0xe6)]:_0x34bc10[_0x469d29(0x151)]=_0xfd1180[_0x469d29(0x21b)]||[],_0x3a9d3e[_0x469d29(0x172)](_0x29fa72);break;case _0x3a9d3e[_0x469d29(0x1f9)]:_0x34bc10[_0x469d29(0x123)][_0xfd1180[_0x469d29(0x14b)]]=_0xfd1180[_0x469d29(0x107)],_0x34bc10[_0x469d29(0x1cc)][_0xfd1180[_0x469d29(0x14b)]]=!(0x1bef+0x1b40+-0x372f),_0x3a9d3e[_0x469d29(0x21c)](_0x34bc10[_0x469d29(0x131)+_0x469d29(0x1d3)],_0xfd1180[_0x469d29(0x14b)])&&_0x3a9d3e[_0x469d29(0x120)](_0x1503e2);break;case _0x3a9d3e[_0x469d29(0x1ee)]:_0x95a786=_0x3a9d3e[_0x469d29(0x167)]((_0x58013c=_0xfd1180)[_0x469d29(0x16d)],_0x34bc10[_0x469d29(0x1ae)])?_0x58013c['to']:_0x58013c[_0x469d29(0x16d)],_0x34bc10[_0x469d29(0x123)][_0x95a786]||(_0x34bc10[_0x469d29(0x123)][_0x95a786]=[]),_0x34bc10[_0x469d29(0x123)][_0x95a786][_0x469d29(0x125)](_0x58013c),_0x3a9d3e[_0x469d29(0x21c)](-(-0x1124+0x2*0xe9d+-0xc15),_0x34bc10[_0x469d29(0x151)][_0x469d29(0x159)](_0x95a786))&&(_0x34bc10[_0x469d29(0x151)][_0x469d29(0x14a)](_0x95a786),_0x3a9d3e[_0x469d29(0x172)](_0x29fa72)),_0x3a9d3e[_0x469d29(0x191)](_0x34bc10[_0x469d29(0x131)+_0x469d29(0x1d3)],_0x95a786)&&(_0x55a475[_0x469d29(0x107)][_0x469d29(0x1f0)+'d'](_0x3a9d3e[_0x469d29(0x20b)](_0x5dd42f,_0x58013c[_0x469d29(0x16d)],_0x58013c[_0x469d29(0x1e1)],_0x58013c['ts'])),_0x3a9d3e[_0x469d29(0x172)](_0x24118));break;case _0x3a9d3e[_0x469d29(0x13b)]:_0x58013c=_0xfd1180,_0x34bc10[_0x469d29(0x1ae)]=_0x58013c[_0x469d29(0x1f8)+'me'],localStorage[_0x469d29(0x146)](_0x189665,_0x58013c[_0x469d29(0x119)]),_0x55a475[_0x469d29(0xff)][_0x469d29(0x19c)+'t']=_0x34bc10[_0x469d29(0x1ae)],_0x3a9d3e[_0x469d29(0x183)](_0xf3b3ee,_0x3a9d3e[_0x469d29(0x20c)](_0x3a9d3e[_0x469d29(0x232)],_0x58013c[_0x469d29(0x1f8)+'me']));break;case _0x3a9d3e[_0x469d29(0x214)]:_0x55a475[_0x469d29(0x133)+_0x469d29(0x14f)][_0x469d29(0x19c)+'t']=_0x3a9d3e[_0x469d29(0x15b)](_0x3a9d3e[_0x469d29(0x1c0)](_0x3a9d3e[_0x469d29(0x170)](_0x3a9d3e[_0x469d29(0x17d)],_0xfd1180[_0x469d29(0x20d)]),_0x3a9d3e[_0x469d29(0x12a)]),_0xfd1180[_0x469d29(0x1f8)+'me']),_0x55a475[_0x469d29(0x133)+_0x469d29(0x14f)][_0x469d29(0x1c8)]=_0x3a9d3e[_0x469d29(0x103)];break;case _0x3a9d3e[_0x469d29(0x14e)]:_0x55a475[_0x469d29(0x133)][_0x469d29(0x12e)][_0x469d29(0x20f)](_0x3a9d3e[_0x469d29(0xf6)])||(_0x55a475[_0x469d29(0x133)+_0x469d29(0x14f)][_0x469d29(0x19c)+'t']=_0xfd1180[_0x469d29(0x1bb)],_0x55a475[_0x469d29(0x133)+_0x469d29(0x14f)][_0x469d29(0x1c8)]=_0x3a9d3e[_0x469d29(0x18b)]);}var _0x58013c,_0x95a786,_0x1e7bd6;}(_0x111dfb);},_0x5eb084[_0x298d27(0x104)]=function(){var _0x3532cf=_0x298d27;_0x55a475[_0x3532cf(0x111)][_0x3532cf(0x19e)][_0x3532cf(0x20a)]=_0x12ccaa[_0x3532cf(0x114)],_0x5de3b9||(_0x5de3b9=_0x12ccaa[_0x3532cf(0x15a)](setTimeout,function(){var _0x57d5ef=_0x3532cf;_0x5de3b9=null,_0x3a9d3e[_0x57d5ef(0x240)](_0x2909b9);},_0x3092b0),_0x3092b0=Math[_0x3532cf(0x1d2)](_0x12ccaa[_0x3532cf(0xdf)](-0x3*0x59b+-0x29*0x57+0x1ec1+0.7,_0x3092b0),-0x29b*-0xe+0x74cd+-0x5eaf));},_0x5eb084[_0x298d27(0x24d)]=function(){var _0x560dce=_0x298d27;try{_0x5eb084[_0x560dce(0x165)]();}catch(_0x541813){}};}();}()));function _0x171c(){var _0x1aa55d=['RpnWh','adminOpenB','1219935ApYEfk','pMYXS','HAmwR','SXIbl','xxzgf','OPEN','placeholde','hPmfD','tory','jwtjN','navPublic','appendChil','main-scree','ebrNV','tAlyw','admin-conf','register','adminConfi','dm_msg','new_userna','flTbe','admin-moda','reg-email','mainScreen','stringify','call','innerHTML','QYMuP','mcAHe','jfjzh','1|3|5|6|4|','pGgfn','adminCance','data','seZec','\x20->\x20','208196SwKdhV','display','oxTwS','XcOlx','target','reg-pw','contains','UpkZO','publicHist','WQKLN','RtETB','DjEFC','tabRegiste','Rtwie','span','VWnEm','stener','t\x20was\x20refr','contacts','kAtoc','wwDls','Blerp','auth_err','login-pw','ignins','mvYjS','YZADL','nxQwl','Node','kKcZL','Zfhlu','AauIQ','tabLogin','IFVCN','MNcgJ','ZcMMK','synced\x20acr','composerSe','jBmhl','block','enamed\x20you','WeiGL','mzccA','modal-msg\x20','public\x20cha','cITNc','Fgvih','err','an\x20admin\x20r','77zvVGYO','public_his','key','register-f','wmgRn','onopen','pjRlW','ById','createText','dYgfk','wss://chat','tab-login','composerIn','ory','DHIXb','mYpof','authScreen','login-form','r\x20account\x20','onerror','Enter','nav-public','click','active','scrollHeig','chat-note','qyieD','gremlincha','GlUbK','654uluqRs','AONqE','sys-note','keydown','input','msg','tAkdn','composer-s','irm','nLSpV','EThHe','gpshp','chatTitle','chatTitleH','maRDJ','chatNote','eshed\x20by\x20t','readyState','to\x20','getElement','\x20own','t_token','jwAGj','81981hYgrRV','XMtpD','dmList','uname','rpKwV','waeoF','FYvSZ','remove','meUsername','tab-regist','split','auth_ok','GSSFM','onclose','value','xuCSn','messages','auth-scree','adbCh','sBkeN','HjVfq','reg-userna','JxtLZ','length','wzpft','FaORV','connBanner','chat-title','end','jMVzB','hLrrR','BmIKG','n.net','me_ok','token','xtIYu','renamed','vHtdE','UIXtr','-hash','gUozm','gEfWD','me-usernam','IciqG','dmThreads','LxFUt','push','QBFPS','forEach','BdlmO','DvCOE','DDkZE','112GSCloZ','Vipff','XRILD','classList','children','IETXC','activeChan','hqruZ','adminModal','yOkoc','wATLW','\x20\x20·\x20\x20','height','Message\x20#p','registerFo','login-id','kzwsO','FUDqg','admin-targ','trim','CmcuZ','dghzN','body','VgAiJ','jqcPr','eHayw','conn-banne','setItem','HiYDr','error','QUevp','unshift','with','.thegremli','nav-item','dJOfx','Msg','getMinutes','dmContacts','DkFsI','meta','YRJks','vvdrH','every\x2030\x20m','parse','MTllK','indexOf','HWElp','fDhcS','isAdmin','composer-i','hidden','getHours','ent','vSgPG','dmNewInput','dm_history','bkqdc','close','add','fJyXc','l-msg','sVnbP','16898jPhZAv','admin-open','61821SoFkvJ','from','rKcNZ','admin-new-','QlYmv','ault','PZaav','WsaTp','ziMaV','YGjEr','public','ydZIE','cqqsC','authError','869024NiIyqf','cuqNv','vIGlC','KErfc','qFPlb','INzJn','crVJx','refreshes\x20','prototype','NMnHb','put','siJPX','Yiupr','KdwUo','cDYTD','2|7|0','tnbis','oDonE','xHGzS','tfFPJ','name','modal-msg','submit','MxNIx','shiftKey','renamed\x20','type','adminTarge','UohLc','addEventLi','ncEWb','ash','resume','ZANCz','textConten','dm_contact','style','ZYYCt','auth-error','dm-new-inp','vpHYw','eIHky','shift','rBVIN','is_admin','bkggT','32ByzIgX','toggle','Message\x20@','adminNewNa','ubgaw','Qzaam','username','public_msg','40px','ATsXa','RNdGa','MMviP','YYnRM','send','nVaMk','nput','PBQaI','1788370fnPmKM','scrollTop','message','kwFOd','none','rRuXF','getItem','aDOQl','RrcwF','-btn','admin_rena','preventDef','rVJUd','IYxxZ','mYDLC','className','OKGFw','HIRiM','kecCB','dmLoaded','he\x20server','oss\x20your\x20s','gKtVo','loginForm','login','min','nel','onmessage','XFWNr','orm','dm-list','ublic','div','tBVHO','admin-canc','uKqtk','\x20active','createElem','ared','CnzPS','text','public_cle'];_0x171c=function(){return _0x1aa55d;};return _0x171c();}</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gremlinchat</title>
+<style>
+  :root{
+    --bg:        #16151c;
+    --panel:     #1d1c25;
+    --panel-alt: #262530;
+    --input-bg:  #2a2836;
+    --border:    #34323f;
+    --text:      #e8e6f0;
+    --muted:     #8b899b;
+    --accent:    #e8a33d;
+    --accent-hi: #f4b656;
+    --other-line:#4a4858;
+    --danger:    #e0576b;
+    --font-ui:   -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--bg); color:var(--text);
+    font-family:var(--font-ui); font-size:14px;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent); color:#1a1a20; }
+  button{ font-family:inherit; cursor:pointer; }
+  input, textarea{ font-family:inherit; }
+  a{ color:var(--accent); }
+
+  /* ---------- app shell ---------- */
+  #app{ height:100%; display:flex; flex-direction:column; }
+  .hidden{ display:none !important; }
+
+  /* ---------- auth screen ---------- */
+  #auth-screen{
+    height:100%; display:flex; align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .auth-card{
+    width:100%; max-width:340px;
+    background:var(--panel); border:1px solid var(--border); border-radius:6px;
+    padding:28px 26px 24px;
+  }
+  .auth-brand{
+    font-family:var(--font-mono); font-size:15px; color:var(--accent);
+    margin:0 0 4px; letter-spacing:0.02em;
+  }
+  .auth-sub{ margin:0 0 20px; color:var(--muted); font-size:12.5px; }
+  .auth-tabs{ display:flex; gap:18px; border-bottom:1px solid var(--border); margin-bottom:18px; }
+  .auth-tab{
+    background:none; border:none; color:var(--muted); padding:0 0 10px;
+    font-size:13.5px; border-bottom:2px solid transparent; margin-bottom:-1px;
+  }
+  .auth-tab.active{ color:var(--text); border-bottom-color:var(--accent); }
+  .field{ margin-bottom:14px; display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:12px; color:var(--muted); }
+  .field input{
+    background:var(--input-bg); border:1px solid var(--border); border-radius:4px;
+    color:var(--text); padding:9px 10px; font-size:13.5px; outline:none;
+  }
+  .field input:focus{ border-color:var(--accent); }
+  .auth-submit{
+    width:100%; background:var(--accent); border:none; border-radius:4px;
+    color:#1a1509; font-weight:600; padding:10px; font-size:13.5px; margin-top:4px;
+  }
+  .auth-submit:hover{ background:var(--accent-hi); }
+  .auth-error{
+    color:var(--danger); font-size:12.5px; margin-top:12px; min-height:1em;
+  }
+
+  /* ---------- main layout ---------- */
+  #main-screen{ height:100%; display:flex; }
+  input:disabled, textarea:disabled, button:disabled{ opacity:.45; cursor:not-allowed; }
+  #sidebar{
+    width:220px; flex:0 0 220px; background:var(--panel);
+    border-right:1px solid var(--border);
+    display:flex; flex-direction:column;
+  }
+  .sidebar-header{
+    padding:14px 16px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .sidebar-header .brand{ font-family:var(--font-mono); color:var(--accent); font-size:13.5px; }
+  .whoami{ padding:10px 16px; font-size:12px; color:var(--muted); border-bottom:1px solid var(--border); }
+  .whoami .me{ color:var(--text); font-family:var(--font-mono); }
+  .nav-section{ padding:12px 16px 4px; font-size:11px; color:var(--muted); letter-spacing:0.03em; }
+  .nav-list{ list-style:none; margin:0; padding:0 8px; overflow-y:auto; }
+  .nav-item{
+    padding:7px 8px; border-radius:4px; color:var(--muted);
+    font-size:13px; cursor:pointer; display:flex; align-items:center; gap:6px;
+  }
+  .nav-item:hover{ background:var(--panel-alt); color:var(--text); }
+  .nav-item.active{ background:var(--panel-alt); color:var(--text); }
+  .nav-item .hash{ color:var(--accent); font-family:var(--font-mono); }
+  .nav-item .label{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .unread-dot{
+    width:8px; height:8px; border-radius:50%; background:var(--accent);
+    margin-left:auto; flex:0 0 8px;
+  }
+  .dm-new{ padding:10px 16px; margin-top:auto; border-top:1px solid var(--border); }
+  .dm-new input{
+    width:100%; background:var(--input-bg); border:1px solid var(--border);
+    border-radius:4px; color:var(--text); padding:7px 9px; font-size:12.5px; outline:none;
+  }
+  .dm-new input:focus{ border-color:var(--accent); }
+  .admin-btn{
+    margin:10px 16px 14px; background:none; border:1px solid var(--border);
+    color:var(--muted); border-radius:4px; padding:6px 8px; font-size:11.5px;
+  }
+  .admin-btn:hover{ color:var(--accent); border-color:var(--accent); }
+
+  #members-sidebar{
+    width:180px; flex:0 0 180px; background:var(--panel);
+    border-left:1px solid var(--border); padding:14px 12px; overflow-y:auto;
+  }
+  .members-header{
+    font-size:11px; color:var(--muted); letter-spacing:0.03em;
+    text-transform:uppercase; margin-bottom:10px;
+  }
+  .members-list{ list-style:none; margin:0 0 14px; padding:0; display:flex; flex-direction:column; gap:9px; }
+  .member-item{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); min-width:0; }
+  .member-item span.member-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .member-item.me{ color:var(--accent); }
+  .member-dot{ width:8px; height:8px; border-radius:50%; background:#7fd18a; flex:0 0 8px; }
+  .member-item.offline .member-dot{ background:var(--muted); }
+  .member-item.offline span.member-name{ color:var(--muted); }
+  .members-header-offline{ margin-top:2px; }
+  .members-empty{ color:var(--muted); font-size:12px; font-style:italic; margin:0 0 14px; }
+
+  #chat-col{ flex:1; display:flex; flex-direction:column; min-width:0; }
+  #chat-header{
+    padding:13px 20px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:8px; font-size:13.5px;
+  }
+  #chat-header .hash{ color:var(--accent); font-family:var(--font-mono); }
+  #chat-header .note{ margin-left:auto; color:var(--muted); font-size:11.5px; }
+
+  #messages{
+    flex:1; overflow-y:auto; padding:18px 22px; display:flex; flex-direction:column; gap:2px;
+  }
+  .msg{
+    position:relative; border-left:2px solid var(--other-line);
+    padding:5px 28px 5px 12px; margin:5px 0;
+  }
+  .msg.own{ border-left-color:var(--accent); }
+  .msg .meta{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--muted); margin-bottom:2px;
+  }
+  .msg.own .meta .uname{ color:var(--accent); }
+  .msg .meta .uname{ color:#9d9bd6; }
+  .msg .body{ font-size:13.5px; line-height:1.5; white-space:pre-wrap; word-break:break-word; }
+  .sys-note{ color:var(--muted); font-size:12px; font-style:italic; text-align:center; margin:10px 0; }
+
+  .embed-img{
+    display:block; max-width:320px; max-height:320px; width:auto; height:auto;
+    border-radius:6px; margin-top:4px; object-fit:contain; background:var(--panel-alt);
+  }
+  .embed-broken{
+    color:var(--muted); font-size:12px; font-style:italic; margin-top:4px;
+  }
+  .msg-del{
+    display:none; position:absolute; top:4px; right:2px; width:20px; height:20px;
+    line-height:1; font-size:13px; background:var(--panel-alt); color:var(--muted);
+    border:1px solid var(--border); border-radius:4px; padding:0;
+  }
+  .msg:hover .msg-del{ display:block; }
+  .msg-del:hover{ color:var(--danger); border-color:var(--danger); }
+
+  #composer{
+    border-top:1px solid var(--border); padding:12px 16px; display:flex; gap:10px;
+  }
+  #composer textarea{
+    flex:1; resize:none; background:var(--input-bg); border:1px solid var(--border);
+    border-radius:5px; color:var(--text); padding:9px 11px; font-size:13.5px;
+    outline:none; height:40px; max-height:120px;
+  }
+  #composer textarea:focus{ border-color:var(--accent); }
+  #composer button{
+    background:var(--accent); border:none; border-radius:5px; padding:0 18px;
+    color:#1a1509; font-weight:600; font-size:13px;
+  }
+  #composer button:hover{ background:var(--accent-hi); }
+  #composer .composer-tool{
+    background:var(--panel-alt); border:1px solid var(--border); color:var(--muted);
+    border-radius:5px; padding:0 14px; font-size:14px;
+  }
+  #composer .composer-tool:hover{ color:var(--text); border-color:var(--accent); }
+
+  /* ---------- modal ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(10,9,13,0.6);
+    display:flex; align-items:center; justify-content:center; z-index:50;
+  }
+  .modal{
+    width:100%; max-width:320px; background:var(--panel); border:1px solid var(--border);
+    border-radius:6px; padding:20px;
+  }
+  .modal h3{ margin:0 0 14px; font-size:14px; font-family:var(--font-mono); color:var(--accent); }
+  .modal .field input{ width:100%; }
+  .modal-actions{ display:flex; gap:8px; margin-top:16px; }
+  .modal-actions button{
+    flex:1; border-radius:4px; padding:8px; font-size:13px; border:1px solid var(--border);
+    background:var(--panel-alt); color:var(--text);
+  }
+  .modal-actions button.primary{ background:var(--accent); color:#1a1509; border-color:var(--accent); font-weight:600; }
+  .modal-msg{ font-size:12px; margin-top:10px; min-height:1em; }
+  .modal-msg.err{ color:var(--danger); }
+  .modal-msg.ok{ color:#7fd18a; }
+
+  #conn-banner{
+    position:fixed; bottom:0; left:0; right:0; background:var(--danger); color:#1a1509;
+    text-align:center; font-size:12.5px; padding:6px; display:none;
+  }
+  ::-webkit-scrollbar{ width:9px; }
+  ::-webkit-scrollbar-thumb{ background:var(--panel-alt); border-radius:5px; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ AUTH SCREEN ============ -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <p class="auth-brand">gremlinchat</p>
+      <p class="auth-sub">sign in to join the public chat and send DMs</p>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login">Log in</button>
+        <button class="auth-tab" id="tab-register">Create account</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="login-form">
+        <div class="field">
+          <label for="login-id">Username or email</label>
+          <input id="login-id" name="identifier" autocomplete="username email" required>
+        </div>
+        <div class="field">
+          <label for="login-pw">Password</label>
+          <input id="login-pw" type="password" name="password" autocomplete="current-password" required>
+        </div>
+        <button class="auth-submit" type="submit">Log in</button>
+      </form>
+
+      <!-- REGISTER FORM -->
+      <form id="register-form" class="hidden">
+        <div class="field">
+          <label for="reg-username">Username</label>
+          <input id="reg-username" autocomplete="username" minlength="3" maxlength="20"
+                 pattern="[A-Za-z0-9_]+" title="3-20 letters, numbers, or underscore" required>
+        </div>
+        <div class="field">
+          <label for="reg-email">Email</label>
+          <input id="reg-email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="reg-pw">Password</label>
+          <input id="reg-pw" type="password" autocomplete="new-password" minlength="6" required>
+        </div>
+        <button class="auth-submit" type="submit">Create account</button>
+        <p style="color:var(--muted); font-size:11.5px; margin-top:10px;">
+          Pick your username carefully - only an admin can change it later.
+        </p>
+      </form>
+
+      <p class="auth-error" id="auth-error"></p>
+    </div>
+  </div>
+
+  <!-- ============ MAIN SCREEN ============ -->
+  <div id="main-screen" class="hidden">
+    <div id="sidebar">
+      <div class="sidebar-header">
+        <span class="brand">gremlinchat</span>
+      </div>
+      <div class="whoami">signed in as <span class="me" id="me-username"></span></div>
+
+      <div class="nav-section">Channels</div>
+      <ul class="nav-list">
+        <li class="nav-item" id="nav-rules"><span class="hash">?</span>&nbsp;rules</li>
+        <li class="nav-item" id="nav-announcements"><span class="hash">!</span>&nbsp;announcements</li>
+		<li class="nav-item active" id="nav-public"><span class="hash">#</span>&nbsp;public</li>
+      </ul>
+
+      <div class="nav-section">Direct messages</div>
+      <ul class="nav-list" id="dm-list"></ul>
+
+      <div class="dm-new">
+        <input id="dm-new-input" placeholder="message a user by name + Enter">
+      </div>
+      <button class="admin-btn hidden" id="admin-open-btn">admin: rename user</button>
+    </div>
+
+    <div id="chat-col">
+      <div id="chat-header">
+        <span class="hash" id="chat-title-hash">#</span>
+        <span id="chat-title">public</span>
+        <span class="note" id="chat-note">refreshes every 30 min</span>
+      </div>
+      <div id="messages"></div>
+      <div id="composer">
+        <button class="composer-tool" id="composer-img-btn" type="button" title="Embed an image or GIF from a URL">🖼</button>
+        <textarea id="composer-input" placeholder="Message #public" rows="1"></textarea>
+        <button id="composer-send">Send</button>
+      </div>
+    </div>
+
+    <div id="members-sidebar">
+      <div class="members-header">Online — <span id="members-online-count">0</span></div>
+      <ul class="members-list" id="members-online-list"></ul>
+      <div class="members-header members-header-offline">Offline — <span id="members-offline-count">0</span></div>
+      <ul class="members-list" id="members-offline-list"></ul>
+    </div>
+  </div>
+
+  <div id="conn-banner">reconnecting...</div>
+
+  <!-- ============ ADMIN MODAL ============ -->
+  <div class="modal-backdrop hidden" id="admin-modal">
+    <div class="modal">
+      <h3>Rename a user</h3>
+      <div class="field">
+        <label>Current username</label>
+        <input id="admin-target">
+      </div>
+      <div class="field">
+        <label>New username</label>
+        <input id="admin-new-name">
+      </div>
+      <div class="modal-actions">
+        <button id="admin-cancel">Cancel</button>
+        <button class="primary" id="admin-confirm">Rename</button>
+      </div>
+      <p class="modal-msg" id="admin-modal-msg"></p>
+    </div>
+  </div>
+
+  <!-- ============ IMAGE / GIF EMBED MODAL ============ -->
+  <div class="modal-backdrop hidden" id="image-modal">
+    <div class="modal">
+      <h3>Embed an image or GIF</h3>
+      <div class="field">
+        <label>Image or GIF URL</label>
+        <input id="image-url-input" placeholder="https://example.com/pic.gif">
+      </div>
+      <div class="field">
+        <label>Caption (optional)</label>
+        <input id="image-caption-input" maxlength="2000">
+      </div>
+      <div class="modal-actions">
+        <button id="image-cancel">Cancel</button>
+        <button class="primary" id="image-send">Send</button>
+      </div>
+      <p class="modal-msg" id="image-modal-msg"></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---- config ----
+  var WS_URL = "wss://chat.thegremlin.net";
+  // For local testing against `python server.py` on the same machine, swap to:
+  // var WS_URL = "ws://127.0.0.1:8765";
+
+  var STORAGE_KEY = "gremlinchat_token";
+  var RECONNECT_MIN = 1000, RECONNECT_MAX = 15000;
+
+  var ADMIN_CHANNELS = ["rules", "announcements"];
+
+  var ws = null;
+  var reconnectDelay = RECONNECT_MIN;
+  var reconnectTimer = null;
+
+  var state = {
+    username: null,
+    isAdmin: false,
+    activeChannel: "public",       // "public", "rules", "announcements", or a DM username
+    publicHistory: [],             // cached copy of the current public log
+    dmContacts: [],                // list of usernames
+    dmThreads: {},                 // username -> [ {id,from,to,kind,text,url,ts}, ... ]
+    dmLoaded: {},                  // username -> bool (history fetched)
+    dmUnread: {},                  // username -> bool (has unseen messages)
+    channelMessages: { rules: [], announcements: [] },
+    channelLoaded: {},             // "rules"/"announcements" -> bool (history fetched)
+    online: [],                    // usernames currently connected
+    allUsers: []                   // every registered username, online or not
+  };
+
+  // ---- element refs ----
+  var el = {
+    authScreen: document.getElementById("auth-screen"),
+    mainScreen: document.getElementById("main-screen"),
+    tabLogin: document.getElementById("tab-login"),
+    tabRegister: document.getElementById("tab-register"),
+    loginForm: document.getElementById("login-form"),
+    registerForm: document.getElementById("register-form"),
+    authError: document.getElementById("auth-error"),
+    meUsername: document.getElementById("me-username"),
+    navPublic: document.getElementById("nav-public"),
+    navRules: document.getElementById("nav-rules"),
+    navAnnouncements: document.getElementById("nav-announcements"),
+    dmList: document.getElementById("dm-list"),
+    dmNewInput: document.getElementById("dm-new-input"),
+    adminOpenBtn: document.getElementById("admin-open-btn"),
+    chatTitle: document.getElementById("chat-title"),
+    chatTitleHash: document.getElementById("chat-title-hash"),
+    chatNote: document.getElementById("chat-note"),
+    messages: document.getElementById("messages"),
+    composerInput: document.getElementById("composer-input"),
+    composerSend: document.getElementById("composer-send"),
+    composerImgBtn: document.getElementById("composer-img-btn"),
+    connBanner: document.getElementById("conn-banner"),
+    adminModal: document.getElementById("admin-modal"),
+    adminTarget: document.getElementById("admin-target"),
+    adminNewName: document.getElementById("admin-new-name"),
+    adminConfirm: document.getElementById("admin-confirm"),
+    adminCancel: document.getElementById("admin-cancel"),
+    adminModalMsg: document.getElementById("admin-modal-msg"),
+    imageModal: document.getElementById("image-modal"),
+    imageUrlInput: document.getElementById("image-url-input"),
+    imageCaptionInput: document.getElementById("image-caption-input"),
+    imageSend: document.getElementById("image-send"),
+    imageCancel: document.getElementById("image-cancel"),
+    imageModalMsg: document.getElementById("image-modal-msg"),
+    membersOnlineList: document.getElementById("members-online-list"),
+    membersOnlineCount: document.getElementById("members-online-count"),
+    membersOfflineList: document.getElementById("members-offline-list"),
+    membersOfflineCount: document.getElementById("members-offline-count"),
+  };
+
+  // ---------------------------------------------------------------------
+  // WEBSOCKET
+  // ---------------------------------------------------------------------
+  function connect(){
+    ws = new WebSocket(WS_URL);
+
+    ws.onopen = function(){
+      reconnectDelay = RECONNECT_MIN;
+      el.connBanner.style.display = "none";
+      var token = localStorage.getItem(STORAGE_KEY);
+      if (token) {
+        send({type:"resume", token: token});
+      }
+    };
+
+    ws.onmessage = function(evt){
+      var msg;
+      try { msg = JSON.parse(evt.data); } catch(e){ return; }
+      handleServerMessage(msg);
+    };
+
+    ws.onclose = function(){
+      el.connBanner.style.display = "block";
+      scheduleReconnect();
+    };
+
+    ws.onerror = function(){
+      try { ws.close(); } catch(e){}
+    };
+  }
+
+  function scheduleReconnect(){
+    if (reconnectTimer) return;
+    reconnectTimer = setTimeout(function(){
+      reconnectTimer = null;
+      connect();
+    }, reconnectDelay);
+    reconnectDelay = Math.min(reconnectDelay * 1.7, RECONNECT_MAX);
+  }
+
+  function send(obj){
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify(obj));
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  // SERVER MESSAGE HANDLING
+  // ---------------------------------------------------------------------
+  function handleServerMessage(msg){
+    switch(msg.type){
+      case "auth_ok":
+        onAuthOk(msg);
+        break;
+      case "auth_err":
+        el.authError.textContent = msg.message;
+        break;
+      case "public_history":
+        renderPublicHistory(msg.messages);
+        break;
+      case "public_msg":
+        appendPublicMessage(msg);
+        break;
+      case "public_cleared":
+        state.publicHistory = [];
+        if (state.activeChannel === "public") {
+          el.messages.innerHTML = "";
+          addSysNote("public chat was refreshed by the server");
+        }
+        break;
+      case "dm_contacts":
+        state.dmContacts = msg.contacts || [];
+        renderDmList();
+        break;
+      case "dm_history":
+        state.dmThreads[msg.with] = msg.messages;
+        state.dmLoaded[msg.with] = true;
+        if (state.activeChannel === msg.with) renderActiveChannel();
+        break;
+      case "dm_msg":
+        onIncomingDm(msg);
+        break;
+      case "renamed":
+        onRenamed(msg);
+        break;
+      case "admin_rename_ok":
+        el.adminModalMsg.textContent = "renamed " + msg.target + " -> " + msg.new_username;
+        el.adminModalMsg.className = "modal-msg ok";
+        break;
+      case "channel_history":
+        state.channelMessages[msg.channel] = msg.messages || [];
+        state.channelLoaded[msg.channel] = true;
+        if (state.activeChannel === msg.channel) renderChannelMessages(msg.channel);
+        break;
+      case "channel_msg":
+        onIncomingChannelMsg(msg);
+        break;
+      case "channel_msg_deleted":
+        if (msg.channel === "public") {
+          state.publicHistory = state.publicHistory.filter(function(m){ return m.id !== msg.id; });
+        } else {
+          removeFromChannelCache(msg.channel, msg.id);
+        }
+        removeMessageFromDom(msg.channel, msg.id);
+        break;
+      case "dm_msg_deleted":
+        var dmOther = (msg.sender === state.username) ? msg.recipient : msg.sender;
+        removeFromDmCache(dmOther, msg.id);
+        if (state.activeChannel === dmOther) removeMessageFromDom("dm", msg.id);
+        break;
+      case "presence":
+        renderMembers(msg.online || [], msg.all || []);
+        break;
+      case "error":
+        if (!el.adminModal.classList.contains("hidden")) {
+          el.adminModalMsg.textContent = msg.message;
+          el.adminModalMsg.className = "modal-msg err";
+        } else if (!el.imageModal.classList.contains("hidden")) {
+          el.imageModalMsg.textContent = msg.message;
+          el.imageModalMsg.className = "modal-msg err";
+        } else {
+          addSysNote(msg.message);
+        }
+        break;
+    }
+  }
+
+  function onAuthOk(msg){
+    state.username = msg.username;
+    state.isAdmin = !!msg.is_admin;
+    localStorage.setItem(STORAGE_KEY, msg.token);
+    el.meUsername.textContent = state.username;
+    el.adminOpenBtn.classList.toggle("hidden", !state.isAdmin);
+    el.authScreen.classList.add("hidden");
+    el.mainScreen.classList.remove("hidden");
+    switchChannel("public");
+  }
+
+  function onRenamed(msg){
+    // the admin changed *our* username while we were connected
+    state.username = msg.new_username;
+    localStorage.setItem(STORAGE_KEY, msg.token);
+    el.meUsername.textContent = state.username;
+    addSysNote("an admin renamed your account to " + msg.new_username);
+  }
+
+  // ---------------------------------------------------------------------
+  // RENDERING
+  // ---------------------------------------------------------------------
+  function addSysNote(text){
+    var d = document.createElement("div");
+    d.className = "sys-note";
+    d.textContent = text;
+    el.messages.appendChild(d);
+    scrollToBottom();
+  }
+
+  // channelKey is "public", "rules", "announcements", or "dm" (any DM thread) -
+  // it's what governs delete permission and lets us find/remove this row later.
+  function messageRow(m, channelKey){
+    var row = document.createElement("div");
+    row.className = "msg" + (m.from === state.username ? " own" : "");
+    if (m.id != null) row.dataset.id = m.id;
+    row.dataset.channel = channelKey;
+
+    var meta = document.createElement("div");
+    meta.className = "meta";
+    var uname = document.createElement("span");
+    uname.className = "uname";
+    uname.textContent = m.from;
+    meta.appendChild(uname);
+    meta.appendChild(document.createTextNode("  ·  " + formatTime(m.ts)));
+    row.appendChild(meta);
+
+    if (m.kind === "image" || m.kind === "gif") {
+      if (m.text) {
+        var cap = document.createElement("div");
+        cap.className = "body";
+        cap.textContent = m.text;
+        row.appendChild(cap);
+      }
+      var img = document.createElement("img");
+      img.className = "embed-img";
+      img.src = m.url;
+      img.loading = "lazy";
+      img.alt = m.kind === "gif" ? "gif" : "image";
+      img.addEventListener("error", function(){
+        var note = document.createElement("div");
+        note.className = "embed-broken";
+        note.textContent = "(couldn't load " + (m.kind === "gif" ? "gif" : "image") + ")";
+        img.replaceWith(note);
+      });
+      row.appendChild(img);
+    } else {
+      var body = document.createElement("div");
+      body.className = "body";
+      body.textContent = m.text;
+      row.appendChild(body);
+    }
+
+    if (m.id != null && canDeleteMessage(m, channelKey)) {
+      var del = document.createElement("button");
+      del.className = "msg-del";
+      del.type = "button";
+      del.title = "Delete message";
+      del.textContent = "\u00d7";
+      del.addEventListener("click", function(){ deleteMessage(m, channelKey); });
+      row.appendChild(del);
+    }
+
+    return row;
+  }
+
+  function canDeleteMessage(m, channelKey){
+    if (state.isAdmin) return true;
+    if (channelKey === "dm" && m.from === state.username) return true;
+    return false;
+  }
+
+  function deleteMessage(m, channelKey){
+    if (channelKey === "dm") {
+      send({type:"delete_dm_msg", id: m.id});
+    } else {
+      send({type:"delete_channel_msg", channel: channelKey, id: m.id});
+    }
+  }
+
+  function removeMessageFromDom(channelKey, id){
+    var rows = el.messages.querySelectorAll('.msg[data-channel="' + channelKey + '"]');
+    Array.prototype.forEach.call(rows, function(row){
+      if (String(row.dataset.id) === String(id)) row.remove();
+    });
+  }
+
+  function removeFromChannelCache(channel, id){
+    var list = state.channelMessages[channel];
+    if (!list) return;
+    state.channelMessages[channel] = list.filter(function(m){ return m.id !== id; });
+  }
+
+  function removeFromDmCache(other, id){
+    var list = state.dmThreads[other];
+    if (!list) return;
+    state.dmThreads[other] = list.filter(function(m){ return m.id !== id; });
+  }
+
+  function formatTime(ts){
+    var d = new Date(ts * 1000);
+    var h = d.getHours(), m = d.getMinutes();
+    return (h < 10 ? "0"+h : h) + ":" + (m < 10 ? "0"+m : m);
+  }
+
+  function scrollToBottom(){
+    el.messages.scrollTop = el.messages.scrollHeight;
+  }
+
+  function renderPublicHistory(list){
+    state.publicHistory = list;
+    if (state.activeChannel === "public") {
+      el.messages.innerHTML = "";
+      list.forEach(function(m){
+        el.messages.appendChild(messageRow(m, "public"));
+      });
+      scrollToBottom();
+    }
+  }
+
+  function appendPublicMessage(m){
+    state.publicHistory.push(m);
+    if (state.publicHistory.length > 500) state.publicHistory.shift();
+    if (state.activeChannel === "public") {
+      el.messages.appendChild(messageRow(m, "public"));
+      scrollToBottom();
+    }
+  }
+
+  function onIncomingChannelMsg(m){
+    var channel = m.channel;
+    if (!state.channelMessages[channel]) state.channelMessages[channel] = [];
+    state.channelMessages[channel].push(m);
+    if (state.activeChannel === channel) {
+      el.messages.appendChild(messageRow(m, channel));
+      scrollToBottom();
+    }
+  }
+
+  function renderChannelMessages(channel){
+    var list = state.channelMessages[channel] || [];
+    el.messages.innerHTML = "";
+    list.forEach(function(m){
+      el.messages.appendChild(messageRow(m, channel));
+    });
+    scrollToBottom();
+  }
+
+  function onIncomingDm(m){
+    var other = (m.from === state.username) ? m.to : m.from;
+    if (!state.dmThreads[other]) state.dmThreads[other] = [];
+    state.dmThreads[other].push(m);
+    var isNewContact = state.dmContacts.indexOf(other) === -1;
+    if (isNewContact) state.dmContacts.unshift(other);
+    if (m.from !== state.username && state.activeChannel !== other) {
+      state.dmUnread[other] = true;
+    }
+    if (isNewContact || state.dmUnread[other]) renderDmList();
+    if (state.activeChannel === other) {
+      el.messages.appendChild(messageRow(m, "dm"));
+      scrollToBottom();
+    }
+  }
+
+  function renderDmList(){
+    el.dmList.innerHTML = "";
+    state.dmContacts.forEach(function(user){
+      var li = document.createElement("li");
+      li.className = "nav-item" + (state.activeChannel === user ? " active" : "");
+      li.dataset.user = user;
+      var label = document.createElement("span");
+      label.className = "label";
+      label.textContent = user;
+      li.appendChild(label);
+      if (state.dmUnread[user] && state.activeChannel !== user) {
+        var dot = document.createElement("span");
+        dot.className = "unread-dot";
+        li.appendChild(dot);
+      }
+      li.addEventListener("click", function(){ switchChannel(user); });
+      el.dmList.appendChild(li);
+    });
+  }
+
+  function renderMemberList(listEl, users, offline, emptyText){
+    listEl.innerHTML = "";
+    if (!users.length) {
+      var empty = document.createElement("li");
+      empty.className = "members-empty";
+      empty.textContent = emptyText;
+      listEl.appendChild(empty);
+      return;
+    }
+    users.forEach(function(user){
+      var li = document.createElement("li");
+      li.className = "member-item" + (offline ? " offline" : "") + (user === state.username ? " me" : "");
+      var dot = document.createElement("span");
+      dot.className = "member-dot";
+      var name = document.createElement("span");
+      name.className = "member-name";
+      name.textContent = user;
+      li.appendChild(dot);
+      li.appendChild(name);
+      listEl.appendChild(li);
+    });
+  }
+
+  function renderMembers(online, all){
+    state.online = online;
+    state.allUsers = all;
+
+    // Partition so every known user shows up in exactly one bucket: online
+    // members first, then everyone else (registered but not connected).
+    // Dedupe defensively in case the server ever sends an overlapping list.
+    var onlineSet = {};
+    var onlineUnique = [];
+    online.forEach(function(user){
+      if (!onlineSet[user]) { onlineSet[user] = true; onlineUnique.push(user); }
+    });
+
+    var offlineSet = {};
+    var offlineUnique = [];
+    all.forEach(function(user){
+      if (!onlineSet[user] && !offlineSet[user]) {
+        offlineSet[user] = true;
+        offlineUnique.push(user);
+      }
+    });
+
+    onlineUnique.sort();
+    offlineUnique.sort();
+
+    el.membersOnlineCount.textContent = onlineUnique.length;
+    el.membersOfflineCount.textContent = offlineUnique.length;
+    renderMemberList(el.membersOnlineList, onlineUnique, false, "nobody's online");
+    renderMemberList(el.membersOfflineList, offlineUnique, true, "nobody else registered yet");
+  }
+
+  function setChannelHeader(hash, title, note){
+    el.chatTitleHash.textContent = hash;
+    el.chatTitle.textContent = title;
+    el.chatNote.textContent = note;
+  }
+
+  function setComposerEnabled(enabled, placeholder){
+    el.composerInput.disabled = !enabled;
+    el.composerInput.placeholder = placeholder;
+    el.composerSend.disabled = !enabled;
+    el.composerImgBtn.disabled = !enabled;
+  }
+
+  function switchChannel(channel){
+    state.activeChannel = channel;
+    if (state.dmUnread[channel]) state.dmUnread[channel] = false;
+
+    el.navPublic.classList.toggle("active", channel === "public");
+    el.navRules.classList.toggle("active", channel === "rules");
+    el.navAnnouncements.classList.toggle("active", channel === "announcements");
+    renderDmList();
+
+    if (channel === "public") {
+      setChannelHeader("#", "public", "refreshes every 30 min");
+      setComposerEnabled(true, "Message #public");
+      el.messages.innerHTML = "";
+      state.publicHistory.forEach(function(m){
+        el.messages.appendChild(messageRow(m, "public"));
+      });
+      scrollToBottom();
+    } else if (channel === "rules" || channel === "announcements") {
+      setChannelHeader("#", channel, state.isAdmin ? "only admins can post here" : "read-only - admins post here");
+      setComposerEnabled(state.isAdmin, "Message #" + channel);
+      el.messages.innerHTML = "";
+      if (state.channelLoaded[channel]) {
+        renderChannelMessages(channel);
+      } else {
+        send({type:"channel_history", channel: channel});
+      }
+    } else {
+      setChannelHeader("@", channel, "synced across your signins");
+      setComposerEnabled(true, "Message @" + channel);
+      el.messages.innerHTML = "";
+      if (state.dmLoaded[channel]) {
+        renderActiveChannel();
+      } else {
+        send({type:"dm_history", with: channel});
+      }
+    }
+  }
+
+  function renderActiveChannel(){
+    var thread = state.dmThreads[state.activeChannel] || [];
+    el.messages.innerHTML = "";
+    thread.forEach(function(m){
+      el.messages.appendChild(messageRow(m, "dm"));
+    });
+    scrollToBottom();
+  }
+
+  // ---------------------------------------------------------------------
+  // AUTH FORM WIRING
+  // ---------------------------------------------------------------------
+  el.tabLogin.addEventListener("click", function(){
+    el.tabLogin.classList.add("active");
+    el.tabRegister.classList.remove("active");
+    el.loginForm.classList.remove("hidden");
+    el.registerForm.classList.add("hidden");
+    el.authError.textContent = "";
+  });
+  el.tabRegister.addEventListener("click", function(){
+    el.tabRegister.classList.add("active");
+    el.tabLogin.classList.remove("active");
+    el.registerForm.classList.remove("hidden");
+    el.loginForm.classList.add("hidden");
+    el.authError.textContent = "";
+  });
+
+  el.loginForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    el.authError.textContent = "";
+    send({
+      type: "login",
+      identifier: document.getElementById("login-id").value.trim(),
+      password: document.getElementById("login-pw").value
+    });
+  });
+
+  el.registerForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    el.authError.textContent = "";
+    send({
+      type: "register",
+      username: document.getElementById("reg-username").value.trim(),
+      email: document.getElementById("reg-email").value.trim(),
+      password: document.getElementById("reg-pw").value
+    });
+  });
+
+  // ---------------------------------------------------------------------
+  // CHAT UI WIRING
+  // ---------------------------------------------------------------------
+  el.navPublic.addEventListener("click", function(){ switchChannel("public"); });
+  el.navRules.addEventListener("click", function(){ switchChannel("rules"); });
+  el.navAnnouncements.addEventListener("click", function(){ switchChannel("announcements"); });
+
+  el.dmNewInput.addEventListener("keydown", function(e){
+    if (e.key === "Enter") {
+      var target = el.dmNewInput.value.trim();
+      if (target && target !== state.username) {
+        switchChannel(target);
+      }
+      el.dmNewInput.value = "";
+    }
+  });
+
+  // Routes an outgoing message to the right server message type depending
+  // on whether the active channel is public / an admin-only channel / a DM.
+  function sendComposerMessage(kind, text, url){
+    var channel = state.activeChannel;
+    if (channel === "public") {
+      send({type:"public_msg", kind: kind, text: text, url: url});
+    } else if (ADMIN_CHANNELS.indexOf(channel) !== -1) {
+      send({type:"admin_channel_msg", channel: channel, kind: kind, text: text, url: url});
+    } else {
+      send({type:"dm_msg", to: channel, kind: kind, text: text, url: url});
+    }
+  }
+
+  function sendComposer(){
+    var text = el.composerInput.value;
+    if (!text.trim()) return;
+    sendComposerMessage("text", text, "");
+    el.composerInput.value = "";
+    el.composerInput.style.height = "40px";
+  }
+
+  el.composerSend.addEventListener("click", sendComposer);
+  el.composerInput.addEventListener("keydown", function(e){
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendComposer();
+    }
+  });
+  el.composerInput.addEventListener("input", function(){
+    el.composerInput.style.height = "40px";
+    el.composerInput.style.height = Math.min(el.composerInput.scrollHeight, 120) + "px";
+  });
+
+  // ---------------------------------------------------------------------
+  // IMAGE EMBED MODAL WIRING
+  // ---------------------------------------------------------------------
+  el.composerImgBtn.addEventListener("click", function(){
+    el.imageUrlInput.value = "";
+    el.imageCaptionInput.value = "";
+    el.imageModalMsg.textContent = "";
+    el.imageModalMsg.className = "modal-msg";
+    el.imageModal.classList.remove("hidden");
+    el.imageUrlInput.focus();
+  });
+  el.imageCancel.addEventListener("click", function(){
+    el.imageModal.classList.add("hidden");
+  });
+  el.imageSend.addEventListener("click", function(){
+    var url = el.imageUrlInput.value.trim();
+    if (!url) {
+      el.imageModalMsg.textContent = "enter an image URL";
+      el.imageModalMsg.className = "modal-msg err";
+      return;
+    }
+    sendComposerMessage("image", el.imageCaptionInput.value.trim(), url);
+    el.imageModal.classList.add("hidden");
+  });
+
+  // ---------------------------------------------------------------------
+  // ADMIN MODAL WIRING
+  // ---------------------------------------------------------------------
+  el.adminOpenBtn.addEventListener("click", function(){
+    el.adminTarget.value = "";
+    el.adminNewName.value = "";
+    el.adminModalMsg.textContent = "";
+    el.adminModalMsg.className = "modal-msg";
+    el.adminModal.classList.remove("hidden");
+  });
+  el.adminCancel.addEventListener("click", function(){
+    el.adminModal.classList.add("hidden");
+  });
+  el.adminConfirm.addEventListener("click", function(){
+    var target = el.adminTarget.value.trim();
+    var newName = el.adminNewName.value.trim();
+    if (!target || !newName) return;
+    send({type:"admin_rename", target: target, new_username: newName});
+  });
+
+  // ---------------------------------------------------------------------
+  // BOOT
+  // ---------------------------------------------------------------------
+  connect();
+
+})();
+</script>
+</body>
+</html>
