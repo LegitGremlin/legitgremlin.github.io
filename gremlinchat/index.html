@@ -79,17 +79,31 @@
   #sidebar{
     width:220px; flex:0 0 220px; background:var(--panel);
     border-right:1px solid var(--border);
-    display:flex; flex-direction:column;
+    display:flex; flex-direction:column; overflow-y:auto;
   }
   .sidebar-header{
     padding:14px 16px; border-bottom:1px solid var(--border);
     display:flex; align-items:center; justify-content:space-between;
   }
   .sidebar-header .brand{ font-family:var(--font-mono); color:var(--accent); font-size:13.5px; }
-  .whoami{ padding:10px 16px; font-size:12px; color:var(--muted); border-bottom:1px solid var(--border); }
+  .whoami{ padding:10px 16px; font-size:12px; color:var(--muted); border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between; gap:8px; }
   .whoami .me{ color:var(--text); font-family:var(--font-mono); }
-  .nav-section{ padding:12px 16px 4px; font-size:11px; color:var(--muted); letter-spacing:0.03em; }
-  .nav-list{ list-style:none; margin:0; padding:0 8px; overflow-y:auto; }
+  .whoami-actions{ display:flex; gap:6px; flex:0 0 auto; }
+  .icon-btn{
+    background:none; border:1px solid var(--border); color:var(--muted); border-radius:4px;
+    width:22px; height:22px; line-height:1; font-size:12px; padding:0; flex:0 0 auto;
+  }
+  .icon-btn:hover{ color:var(--accent); border-color:var(--accent); }
+  .nav-section{
+    padding:12px 16px 4px; font-size:11px; color:var(--muted); letter-spacing:0.03em;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-section-action{
+    background:none; border:none; color:var(--accent); font-size:14px; padding:0 2px; line-height:1;
+  }
+  .nav-section-action:hover{ color:var(--accent-hi); }
+  .nav-list{ list-style:none; margin:0; padding:0 8px; }
   .nav-item{
     padding:7px 8px; border-radius:4px; color:var(--muted);
     font-size:13px; cursor:pointer; display:flex; align-items:center; gap:6px;
@@ -98,11 +112,12 @@
   .nav-item.active{ background:var(--panel-alt); color:var(--text); }
   .nav-item .hash{ color:var(--accent); font-family:var(--font-mono); }
   .nav-item .label{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .gc-marker{ color:var(--muted); font-size:11px; margin-left:2px; }
   .unread-dot{
     width:8px; height:8px; border-radius:50%; background:var(--accent);
     margin-left:auto; flex:0 0 8px;
   }
-  .dm-new{ padding:10px 16px; margin-top:auto; border-top:1px solid var(--border); }
+  .dm-new{ padding:10px 16px; border-top:1px solid var(--border); }
   .dm-new input{
     width:100%; background:var(--input-bg); border:1px solid var(--border);
     border-radius:4px; color:var(--text); padding:7px 9px; font-size:12.5px; outline:none;
@@ -114,6 +129,22 @@
   }
   .admin-btn:hover{ color:var(--accent); border-color:var(--accent); }
 
+  .filter-toggle-row{
+    display:flex; align-items:center; gap:8px; margin:10px 16px 0; font-size:12px; color:var(--muted);
+  }
+  .switch{ position:relative; display:inline-block; width:34px; height:19px; flex:0 0 auto; }
+  .switch input{ opacity:0; width:0; height:0; position:absolute; }
+  .switch-slider{
+    position:absolute; inset:0; cursor:pointer; background:var(--panel-alt);
+    border:1px solid var(--border); border-radius:19px; transition:.15s;
+  }
+  .switch-slider:before{
+    content:""; position:absolute; height:13px; width:13px; left:2px; top:2px;
+    background:var(--muted); border-radius:50%; transition:.15s;
+  }
+  .switch input:checked + .switch-slider{ background:var(--accent); border-color:var(--accent); }
+  .switch input:checked + .switch-slider:before{ transform:translateX(15px); background:#1a1509; }
+
   #members-sidebar{
     width:180px; flex:0 0 180px; background:var(--panel);
     border-left:1px solid var(--border); padding:14px 12px; overflow-y:auto;
@@ -124,13 +155,20 @@
   }
   .members-list{ list-style:none; margin:0 0 14px; padding:0; display:flex; flex-direction:column; gap:9px; }
   .member-item{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); min-width:0; }
-  .member-item span.member-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .member-item span.member-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:flex; align-items:center; gap:3px; }
   .member-item.me{ color:var(--accent); }
   .member-dot{ width:8px; height:8px; border-radius:50%; background:#7fd18a; flex:0 0 8px; }
   .member-item.offline .member-dot{ background:var(--muted); }
   .member-item.offline span.member-name{ color:var(--muted); }
   .members-header-offline{ margin-top:2px; }
   .members-empty{ color:var(--muted); font-size:12px; font-style:italic; margin:0 0 14px; }
+  .member-remove-btn{
+    margin-left:auto; background:none; border:1px solid var(--border); color:var(--muted);
+    border-radius:4px; width:18px; height:18px; line-height:1; font-size:12px; padding:0; flex:0 0 auto;
+  }
+  .member-remove-btn:hover{ color:var(--danger); border-color:var(--danger); }
+
+  .crown{ margin-right:2px; }
 
   #chat-col{ flex:1; display:flex; flex-direction:column; min-width:0; }
   #chat-header{
@@ -139,6 +177,11 @@
   }
   #chat-header .hash{ color:var(--accent); font-family:var(--font-mono); }
   #chat-header .note{ margin-left:auto; color:var(--muted); font-size:11.5px; }
+  #gc-manage-btn{
+    background:none; border:1px solid var(--border); color:var(--muted); border-radius:4px;
+    padding:4px 9px; font-size:11.5px; margin-left:8px;
+  }
+  #gc-manage-btn:hover{ color:var(--accent); border-color:var(--accent); }
 
   #messages{
     flex:1; overflow-y:auto; padding:18px 22px; display:flex; flex-direction:column; gap:2px;
@@ -150,11 +193,19 @@
   .msg.own{ border-left-color:var(--accent); }
   .msg .meta{
     font-family:var(--font-mono); font-size:11.5px; color:var(--muted); margin-bottom:2px;
+    display:flex; align-items:center; gap:0;
   }
   .msg.own .meta .uname{ color:var(--accent); }
-  .msg .meta .uname{ color:#9d9bd6; }
+  .msg .meta .uname{ color:#9d9bd6; display:inline-flex; align-items:center; }
   .msg .body{ font-size:13.5px; line-height:1.5; white-space:pre-wrap; word-break:break-word; }
+  .edited-tag{ color:var(--muted); font-style:italic; margin-left:6px; font-size:11px; }
   .sys-note{ color:var(--muted); font-size:12px; font-style:italic; text-align:center; margin:10px 0; }
+
+  .msg-reply-preview{
+    font-size:11.5px; color:var(--muted); border-left:2px solid var(--other-line);
+    padding-left:8px; margin-bottom:3px; overflow:hidden; text-overflow:ellipsis;
+    white-space:nowrap; max-width:100%;
+  }
 
   .embed-img{
     display:block; max-width:320px; max-height:320px; width:auto; height:auto;
@@ -163,13 +214,47 @@
   .embed-broken{
     color:var(--muted); font-size:12px; font-style:italic; margin-top:4px;
   }
-  .msg-del{
-    display:none; position:absolute; top:4px; right:2px; width:20px; height:20px;
-    line-height:1; font-size:13px; background:var(--panel-alt); color:var(--muted);
+  .msg-actions{
+    display:none; position:absolute; top:4px; right:2px; gap:3px;
+  }
+  .msg:hover .msg-actions{ display:flex; }
+  .msg-action-btn{
+    width:20px; height:20px; line-height:1; font-size:12px; background:var(--panel-alt); color:var(--muted);
     border:1px solid var(--border); border-radius:4px; padding:0;
   }
-  .msg:hover .msg-del{ display:block; }
-  .msg-del:hover{ color:var(--danger); border-color:var(--danger); }
+  .msg-action-btn:hover{ color:var(--accent); border-color:var(--accent); }
+  .msg-action-btn.danger:hover{ color:var(--danger); border-color:var(--danger); }
+
+  .msg-edit-textarea{
+    width:100%; background:var(--input-bg); border:1px solid var(--accent); border-radius:4px;
+    color:var(--text); padding:6px 8px; font-size:13.5px; font-family:inherit; resize:vertical;
+  }
+
+  .reactions-row{ display:flex; flex-wrap:wrap; gap:4px; margin-top:5px; }
+  .reaction-pill{
+    display:inline-flex; align-items:center; gap:3px; background:var(--panel-alt);
+    border:1px solid var(--border); border-radius:10px; padding:1px 7px; font-size:12px;
+    cursor:pointer; color:var(--text);
+  }
+  .reaction-pill:hover{ border-color:var(--accent); }
+  .reaction-pill.mine{ border-color:var(--accent); color:var(--accent); }
+
+  .emoji-picker{
+    display:flex; gap:2px; background:var(--panel-alt); border:1px solid var(--border);
+    border-radius:6px; padding:4px; z-index:60; box-shadow:0 4px 14px rgba(0,0,0,0.35);
+  }
+  .emoji-picker button{
+    background:none; border:none; font-size:16px; padding:3px 5px; border-radius:4px;
+  }
+  .emoji-picker button:hover{ background:var(--panel); }
+
+  #reply-bar{
+    display:flex; align-items:center; gap:10px; padding:7px 16px; border-top:1px solid var(--border);
+    font-size:12px; color:var(--muted); background:var(--panel-alt);
+  }
+  #reply-bar .reply-bar-text{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #reply-bar button{ background:none; border:none; color:var(--muted); font-size:15px; line-height:1; padding:0; }
+  #reply-bar button:hover{ color:var(--danger); }
 
   #composer{
     border-top:1px solid var(--border); padding:12px 16px; display:flex; gap:10px;
@@ -198,19 +283,29 @@
   }
   .modal{
     width:100%; max-width:320px; background:var(--panel); border:1px solid var(--border);
-    border-radius:6px; padding:20px;
+    border-radius:6px; padding:20px; max-height:80vh; overflow-y:auto;
   }
   .modal h3{ margin:0 0 14px; font-size:14px; font-family:var(--font-mono); color:var(--accent); }
   .modal .field input{ width:100%; }
+  .modal .hint{ color:var(--muted); font-size:11.5px; margin:-8px 0 14px; }
   .modal-actions{ display:flex; gap:8px; margin-top:16px; }
   .modal-actions button{
     flex:1; border-radius:4px; padding:8px; font-size:13px; border:1px solid var(--border);
     background:var(--panel-alt); color:var(--text);
   }
   .modal-actions button.primary{ background:var(--accent); color:#1a1509; border-color:var(--accent); font-weight:600; }
+  .modal-actions button.danger{ color:var(--danger); border-color:var(--danger); }
   .modal-msg{ font-size:12px; margin-top:10px; min-height:1em; }
   .modal-msg.err{ color:var(--danger); }
   .modal-msg.ok{ color:#7fd18a; }
+  .manage-add-row{ display:flex; gap:6px; margin-top:6px; }
+  .manage-add-row input{ flex:1; }
+  .manage-add-row button{ border-radius:4px; border:1px solid var(--border); background:var(--panel-alt); color:var(--text); padding:0 10px; }
+  .manage-add-row button:hover{ border-color:var(--accent); color:var(--accent); }
+  #color-modal input[type="color"]{
+    width:100%; height:40px; border:1px solid var(--border); border-radius:4px;
+    background:var(--input-bg); padding:2px; cursor:pointer;
+  }
 
   #conn-banner{
     position:fixed; bottom:0; left:0; right:0; background:var(--danger); color:#1a1509;
@@ -278,20 +373,39 @@
       <div class="sidebar-header">
         <span class="brand">gremlinchat</span>
       </div>
-      <div class="whoami">signed in as <span class="me" id="me-username"></span></div>
+      <div class="whoami">
+        <span>signed in as <span class="me" id="me-username"></span></span>
+        <span class="whoami-actions">
+          <button class="icon-btn" id="color-open-btn" title="Change your username color">&#127912;</button>
+        </span>
+      </div>
 
       <div class="nav-section">Channels</div>
       <ul class="nav-list">
         <li class="nav-item" id="nav-rules"><span class="hash">?</span>&nbsp;rules</li>
         <li class="nav-item" id="nav-announcements"><span class="hash">!</span>&nbsp;announcements</li>
+        <li class="nav-item" id="nav-roadmap"><span class="hash">*</span>&nbsp;roadmap</li>
 		<li class="nav-item active" id="nav-public"><span class="hash">#</span>&nbsp;public</li>
       </ul>
 
       <div class="nav-section">Direct messages</div>
       <ul class="nav-list" id="dm-list"></ul>
-
       <div class="dm-new">
         <input id="dm-new-input" placeholder="message a user by name + Enter">
+      </div>
+
+      <div class="nav-section">
+        Group chats
+        <button class="nav-section-action" id="gc-new-btn" title="New group chat">+</button>
+      </div>
+      <ul class="nav-list" id="gc-list"></ul>
+
+      <div class="filter-toggle-row hidden" id="filter-toggle-row">
+        <label class="switch">
+          <input type="checkbox" id="filter-toggle-input">
+          <span class="switch-slider"></span>
+        </label>
+        <span class="filter-toggle-label">Global Chat Filter</span>
       </div>
       <button class="admin-btn hidden" id="admin-open-btn">admin: rename user</button>
     </div>
@@ -300,9 +414,14 @@
       <div id="chat-header">
         <span class="hash" id="chat-title-hash">#</span>
         <span id="chat-title">public</span>
+        <button class="hidden" id="gc-manage-btn" type="button">manage members</button>
         <span class="note" id="chat-note">refreshes every 30 min</span>
       </div>
       <div id="messages"></div>
+      <div id="reply-bar" class="hidden">
+        <span class="reply-bar-text" id="reply-bar-text"></span>
+        <button type="button" id="reply-bar-cancel" title="Cancel reply">&#10005;</button>
+      </div>
       <div id="composer">
         <button class="composer-tool" id="composer-img-btn" type="button" title="Embed an image or GIF from a URL">🖼</button>
         <textarea id="composer-input" placeholder="Message #public" rows="1"></textarea>
@@ -360,6 +479,60 @@
     </div>
   </div>
 
+  <!-- ============ NEW GROUP CHAT MODAL ============ -->
+  <div class="modal-backdrop hidden" id="group-modal">
+    <div class="modal">
+      <h3>New group chat</h3>
+      <div class="field">
+        <label>Group name</label>
+        <input id="group-name-input" maxlength="60" placeholder="e.g. weekend crew">
+      </div>
+      <div class="field">
+        <label>Members (comma-separated usernames)</label>
+        <input id="group-members-input" placeholder="alice, bob, carol">
+      </div>
+      <p class="hint">You're added automatically.</p>
+      <div class="modal-actions">
+        <button id="group-cancel">Cancel</button>
+        <button class="primary" id="group-create">Create</button>
+      </div>
+      <p class="modal-msg" id="group-modal-msg"></p>
+    </div>
+  </div>
+
+  <!-- ============ MANAGE GROUP MODAL ============ -->
+  <div class="modal-backdrop hidden" id="manage-group-modal">
+    <div class="modal">
+      <h3 id="manage-group-title">Manage group</h3>
+      <ul class="members-list" id="manage-group-members-list"></ul>
+      <div class="manage-add-row">
+        <input id="manage-add-input" placeholder="add member by username">
+        <button id="manage-add-btn" type="button">Add</button>
+      </div>
+      <div class="modal-actions">
+        <button id="manage-close-btn">Close</button>
+        <button class="danger" id="manage-leave-btn">Leave group</button>
+      </div>
+      <p class="modal-msg" id="manage-modal-msg"></p>
+    </div>
+  </div>
+
+  <!-- ============ COLOR MODAL ============ -->
+  <div class="modal-backdrop hidden" id="color-modal">
+    <div class="modal">
+      <h3>Change your username color</h3>
+      <div class="field">
+        <label>Color</label>
+        <input id="color-input" type="color" value="#e8a33d">
+      </div>
+      <div class="modal-actions">
+        <button id="color-cancel">Cancel</button>
+        <button class="primary" id="color-save">Save</button>
+      </div>
+      <p class="modal-msg" id="color-modal-msg"></p>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -374,25 +547,87 @@
   var STORAGE_KEY = "gremlinchat_token";
   var RECONNECT_MIN = 1000, RECONNECT_MAX = 15000;
 
-  var ADMIN_CHANNELS = ["rules", "announcements"];
+  var ADMIN_CHANNELS = ["rules", "announcements", "roadmap"];
+  var REACTION_EMOJI = ["\uD83D\uDC4D", "\u2764\uFE0F", "\uD83D\uDE02", "\uD83D\uDE2E", "\uD83D\uDE22", "\uD83C\uDF89"];
+
+  // Bump this together with SERVER_VERSION in main.py any time this file
+  // changes. On connect, the client reports this to the server; if it
+  // doesn't match, the server sends back the current file and this page
+  // hot-swaps itself with it (see applyClientUpdate below) - that's what
+  // lets every site hosting this file self-update on future releases
+  // without anyone re-uploading it by hand.
+  var CLIENT_VERSION = "3.0.0.21";
+  var CLIENT_CACHE_KEY = "gremlinchat_client_cache";
 
   var ws = null;
   var reconnectDelay = RECONNECT_MIN;
   var reconnectTimer = null;
 
+  // -----------------------------------------------------------------------
+  // SELF-UPDATE: apply a cached newer copy immediately on DOM load (before
+  // ever opening a socket), and/or accept a fresh copy pushed by the server
+  // once connected. Either path replaces the whole document in place.
+  // -----------------------------------------------------------------------
+  function applyClientUpdate(html, version){
+    try {
+      localStorage.setItem(CLIENT_CACHE_KEY, JSON.stringify({ version: version, html: html }));
+    } catch(e){ /* localStorage unavailable - update still applies, just won't be cached */ }
+    // document.write() replaces the DOM but does NOT reset this page's JS
+    // execution context, so anything still running (a live socket, a
+    // pending reconnect timer) needs to be torn down explicitly first or
+    // it'll keep running invisibly alongside the freshly-swapped-in page.
+    if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
+    if (ws) {
+      try {
+        ws.onopen = null; ws.onmessage = null; ws.onclose = null; ws.onerror = null;
+        ws.close();
+      } catch(e){}
+      ws = null;
+    }
+    document.open();
+    document.write(html);
+    document.close();
+  }
+
+  function applyCachedClientIfMismatched(){
+    try {
+      var raw = localStorage.getItem(CLIENT_CACHE_KEY);
+      if (!raw) return false;
+      var cached = JSON.parse(raw);
+      if (cached && cached.version && cached.html && cached.version !== CLIENT_VERSION) {
+        applyClientUpdate(cached.html, cached.version);
+        return true;
+      }
+    } catch(e){}
+    return false;
+  }
+
+  // If we bail out here, this stale copy of the script stops executing -
+  // the cached (newer) copy just took over the document and is booting itself.
+  if (applyCachedClientIfMismatched()) { return; }
+
   var state = {
     username: null,
     isAdmin: false,
-    activeChannel: "public",       // "public", "rules", "announcements", or a DM username
+    admins: [],                    // usernames who get a crown
+    activeChannel: "public",       // "public", "rules"/"announcements"/"roadmap", "gc:<id>", or a DM username
     publicHistory: [],             // cached copy of the current public log
     dmContacts: [],                // list of usernames
-    dmThreads: {},                 // username -> [ {id,from,to,kind,text,url,ts}, ... ]
+    dmThreads: {},                 // username -> [ {id,from,to,kind,text,url,ts,...}, ... ]
     dmLoaded: {},                  // username -> bool (history fetched)
     dmUnread: {},                  // username -> bool (has unseen messages)
-    channelMessages: { rules: [], announcements: [] },
-    channelLoaded: {},             // "rules"/"announcements" -> bool (history fetched)
+    channelMessages: { rules: [], announcements: [], roadmap: [] },
+    channelLoaded: {},             // channel name -> bool (history fetched)
     online: [],                    // usernames currently connected
-    allUsers: []                   // every registered username, online or not
+    allUsers: [],                  // every registered username, online or not
+    userColors: {},                // username -> "#rrggbb"
+    groups: {},                    // group_id -> {id,name,members}
+    gcThreads: {},                 // group_id -> [ messages... ]
+    gcLoaded: {},                  // group_id -> bool
+    gcUnread: {},                  // group_id -> bool
+    replyTarget: null,             // {id, from, text} currently composing a reply to, or null
+    chatFilterFeatureEnabled: false, // whether the server has the filter subsystem at all
+    chatFilterEnabled: false       // whether it's currently live (admins can flip this)
   };
 
   // ---- element refs ----
@@ -408,13 +643,23 @@
     navPublic: document.getElementById("nav-public"),
     navRules: document.getElementById("nav-rules"),
     navAnnouncements: document.getElementById("nav-announcements"),
+    navRoadmap: document.getElementById("nav-roadmap"),
     dmList: document.getElementById("dm-list"),
     dmNewInput: document.getElementById("dm-new-input"),
+    gcList: document.getElementById("gc-list"),
+    gcNewBtn: document.getElementById("gc-new-btn"),
+    gcManageBtn: document.getElementById("gc-manage-btn"),
     adminOpenBtn: document.getElementById("admin-open-btn"),
+    colorOpenBtn: document.getElementById("color-open-btn"),
+    filterToggleRow: document.getElementById("filter-toggle-row"),
+    filterToggleInput: document.getElementById("filter-toggle-input"),
     chatTitle: document.getElementById("chat-title"),
     chatTitleHash: document.getElementById("chat-title-hash"),
     chatNote: document.getElementById("chat-note"),
     messages: document.getElementById("messages"),
+    replyBar: document.getElementById("reply-bar"),
+    replyBarText: document.getElementById("reply-bar-text"),
+    replyBarCancel: document.getElementById("reply-bar-cancel"),
     composerInput: document.getElementById("composer-input"),
     composerSend: document.getElementById("composer-send"),
     composerImgBtn: document.getElementById("composer-img-btn"),
@@ -431,6 +676,25 @@
     imageSend: document.getElementById("image-send"),
     imageCancel: document.getElementById("image-cancel"),
     imageModalMsg: document.getElementById("image-modal-msg"),
+    groupModal: document.getElementById("group-modal"),
+    groupNameInput: document.getElementById("group-name-input"),
+    groupMembersInput: document.getElementById("group-members-input"),
+    groupCreate: document.getElementById("group-create"),
+    groupCancel: document.getElementById("group-cancel"),
+    groupModalMsg: document.getElementById("group-modal-msg"),
+    manageGroupModal: document.getElementById("manage-group-modal"),
+    manageGroupTitle: document.getElementById("manage-group-title"),
+    manageGroupMembersList: document.getElementById("manage-group-members-list"),
+    manageAddInput: document.getElementById("manage-add-input"),
+    manageAddBtn: document.getElementById("manage-add-btn"),
+    manageCloseBtn: document.getElementById("manage-close-btn"),
+    manageLeaveBtn: document.getElementById("manage-leave-btn"),
+    manageModalMsg: document.getElementById("manage-modal-msg"),
+    colorModal: document.getElementById("color-modal"),
+    colorInput: document.getElementById("color-input"),
+    colorSave: document.getElementById("color-save"),
+    colorCancel: document.getElementById("color-cancel"),
+    colorModalMsg: document.getElementById("color-modal-msg"),
     membersOnlineList: document.getElementById("members-online-list"),
     membersOnlineCount: document.getElementById("members-online-count"),
     membersOfflineList: document.getElementById("members-offline-list"),
@@ -446,6 +710,7 @@
     ws.onopen = function(){
       reconnectDelay = RECONNECT_MIN;
       el.connBanner.style.display = "none";
+      send({type: "client_hello", version: CLIENT_VERSION});
       var token = localStorage.getItem(STORAGE_KEY);
       if (token) {
         send({type:"resume", token: token});
@@ -488,6 +753,11 @@
   // ---------------------------------------------------------------------
   function handleServerMessage(msg){
     switch(msg.type){
+      case "client_update":
+        applyClientUpdate(msg.html, msg.version);
+        break;
+      case "client_current":
+        break;
       case "auth_ok":
         onAuthOk(msg);
         break;
@@ -550,6 +820,54 @@
       case "presence":
         renderMembers(msg.online || [], msg.all || []);
         break;
+      case "user_colors":
+        state.userColors = msg.colors || {};
+        refreshVisibleColors();
+        break;
+      case "user_color":
+        state.userColors[msg.username] = msg.color;
+        refreshVisibleColors();
+        break;
+      case "chat_filter_state":
+        state.chatFilterEnabled = !!msg.enabled;
+        renderChatFilterToggle();
+        break;
+      case "gc_list":
+        (msg.groups || []).forEach(function(g){ state.groups[g.id] = g; });
+        renderGcList();
+        break;
+      case "gc_created":
+        var isNewToUs = !state.groups[msg.id];
+        state.groups[msg.id] = {id: msg.id, name: msg.name, members: msg.members};
+        renderGcList();
+        if (isNewToUs) addSysNote('added to group "' + msg.name + '"');
+        break;
+      case "gc_member_added":
+        if (state.groups[msg.group_id]) state.groups[msg.group_id].members = msg.members;
+        renderManageGroupModalIfOpen(msg.group_id);
+        if (state.activeChannel === "gc:" + msg.group_id) addSysNote(msg.username + " was added to the group");
+        break;
+      case "gc_member_removed":
+        onGcMemberRemoved(msg);
+        break;
+      case "gc_history":
+        state.gcThreads[msg.group_id] = msg.messages;
+        state.gcLoaded[msg.group_id] = true;
+        if (state.activeChannel === "gc:" + msg.group_id) renderActiveGc(msg.group_id);
+        break;
+      case "gc_msg":
+        onIncomingGc(msg);
+        break;
+      case "gc_msg_deleted":
+        removeFromGcCache(msg.group_id, msg.id);
+        if (state.activeChannel === "gc:" + msg.group_id) removeMessageFromDom("gc:" + msg.group_id, msg.id);
+        break;
+      case "reaction_update":
+        applyReactionUpdate(msg);
+        break;
+      case "msg_edited":
+        applyMsgEdit(msg);
+        break;
       case "error":
         if (!el.adminModal.classList.contains("hidden")) {
           el.adminModalMsg.textContent = msg.message;
@@ -557,6 +875,15 @@
         } else if (!el.imageModal.classList.contains("hidden")) {
           el.imageModalMsg.textContent = msg.message;
           el.imageModalMsg.className = "modal-msg err";
+        } else if (!el.groupModal.classList.contains("hidden")) {
+          el.groupModalMsg.textContent = msg.message;
+          el.groupModalMsg.className = "modal-msg err";
+        } else if (!el.manageGroupModal.classList.contains("hidden")) {
+          el.manageModalMsg.textContent = msg.message;
+          el.manageModalMsg.className = "modal-msg err";
+        } else if (!el.colorModal.classList.contains("hidden")) {
+          el.colorModalMsg.textContent = msg.message;
+          el.colorModalMsg.className = "modal-msg err";
         } else {
           addSysNote(msg.message);
         }
@@ -567,12 +894,21 @@
   function onAuthOk(msg){
     state.username = msg.username;
     state.isAdmin = !!msg.is_admin;
+    state.admins = msg.admins || [];
+    state.chatFilterFeatureEnabled = !!msg.chat_filter_feature_enabled;
+    state.chatFilterEnabled = !!msg.chat_filter_enabled;
     localStorage.setItem(STORAGE_KEY, msg.token);
     el.meUsername.textContent = state.username;
     el.adminOpenBtn.classList.toggle("hidden", !state.isAdmin);
+    renderChatFilterToggle();
     el.authScreen.classList.add("hidden");
     el.mainScreen.classList.remove("hidden");
     switchChannel("public");
+  }
+
+  function renderChatFilterToggle(){
+    el.filterToggleRow.classList.toggle("hidden", !(state.isAdmin && state.chatFilterFeatureEnabled));
+    el.filterToggleInput.checked = state.chatFilterEnabled;
   }
 
   function onRenamed(msg){
@@ -581,6 +917,72 @@
     localStorage.setItem(STORAGE_KEY, msg.token);
     el.meUsername.textContent = state.username;
     addSysNote("an admin renamed your account to " + msg.new_username);
+  }
+
+  function onGcMemberRemoved(msg){
+    var channelKey = "gc:" + msg.group_id;
+    if (msg.username === state.username) {
+      delete state.groups[msg.group_id];
+      delete state.gcThreads[msg.group_id];
+      delete state.gcLoaded[msg.group_id];
+      renderGcList();
+      if (state.activeChannel === channelKey) {
+        switchChannel("public");
+        addSysNote("you were removed from that group");
+      }
+    } else {
+      if (state.groups[msg.group_id]) {
+        state.groups[msg.group_id].members = state.groups[msg.group_id].members.filter(function(u){
+          return u !== msg.username;
+        });
+      }
+      renderManageGroupModalIfOpen(msg.group_id);
+      if (state.activeChannel === channelKey) addSysNote(msg.username + " left the group");
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  // RENDERING HELPERS - crowns + custom colors
+  // ---------------------------------------------------------------------
+  function isAdminUser(username){
+    return state.admins.indexOf(username) !== -1;
+  }
+
+  function colorForUser(username){
+    if (state.userColors[username]) return state.userColors[username];
+    return (username === state.username) ? "var(--accent)" : "#9d9bd6";
+  }
+
+  function unameFragment(username){
+    var frag = document.createDocumentFragment();
+    if (isAdminUser(username)) {
+      var crown = document.createElement("span");
+      crown.className = "crown";
+      crown.textContent = "\u25CA";
+      crown.title = "admin";
+      frag.appendChild(crown);
+    }
+    frag.appendChild(document.createTextNode(username));
+    return frag;
+  }
+
+  function refreshVisibleColors(){
+    renderMembers(state.online, state.allUsers);
+    renderDmList();
+    renderGcList();
+    renderManageGroupModalIfOpen(null);
+    var c = state.activeChannel;
+    if (c === "public") {
+      el.messages.innerHTML = "";
+      state.publicHistory.forEach(function(m){ el.messages.appendChild(messageRow(m, "public")); });
+      scrollToBottom();
+    } else if (ADMIN_CHANNELS.indexOf(c) !== -1) {
+      renderChannelMessages(c);
+    } else if (c.indexOf("gc:") === 0) {
+      renderActiveGc(c.slice(3));
+    } else {
+      renderActiveChannel();
+    }
   }
 
   // ---------------------------------------------------------------------
@@ -594,29 +996,58 @@
     scrollToBottom();
   }
 
-  // channelKey is "public", "rules", "announcements", or "dm" (any DM thread) -
-  // it's what governs delete permission and lets us find/remove this row later.
+  function scopeFromChannelKey(channelKey){
+    if (channelKey === "public") return "public";
+    if (channelKey === "dm") return "dm";
+    if (channelKey.indexOf("gc:") === 0) return "gc";
+    return "channel";
+  }
+
+  // channelKey is "public", "rules"/"announcements"/"roadmap", "gc:<id>", or
+  // "dm" (any DM thread) - it's what governs delete/edit permission and the
+  // scope used for replies/reactions/edits, and lets us find/remove this row later.
   function messageRow(m, channelKey){
     var row = document.createElement("div");
     row.className = "msg" + (m.from === state.username ? " own" : "");
     if (m.id != null) row.dataset.id = m.id;
     row.dataset.channel = channelKey;
 
+    if (m.reply_preview) {
+      var rp = document.createElement("div");
+      rp.className = "msg-reply-preview";
+      var rpFrom = document.createElement("span");
+      rpFrom.style.color = colorForUser(m.reply_preview.from);
+      rpFrom.appendChild(unameFragment(m.reply_preview.from));
+      rp.appendChild(rpFrom);
+      rp.appendChild(document.createTextNode(": " + m.reply_preview.text));
+      row.appendChild(rp);
+    }
+
     var meta = document.createElement("div");
     meta.className = "meta";
     var uname = document.createElement("span");
     uname.className = "uname";
-    uname.textContent = m.from;
+    uname.style.color = colorForUser(m.from);
+    uname.appendChild(unameFragment(m.from));
     meta.appendChild(uname);
-    meta.appendChild(document.createTextNode("  ·  " + formatTime(m.ts)));
+    meta.appendChild(document.createTextNode("  \u00b7  " + formatTime(m.ts)));
+    if (m.edited) {
+      var editedTag = document.createElement("span");
+      editedTag.className = "edited-tag";
+      editedTag.textContent = "(edited)";
+      meta.appendChild(editedTag);
+    }
     row.appendChild(meta);
+
+    var bodyContainer = document.createElement("div");
+    bodyContainer.className = "msg-body-container";
 
     if (m.kind === "image" || m.kind === "gif") {
       if (m.text) {
         var cap = document.createElement("div");
         cap.className = "body";
         cap.textContent = m.text;
-        row.appendChild(cap);
+        bodyContainer.appendChild(cap);
       }
       var img = document.createElement("img");
       img.className = "embed-img";
@@ -629,36 +1060,168 @@
         note.textContent = "(couldn't load " + (m.kind === "gif" ? "gif" : "image") + ")";
         img.replaceWith(note);
       });
-      row.appendChild(img);
+      bodyContainer.appendChild(img);
     } else {
       var body = document.createElement("div");
       body.className = "body";
       body.textContent = m.text;
-      row.appendChild(body);
+      bodyContainer.appendChild(body);
+    }
+    row.appendChild(bodyContainer);
+
+    var reactions = m.reactions || {};
+    if (Object.keys(reactions).length) {
+      row.appendChild(reactionsRow(m, channelKey, reactions));
     }
 
-    if (m.id != null && canDeleteMessage(m, channelKey)) {
-      var del = document.createElement("button");
-      del.className = "msg-del";
-      del.type = "button";
-      del.title = "Delete message";
-      del.textContent = "\u00d7";
-      del.addEventListener("click", function(){ deleteMessage(m, channelKey); });
-      row.appendChild(del);
+    if (m.id != null) {
+      var actions = document.createElement("div");
+      actions.className = "msg-actions";
+      actions.appendChild(actionBtn("\u21a9", "Reply", function(){ startReply(m); }));
+      actions.appendChild(actionBtn("\u263a", "React", function(e){ openEmojiPicker(e.currentTarget, m, channelKey); }));
+      if (m.from === state.username && m.kind === "text") {
+        actions.appendChild(actionBtn("\u270e", "Edit", function(){ startInlineEdit(row, m, channelKey, bodyContainer); }));
+      }
+      if (canDeleteMessage(m, channelKey)) {
+        actions.appendChild(actionBtn("\u00d7", "Delete", function(){ deleteMessage(m, channelKey); }, true));
+      }
+      row.appendChild(actions);
     }
 
     return row;
   }
 
+  function actionBtn(label, title, onClick, danger){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "msg-action-btn" + (danger ? " danger" : "");
+    b.title = title;
+    b.textContent = label;
+    b.addEventListener("click", onClick);
+    return b;
+  }
+
+  function reactionsRow(m, channelKey, reactions){
+    var wrap = document.createElement("div");
+    wrap.className = "reactions-row";
+    Object.keys(reactions).forEach(function(emoji){
+      var users = reactions[emoji] || [];
+      if (!users.length) return;
+      var pill = document.createElement("button");
+      pill.type = "button";
+      pill.className = "reaction-pill" + (users.indexOf(state.username) !== -1 ? " mine" : "");
+      pill.title = users.join(", ");
+      pill.textContent = emoji + " " + users.length;
+      pill.addEventListener("click", function(){ sendReaction(m, channelKey, emoji); });
+      wrap.appendChild(pill);
+    });
+    return wrap;
+  }
+
+  function sendReaction(m, channelKey, emoji){
+    send({type: "react_msg", scope: scopeFromChannelKey(channelKey), id: m.id, emoji: emoji});
+  }
+
+  function openEmojiPicker(anchorEl, m, channelKey){
+    closeEmojiPicker();
+    var picker = document.createElement("div");
+    picker.className = "emoji-picker";
+    picker.id = "active-emoji-picker";
+    REACTION_EMOJI.forEach(function(e){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = e;
+      b.addEventListener("click", function(ev){
+        ev.stopPropagation();
+        sendReaction(m, channelKey, e);
+        closeEmojiPicker();
+      });
+      picker.appendChild(b);
+    });
+    document.body.appendChild(picker);
+    var rect = anchorEl.getBoundingClientRect();
+    picker.style.position = "fixed";
+    picker.style.top = (rect.bottom + 4) + "px";
+    picker.style.left = Math.max(4, rect.right - 170) + "px";
+    setTimeout(function(){ document.addEventListener("click", closeEmojiPickerOnOutsideClick); }, 0);
+  }
+
+  function closeEmojiPickerOnOutsideClick(e){
+    var p = document.getElementById("active-emoji-picker");
+    if (p && !p.contains(e.target)) closeEmojiPicker();
+  }
+
+  function closeEmojiPicker(){
+    var p = document.getElementById("active-emoji-picker");
+    if (p) p.remove();
+    document.removeEventListener("click", closeEmojiPickerOnOutsideClick);
+  }
+
+  function startInlineEdit(row, m, channelKey, bodyContainer){
+    if (bodyContainer.querySelector("textarea")) return;
+    bodyContainer.innerHTML = "";
+    var ta = document.createElement("textarea");
+    ta.className = "msg-edit-textarea";
+    ta.value = m.text;
+    ta.rows = Math.min(6, Math.max(1, m.text.split("\n").length));
+    bodyContainer.appendChild(ta);
+    var hint = document.createElement("div");
+    hint.style.cssText = "font-size:11px;color:var(--muted);margin-top:3px;";
+    hint.textContent = "Enter to save \u00b7 Esc to cancel";
+    bodyContainer.appendChild(hint);
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+
+    function cancel(){
+      row.replaceWith(messageRow(m, channelKey));
+    }
+    ta.addEventListener("keydown", function(e){
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        var newText = ta.value.trim();
+        if (newText && newText !== m.text) {
+          send({type: "edit_msg", scope: scopeFromChannelKey(channelKey), id: m.id, text: newText});
+        }
+        cancel();
+      } else if (e.key === "Escape") {
+        cancel();
+      }
+    });
+  }
+
+  function startReply(m){
+    state.replyTarget = {
+      id: m.id,
+      from: m.from,
+      text: m.kind === "text" ? m.text : (m.kind === "image" ? "[image]" : "[gif]")
+    };
+    renderReplyBar();
+    el.composerInput.focus();
+  }
+
+  function cancelReply(){
+    state.replyTarget = null;
+    renderReplyBar();
+  }
+
+  function renderReplyBar(){
+    if (!state.replyTarget) { el.replyBar.classList.add("hidden"); return; }
+    el.replyBar.classList.remove("hidden");
+    var snippet = state.replyTarget.text.length > 80 ? state.replyTarget.text.slice(0, 80) + "..." : state.replyTarget.text;
+    el.replyBarText.textContent = "Replying to " + state.replyTarget.from + ": " + snippet;
+  }
+
   function canDeleteMessage(m, channelKey){
     if (state.isAdmin) return true;
-    if (channelKey === "dm" && m.from === state.username) return true;
+    if ((channelKey === "dm" || channelKey.indexOf("gc:") === 0) && m.from === state.username) return true;
     return false;
   }
 
   function deleteMessage(m, channelKey){
     if (channelKey === "dm") {
       send({type:"delete_dm_msg", id: m.id});
+    } else if (channelKey.indexOf("gc:") === 0) {
+      send({type:"delete_gc_msg", group_id: parseInt(channelKey.slice(3), 10), id: m.id});
     } else {
       send({type:"delete_channel_msg", channel: channelKey, id: m.id});
     }
@@ -681,6 +1244,70 @@
     var list = state.dmThreads[other];
     if (!list) return;
     state.dmThreads[other] = list.filter(function(m){ return m.id !== id; });
+  }
+
+  function removeFromGcCache(gid, id){
+    var list = state.gcThreads[gid];
+    if (!list) return;
+    state.gcThreads[gid] = list.filter(function(m){ return m.id !== id; });
+  }
+
+  // ---- generic lookup used for reactions/edits, which arrive with just an
+  // id (their scope alone isn't enough to know which channel/DM/group cache
+  // holds it) ----
+  function indexById(list, id){
+    if (!list) return -1;
+    for (var i = 0; i < list.length; i++){
+      if (list[i].id === id) return i;
+    }
+    return -1;
+  }
+
+  function findMessageContainer(id){
+    var i = indexById(state.publicHistory, id);
+    if (i !== -1) return {list: state.publicHistory, index: i, channelKey: "public", isActive: state.activeChannel === "public"};
+
+    var ch;
+    for (ch in state.channelMessages){
+      i = indexById(state.channelMessages[ch], id);
+      if (i !== -1) return {list: state.channelMessages[ch], index: i, channelKey: ch, isActive: state.activeChannel === ch};
+    }
+    var other;
+    for (other in state.dmThreads){
+      i = indexById(state.dmThreads[other], id);
+      if (i !== -1) return {list: state.dmThreads[other], index: i, channelKey: "dm", isActive: state.activeChannel === other};
+    }
+    var gid;
+    for (gid in state.gcThreads){
+      i = indexById(state.gcThreads[gid], id);
+      if (i !== -1) return {list: state.gcThreads[gid], index: i, channelKey: "gc:" + gid, isActive: state.activeChannel === ("gc:" + gid)};
+    }
+    return null;
+  }
+
+  function patchMessageRowInPlace(m, channelKey){
+    var old = el.messages.querySelector('.msg[data-id="' + m.id + '"]');
+    if (!old) return;
+    old.replaceWith(messageRow(m, channelKey));
+  }
+
+  function applyReactionUpdate(msg){
+    var found = findMessageContainer(msg.id);
+    if (!found) return;
+    var m = found.list[found.index];
+    if (!m.reactions) m.reactions = {};
+    if (msg.users && msg.users.length) m.reactions[msg.emoji] = msg.users;
+    else delete m.reactions[msg.emoji];
+    if (found.isActive) patchMessageRowInPlace(m, found.channelKey);
+  }
+
+  function applyMsgEdit(msg){
+    var found = findMessageContainer(msg.id);
+    if (!found) return;
+    var m = found.list[found.index];
+    m.text = msg.text;
+    m.edited = true;
+    if (found.isActive) patchMessageRowInPlace(m, found.channelKey);
   }
 
   function formatTime(ts){
@@ -748,6 +1375,20 @@
     }
   }
 
+  function onIncomingGc(m){
+    var gid = m.group_id;
+    if (!state.gcThreads[gid]) state.gcThreads[gid] = [];
+    state.gcThreads[gid].push(m);
+    if (m.from !== state.username && state.activeChannel !== ("gc:" + gid)) {
+      state.gcUnread[gid] = true;
+      renderGcList();
+    }
+    if (state.activeChannel === ("gc:" + gid)) {
+      el.messages.appendChild(messageRow(m, "gc:" + gid));
+      scrollToBottom();
+    }
+  }
+
   function renderDmList(){
     el.dmList.innerHTML = "";
     state.dmContacts.forEach(function(user){
@@ -756,7 +1397,8 @@
       li.dataset.user = user;
       var label = document.createElement("span");
       label.className = "label";
-      label.textContent = user;
+      if (state.userColors[user]) label.style.color = state.userColors[user];
+      label.appendChild(unameFragment(user));
       li.appendChild(label);
       if (state.dmUnread[user] && state.activeChannel !== user) {
         var dot = document.createElement("span");
@@ -765,6 +1407,32 @@
       }
       li.addEventListener("click", function(){ switchChannel(user); });
       el.dmList.appendChild(li);
+    });
+  }
+
+  function renderGcList(){
+    el.gcList.innerHTML = "";
+    var ids = Object.keys(state.groups).sort(function(a, b){ return Number(a) - Number(b); });
+    ids.forEach(function(gid){
+      var g = state.groups[gid];
+      var channelKey = "gc:" + gid;
+      var li = document.createElement("li");
+      li.className = "nav-item" + (state.activeChannel === channelKey ? " active" : "");
+      var label = document.createElement("span");
+      label.className = "label";
+      label.textContent = g.name;
+      li.appendChild(label);
+      var tag = document.createElement("span");
+      tag.className = "gc-marker";
+      tag.textContent = "(GC)";
+      li.appendChild(tag);
+      if (state.gcUnread[gid] && state.activeChannel !== channelKey) {
+        var dot = document.createElement("span");
+        dot.className = "unread-dot";
+        li.appendChild(dot);
+      }
+      li.addEventListener("click", function(){ switchChannel(channelKey); });
+      el.gcList.appendChild(li);
     });
   }
 
@@ -784,7 +1452,8 @@
       dot.className = "member-dot";
       var name = document.createElement("span");
       name.className = "member-name";
-      name.textContent = user;
+      if (state.userColors[user] && !offline) name.style.color = state.userColors[user];
+      name.appendChild(unameFragment(user));
       li.appendChild(dot);
       li.appendChild(name);
       listEl.appendChild(li);
@@ -836,13 +1505,21 @@
   }
 
   function switchChannel(channel){
+    closeEmojiPicker();
+    cancelReply();
     state.activeChannel = channel;
     if (state.dmUnread[channel]) state.dmUnread[channel] = false;
+    if (channel.indexOf("gc:") === 0 && state.gcUnread[channel.slice(3)]) {
+      state.gcUnread[channel.slice(3)] = false;
+    }
 
     el.navPublic.classList.toggle("active", channel === "public");
     el.navRules.classList.toggle("active", channel === "rules");
     el.navAnnouncements.classList.toggle("active", channel === "announcements");
+    el.navRoadmap.classList.toggle("active", channel === "roadmap");
+    el.gcManageBtn.classList.toggle("hidden", channel.indexOf("gc:") !== 0);
     renderDmList();
+    renderGcList();
 
     if (channel === "public") {
       setChannelHeader("#", "public", "refreshes every 30 min");
@@ -852,7 +1529,7 @@
         el.messages.appendChild(messageRow(m, "public"));
       });
       scrollToBottom();
-    } else if (channel === "rules" || channel === "announcements") {
+    } else if (ADMIN_CHANNELS.indexOf(channel) !== -1) {
       setChannelHeader("#", channel, state.isAdmin ? "only admins can post here" : "read-only - admins post here");
       setComposerEnabled(state.isAdmin, "Message #" + channel);
       el.messages.innerHTML = "";
@@ -860,6 +1537,17 @@
         renderChannelMessages(channel);
       } else {
         send({type:"channel_history", channel: channel});
+      }
+    } else if (channel.indexOf("gc:") === 0) {
+      var gid = channel.slice(3);
+      var group = state.groups[gid];
+      setChannelHeader("\u25c6", (group ? group.name : "group chat") + " (GC)", "group chat \u00b7 synced across your signins");
+      setComposerEnabled(true, "Message the group");
+      el.messages.innerHTML = "";
+      if (state.gcLoaded[gid]) {
+        renderActiveGc(gid);
+      } else {
+        send({type:"gc_history", group_id: parseInt(gid, 10)});
       }
     } else {
       setChannelHeader("@", channel, "synced across your signins");
@@ -878,6 +1566,15 @@
     el.messages.innerHTML = "";
     thread.forEach(function(m){
       el.messages.appendChild(messageRow(m, "dm"));
+    });
+    scrollToBottom();
+  }
+
+  function renderActiveGc(gid){
+    var thread = state.gcThreads[gid] || [];
+    el.messages.innerHTML = "";
+    thread.forEach(function(m){
+      el.messages.appendChild(messageRow(m, "gc:" + gid));
     });
     scrollToBottom();
   }
@@ -927,6 +1624,7 @@
   el.navPublic.addEventListener("click", function(){ switchChannel("public"); });
   el.navRules.addEventListener("click", function(){ switchChannel("rules"); });
   el.navAnnouncements.addEventListener("click", function(){ switchChannel("announcements"); });
+  el.navRoadmap.addEventListener("click", function(){ switchChannel("roadmap"); });
 
   el.dmNewInput.addEventListener("keydown", function(e){
     if (e.key === "Enter") {
@@ -938,17 +1636,24 @@
     }
   });
 
+  el.replyBarCancel.addEventListener("click", cancelReply);
+
   // Routes an outgoing message to the right server message type depending
-  // on whether the active channel is public / an admin-only channel / a DM.
+  // on whether the active channel is public / an admin-only channel /
+  // a group chat / a DM - and attaches reply_to if the user is replying.
   function sendComposerMessage(kind, text, url){
     var channel = state.activeChannel;
+    var replyTo = state.replyTarget ? state.replyTarget.id : undefined;
     if (channel === "public") {
-      send({type:"public_msg", kind: kind, text: text, url: url});
+      send({type:"public_msg", kind: kind, text: text, url: url, reply_to: replyTo});
     } else if (ADMIN_CHANNELS.indexOf(channel) !== -1) {
-      send({type:"admin_channel_msg", channel: channel, kind: kind, text: text, url: url});
+      send({type:"admin_channel_msg", channel: channel, kind: kind, text: text, url: url, reply_to: replyTo});
+    } else if (channel.indexOf("gc:") === 0) {
+      send({type:"gc_msg", group_id: parseInt(channel.slice(3), 10), kind: kind, text: text, url: url, reply_to: replyTo});
     } else {
-      send({type:"dm_msg", to: channel, kind: kind, text: text, url: url});
+      send({type:"dm_msg", to: channel, kind: kind, text: text, url: url, reply_to: replyTo});
     }
+    if (state.replyTarget) cancelReply();
   }
 
   function sendComposer(){
@@ -1014,6 +1719,126 @@
     var newName = el.adminNewName.value.trim();
     if (!target || !newName) return;
     send({type:"admin_rename", target: target, new_username: newName});
+  });
+
+  // ---------------------------------------------------------------------
+  // GROUP CHAT MODAL WIRING
+  // ---------------------------------------------------------------------
+  el.gcNewBtn.addEventListener("click", function(){
+    el.groupNameInput.value = "";
+    el.groupMembersInput.value = "";
+    el.groupModalMsg.textContent = "";
+    el.groupModalMsg.className = "modal-msg";
+    el.groupModal.classList.remove("hidden");
+    el.groupNameInput.focus();
+  });
+  el.groupCancel.addEventListener("click", function(){
+    el.groupModal.classList.add("hidden");
+  });
+  el.groupCreate.addEventListener("click", function(){
+    var name = el.groupNameInput.value.trim();
+    var members = el.groupMembersInput.value.split(",")
+      .map(function(s){ return s.trim(); })
+      .filter(function(s){ return !!s; });
+    if (!name) {
+      el.groupModalMsg.textContent = "enter a group name";
+      el.groupModalMsg.className = "modal-msg err";
+      return;
+    }
+    send({type:"create_group", name: name, members: members});
+    el.groupModal.classList.add("hidden");
+  });
+
+  // ---------------------------------------------------------------------
+  // MANAGE GROUP MODAL WIRING
+  // ---------------------------------------------------------------------
+  function renderManageGroupMembers(gid){
+    var group = state.groups[gid];
+    el.manageGroupMembersList.innerHTML = "";
+    if (!group) return;
+    group.members.forEach(function(user){
+      var li = document.createElement("li");
+      li.className = "member-item";
+      var name = document.createElement("span");
+      name.className = "member-name";
+      if (state.userColors[user]) name.style.color = state.userColors[user];
+      name.appendChild(unameFragment(user));
+      li.appendChild(name);
+      if (user !== state.username) {
+        var rm = document.createElement("button");
+        rm.type = "button";
+        rm.className = "member-remove-btn";
+        rm.textContent = "\u00d7";
+        rm.title = "Remove from group";
+        rm.addEventListener("click", function(){
+          send({type:"gc_remove_member", group_id: parseInt(gid, 10), username: user});
+        });
+        li.appendChild(rm);
+      }
+      el.manageGroupMembersList.appendChild(li);
+    });
+  }
+
+  function renderManageGroupModalIfOpen(gid){
+    if (el.manageGroupModal.classList.contains("hidden")) return;
+    var openGid = el.manageGroupModal.dataset.gid;
+    if (!openGid) return;
+    if (gid != null && String(gid) !== String(openGid)) return;
+    renderManageGroupMembers(openGid);
+  }
+
+  el.gcManageBtn.addEventListener("click", function(){
+    var channel = state.activeChannel;
+    if (channel.indexOf("gc:") !== 0) return;
+    var gid = channel.slice(3);
+    var group = state.groups[gid];
+    if (!group) return;
+    el.manageGroupTitle.textContent = 'Manage "' + group.name + '"';
+    el.manageAddInput.value = "";
+    el.manageModalMsg.textContent = "";
+    el.manageModalMsg.className = "modal-msg";
+    el.manageGroupModal.dataset.gid = gid;
+    renderManageGroupMembers(gid);
+    el.manageGroupModal.classList.remove("hidden");
+  });
+  el.manageCloseBtn.addEventListener("click", function(){
+    el.manageGroupModal.classList.add("hidden");
+  });
+  el.manageAddBtn.addEventListener("click", function(){
+    var gid = el.manageGroupModal.dataset.gid;
+    var uname = el.manageAddInput.value.trim();
+    if (!uname) return;
+    send({type:"gc_add_member", group_id: parseInt(gid, 10), username: uname});
+    el.manageAddInput.value = "";
+  });
+  el.manageLeaveBtn.addEventListener("click", function(){
+    var gid = el.manageGroupModal.dataset.gid;
+    send({type:"gc_remove_member", group_id: parseInt(gid, 10), username: state.username});
+    el.manageGroupModal.classList.add("hidden");
+  });
+
+  // ---------------------------------------------------------------------
+  // COLOR MODAL WIRING
+  // ---------------------------------------------------------------------
+  el.colorOpenBtn.addEventListener("click", function(){
+    el.colorInput.value = state.userColors[state.username] || "#e8a33d";
+    el.colorModalMsg.textContent = "";
+    el.colorModalMsg.className = "modal-msg";
+    el.colorModal.classList.remove("hidden");
+  });
+  el.colorCancel.addEventListener("click", function(){
+    el.colorModal.classList.add("hidden");
+  });
+  el.colorSave.addEventListener("click", function(){
+    send({type:"set_color", color: el.colorInput.value});
+    el.colorModal.classList.add("hidden");
+  });
+
+  // ---------------------------------------------------------------------
+  // CHAT FILTER TOGGLE WIRING (admin-only)
+  // ---------------------------------------------------------------------
+  el.filterToggleInput.addEventListener("change", function(){
+    send({type:"set_chat_filter", enabled: el.filterToggleInput.checked});
   });
 
   // ---------------------------------------------------------------------
