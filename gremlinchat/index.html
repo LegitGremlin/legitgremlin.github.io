@@ -129,6 +129,23 @@
   }
   .admin-btn:hover{ color:var(--accent); border-color:var(--accent); }
 
+  .admin-actions-wrap{ position:relative; margin:10px 16px 14px; }
+  .admin-actions-wrap .admin-btn{ margin:0; width:100%; }
+  .admin-actions-menu{
+    position:absolute; bottom:calc(100% + 6px); left:0; right:0;
+    background:var(--panel); border:1px solid var(--border); border-radius:6px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.45); padding:4px; z-index:50;
+    display:flex; flex-direction:column; gap:1px;
+  }
+  .admin-actions-item{
+    background:none; border:none; color:var(--text); text-align:left;
+    padding:8px 10px; font-size:12.5px; border-radius:4px; cursor:pointer; width:100%;
+  }
+  .admin-actions-item:hover{ background:var(--panel-alt); color:var(--accent); }
+  .admin-actions-item.danger{ color:var(--danger); }
+  .admin-actions-item.danger:hover{ background:rgba(220,80,80,0.12); color:var(--danger); }
+  .admin-actions-sep{ height:1px; background:var(--border); margin:4px 2px; }
+
   .filter-toggle-row{
     display:flex; align-items:center; gap:8px; margin:10px 16px 0; font-size:12px; color:var(--muted);
   }
@@ -177,6 +194,9 @@
   }
   #chat-header .hash{ color:var(--accent); font-family:var(--font-mono); }
   #chat-header .note{ margin-left:auto; color:var(--muted); font-size:11.5px; }
+  .header-version{ font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+  .header-image-quota{ font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+  #typing-indicator{ padding:0 22px 6px; font-size:11.5px; color:var(--muted); font-style:italic; min-height:1em; }
   #gc-manage-btn{
     background:none; border:1px solid var(--border); color:var(--muted); border-radius:4px;
     padding:4px 9px; font-size:11.5px; margin-left:8px;
@@ -275,6 +295,9 @@
     border-radius:5px; padding:0 14px; font-size:14px;
   }
   #composer .composer-tool:hover{ color:var(--text); border-color:var(--accent); }
+
+  /* drag-and-drop image upload overlay */
+  #chat-col.drag-over{ outline:2px dashed var(--accent); outline-offset:-2px; background:rgba(232,163,61,0.04); }
 
   /* ---------- modal ---------- */
   .modal-backdrop{
@@ -407,7 +430,18 @@
         </label>
         <span class="filter-toggle-label">Global Chat Filter</span>
       </div>
-      <button class="admin-btn hidden" id="admin-open-btn">admin: rename user</button>
+
+      <div class="admin-actions-wrap">
+        <button class="admin-btn hidden" id="admin-actions-btn">Admin Actions</button>
+        <div class="admin-actions-menu hidden" id="admin-actions-menu">
+          <button class="admin-actions-item" id="menu-rename-btn">Rename user</button>
+          <button class="admin-actions-item" id="menu-ban-btn">Ban / unban user</button>
+          <button class="admin-actions-item" id="menu-mod-btn">Manage moderators</button>
+          <button class="admin-actions-item" id="menu-delete-btn">Delete account</button>
+          <div class="admin-actions-sep"></div>
+          <button class="admin-actions-item danger" id="menu-killswitch-btn">Shutdown server</button>
+        </div>
+      </div>
     </div>
 
     <div id="chat-col">
@@ -415,9 +449,12 @@
         <span class="hash" id="chat-title-hash">#</span>
         <span id="chat-title">public</span>
         <button class="hidden" id="gc-manage-btn" type="button">manage members</button>
+        <span class="header-version" id="header-version"></span>
+        <span class="header-image-quota hidden" id="image-quota-row">images: <span id="image-quota-text"></span></span>
         <span class="note" id="chat-note">refreshes every 30 min</span>
       </div>
       <div id="messages"></div>
+      <div id="typing-indicator" class="hidden"></div>
       <div id="reply-bar" class="hidden">
         <span class="reply-bar-text" id="reply-bar-text"></span>
         <button type="button" id="reply-bar-cancel" title="Cancel reply">&#10005;</button>
@@ -456,6 +493,75 @@
         <button class="primary" id="admin-confirm">Rename</button>
       </div>
       <p class="modal-msg" id="admin-modal-msg"></p>
+    </div>
+  </div>
+
+  <!-- ============ BAN / UNBAN MODAL ============ -->
+  <div class="modal-backdrop hidden" id="ban-modal">
+    <div class="modal">
+      <h3>Ban / unban a user</h3>
+      <div class="field">
+        <label>Username</label>
+        <input id="ban-target">
+      </div>
+      <div class="field">
+        <label>Duration</label>
+        <select id="ban-duration">
+          <option value="0">Permanent</option>
+          <option value="600">10 minutes</option>
+          <option value="3600">1 hour</option>
+          <option value="86400">1 day</option>
+          <option value="259200">3 days</option>
+          <option value="604800">7 days</option>
+          <option value="2592000">30 days</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Reason (optional)</label>
+        <input id="ban-reason" maxlength="300">
+      </div>
+      <p class="hint">Bans an account by username (not by IP) - the ban follows the account's email too, so it can't be dodged with a new signup.</p>
+      <div class="modal-actions">
+        <button id="ban-cancel">Cancel</button>
+        <button class="danger" id="ban-unban-confirm">Unban</button>
+        <button class="primary" id="ban-confirm">Ban</button>
+      </div>
+      <p class="modal-msg" id="ban-modal-msg"></p>
+    </div>
+  </div>
+
+  <!-- ============ MODERATOR MANAGEMENT MODAL ============ -->
+  <div class="modal-backdrop hidden" id="mod-modal">
+    <div class="modal">
+      <h3>Grant / revoke moderator</h3>
+      <div class="field">
+        <label>Username</label>
+        <input id="mod-target">
+      </div>
+      <p class="hint">Moderators can delete any message. That's their only extra power.</p>
+      <div class="modal-actions">
+        <button id="mod-cancel">Cancel</button>
+        <button class="danger" id="mod-remove-confirm">Remove</button>
+        <button class="primary" id="mod-add-confirm">Add</button>
+      </div>
+      <p class="modal-msg" id="mod-modal-msg"></p>
+    </div>
+  </div>
+
+  <!-- ============ DELETE ACCOUNT MODAL ============ -->
+  <div class="modal-backdrop hidden" id="delete-account-modal">
+    <div class="modal">
+      <h3>Delete an account</h3>
+      <div class="field">
+        <label>Username</label>
+        <input id="delete-account-target">
+      </div>
+      <p class="hint">This permanently deletes the account - it's not a ban. The username and email become free to sign up with again right away. Their message history is left as-is.</p>
+      <div class="modal-actions">
+        <button id="delete-account-cancel">Cancel</button>
+        <button class="danger" id="delete-account-confirm">Delete account</button>
+      </div>
+      <p class="modal-msg" id="delete-account-modal-msg"></p>
     </div>
   </div>
 
@@ -556,12 +662,14 @@
   // hot-swaps itself with it (see applyClientUpdate below) - that's what
   // lets every site hosting this file self-update on future releases
   // without anyone re-uploading it by hand.
-  var CLIENT_VERSION = "3.0.0.21";
+  var CLIENT_VERSION = "3.0.0.32";
   var CLIENT_CACHE_KEY = "gremlinchat_client_cache";
 
   var ws = null;
   var reconnectDelay = RECONNECT_MIN;
   var reconnectTimer = null;
+  var intentionalShutdown = false; // set true when an admin killswitches the server, so we stop auto-reconnecting
+  var pendingImageCaption = "";    // caption to attach once an in-flight paste/drop upload finishes
 
   // -----------------------------------------------------------------------
   // SELF-UPDATE: apply a cached newer copy immediately on DOM load (before
@@ -589,12 +697,30 @@
     document.close();
   }
 
+  function parseVersion(v){
+    return String(v || "0").split(".").map(function(n){ return parseInt(n, 10) || 0; });
+  }
+
+  // True only if `a` is STRICTLY newer than `b` - used so a stale cached
+  // copy (e.g. leftover in this browser's localStorage from before a
+  // downgrade or a re-deploy) can never win against a freshly-served page,
+  // even though their version strings differ either way.
+  function isVersionNewer(a, b){
+    var pa = parseVersion(a), pb = parseVersion(b);
+    var len = Math.max(pa.length, pb.length);
+    for (var i = 0; i < len; i++){
+      var na = pa[i] || 0, nb = pb[i] || 0;
+      if (na !== nb) return na > nb;
+    }
+    return false;
+  }
+
   function applyCachedClientIfMismatched(){
     try {
       var raw = localStorage.getItem(CLIENT_CACHE_KEY);
       if (!raw) return false;
       var cached = JSON.parse(raw);
-      if (cached && cached.version && cached.html && cached.version !== CLIENT_VERSION) {
+      if (cached && cached.version && cached.html && isVersionNewer(cached.version, CLIENT_VERSION)) {
         applyClientUpdate(cached.html, cached.version);
         return true;
       }
@@ -602,14 +728,34 @@
     return false;
   }
 
-  // If we bail out here, this stale copy of the script stops executing -
-  // the cached (newer) copy just took over the document and is booting itself.
-  if (applyCachedClientIfMismatched()) { return; }
+  // NOTE: this cache check can't just run inline here. document.write()
+  // only does a full "replace the whole page" when the document has
+  // finished loading - it works that way for the live push in
+  // handleServerMessage's "client_update" case, further down, because by
+  // then the page is fully loaded. But THIS script is still being parsed
+  // by the browser right now (document.readyState is "loading"), and
+  // document.write() called from a script the parser is actively running
+  // does NOT replace the page - it just inserts the new markup alongside
+  // the old, half-parsed page, leaving two copies of every element in the
+  // DOM and the old one still "in charge". That's what was making an
+  // already-cached newer version silently fail to take over on a normal
+  // page load/refresh (it only ever worked for a live push while a tab
+  // was already open). Deferring to `load` guarantees the document is
+  // fully parsed first, so the swap behaves the same reliable way it does
+  // for a live push.
+  function startBoot(){
+    // If we bail out here, this stale copy of the script stops executing -
+    // the cached (newer) copy just took over the document and is booting itself.
+    if (applyCachedClientIfMismatched()) { return; }
+    boot();
+  }
 
+  function boot(){
   var state = {
     username: null,
     isAdmin: false,
-    admins: [],                    // usernames who get a crown
+    admins: [],                    // usernames who get a full diamond
+    moderators: [],                // usernames who get an empty diamond (can delete any message)
     activeChannel: "public",       // "public", "rules"/"announcements"/"roadmap", "gc:<id>", or a DM username
     publicHistory: [],             // cached copy of the current public log
     dmContacts: [],                // list of usernames
@@ -627,7 +773,9 @@
     gcUnread: {},                  // group_id -> bool
     replyTarget: null,             // {id, from, text} currently composing a reply to, or null
     chatFilterFeatureEnabled: false, // whether the server has the filter subsystem at all
-    chatFilterEnabled: false       // whether it's currently live (admins can flip this)
+    chatFilterEnabled: false,      // whether it's currently live (admins can flip this)
+    imageQuotaBytes: 0,             // total image storage allocation (bytes)
+    imageUsedBytes: 0               // bytes currently used by uploaded images
   };
 
   // ---- element refs ----
@@ -649,13 +797,24 @@
     gcList: document.getElementById("gc-list"),
     gcNewBtn: document.getElementById("gc-new-btn"),
     gcManageBtn: document.getElementById("gc-manage-btn"),
-    adminOpenBtn: document.getElementById("admin-open-btn"),
+    adminActionsBtn: document.getElementById("admin-actions-btn"),
+    adminActionsMenu: document.getElementById("admin-actions-menu"),
+    menuRenameBtn: document.getElementById("menu-rename-btn"),
+    menuBanBtn: document.getElementById("menu-ban-btn"),
+    menuModBtn: document.getElementById("menu-mod-btn"),
+    menuDeleteBtn: document.getElementById("menu-delete-btn"),
+    menuKillswitchBtn: document.getElementById("menu-killswitch-btn"),
     colorOpenBtn: document.getElementById("color-open-btn"),
     filterToggleRow: document.getElementById("filter-toggle-row"),
     filterToggleInput: document.getElementById("filter-toggle-input"),
     chatTitle: document.getElementById("chat-title"),
     chatTitleHash: document.getElementById("chat-title-hash"),
     chatNote: document.getElementById("chat-note"),
+    chatCol: document.getElementById("chat-col"),
+    headerVersion: document.getElementById("header-version"),
+    imageQuotaRow: document.getElementById("image-quota-row"),
+    imageQuotaText: document.getElementById("image-quota-text"),
+    typingIndicator: document.getElementById("typing-indicator"),
     messages: document.getElementById("messages"),
     replyBar: document.getElementById("reply-bar"),
     replyBarText: document.getElementById("reply-bar-text"),
@@ -670,6 +829,25 @@
     adminConfirm: document.getElementById("admin-confirm"),
     adminCancel: document.getElementById("admin-cancel"),
     adminModalMsg: document.getElementById("admin-modal-msg"),
+    banModal: document.getElementById("ban-modal"),
+    banTarget: document.getElementById("ban-target"),
+    banDuration: document.getElementById("ban-duration"),
+    banReason: document.getElementById("ban-reason"),
+    banConfirm: document.getElementById("ban-confirm"),
+    banUnbanConfirm: document.getElementById("ban-unban-confirm"),
+    banCancel: document.getElementById("ban-cancel"),
+    banModalMsg: document.getElementById("ban-modal-msg"),
+    modModal: document.getElementById("mod-modal"),
+    modTarget: document.getElementById("mod-target"),
+    modAddConfirm: document.getElementById("mod-add-confirm"),
+    modRemoveConfirm: document.getElementById("mod-remove-confirm"),
+    modCancel: document.getElementById("mod-cancel"),
+    modModalMsg: document.getElementById("mod-modal-msg"),
+    deleteAccountModal: document.getElementById("delete-account-modal"),
+    deleteAccountTarget: document.getElementById("delete-account-target"),
+    deleteAccountConfirm: document.getElementById("delete-account-confirm"),
+    deleteAccountCancel: document.getElementById("delete-account-cancel"),
+    deleteAccountModalMsg: document.getElementById("delete-account-modal-msg"),
     imageModal: document.getElementById("image-modal"),
     imageUrlInput: document.getElementById("image-url-input"),
     imageCaptionInput: document.getElementById("image-caption-input"),
@@ -701,6 +879,8 @@
     membersOfflineCount: document.getElementById("members-offline-count"),
   };
 
+  el.headerVersion.textContent = "v" + CLIENT_VERSION;
+
   // ---------------------------------------------------------------------
   // WEBSOCKET
   // ---------------------------------------------------------------------
@@ -724,6 +904,7 @@
     };
 
     ws.onclose = function(){
+      if (intentionalShutdown) return; // server was deliberately killswitched - don't spam reconnects
       el.connBanner.style.display = "block";
       scheduleReconnect();
     };
@@ -795,6 +976,45 @@
       case "admin_rename_ok":
         el.adminModalMsg.textContent = "renamed " + msg.target + " -> " + msg.new_username;
         el.adminModalMsg.className = "modal-msg ok";
+        break;
+      case "admin_ban_ok":
+        el.banModalMsg.textContent = "banned " + msg.target + (msg.permanent ? " permanently" : " temporarily");
+        el.banModalMsg.className = "modal-msg ok";
+        break;
+      case "admin_unban_ok":
+        el.banModalMsg.textContent = "unbanned " + msg.target;
+        el.banModalMsg.className = "modal-msg ok";
+        break;
+      case "admin_set_moderator_ok":
+        el.modModalMsg.textContent = (msg.action === "add" ? "added " : "removed ") + msg.target + " as a moderator";
+        el.modModalMsg.className = "modal-msg ok";
+        break;
+      case "admin_delete_account_ok":
+        el.deleteAccountModalMsg.textContent = "deleted account " + msg.target;
+        el.deleteAccountModalMsg.className = "modal-msg ok";
+        break;
+      case "moderators_update":
+        state.moderators = msg.moderators || [];
+        refreshVisibleColors();
+        updateImageQuotaDisplay();
+        break;
+      case "image_storage_update":
+        state.imageUsedBytes = msg.used_bytes || 0;
+        state.imageQuotaBytes = msg.quota_bytes || state.imageQuotaBytes;
+        updateImageQuotaDisplay();
+        break;
+      case "server_shutdown":
+        intentionalShutdown = true;
+        if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
+        el.connBanner.textContent = msg.message || "server was shut down by an admin";
+        el.connBanner.style.display = "block";
+        break;
+      case "image_uploaded":
+        sendComposerMessage("image", pendingImageCaption, msg.url);
+        pendingImageCaption = "";
+        break;
+      case "typing":
+        onIncomingTyping(msg);
         break;
       case "channel_history":
         state.channelMessages[msg.channel] = msg.messages || [];
@@ -872,6 +1092,15 @@
         if (!el.adminModal.classList.contains("hidden")) {
           el.adminModalMsg.textContent = msg.message;
           el.adminModalMsg.className = "modal-msg err";
+        } else if (!el.banModal.classList.contains("hidden")) {
+          el.banModalMsg.textContent = msg.message;
+          el.banModalMsg.className = "modal-msg err";
+        } else if (!el.modModal.classList.contains("hidden")) {
+          el.modModalMsg.textContent = msg.message;
+          el.modModalMsg.className = "modal-msg err";
+        } else if (!el.deleteAccountModal.classList.contains("hidden")) {
+          el.deleteAccountModalMsg.textContent = msg.message;
+          el.deleteAccountModalMsg.className = "modal-msg err";
         } else if (!el.imageModal.classList.contains("hidden")) {
           el.imageModalMsg.textContent = msg.message;
           el.imageModalMsg.className = "modal-msg err";
@@ -895,15 +1124,28 @@
     state.username = msg.username;
     state.isAdmin = !!msg.is_admin;
     state.admins = msg.admins || [];
+    state.moderators = msg.moderators || [];
     state.chatFilterFeatureEnabled = !!msg.chat_filter_feature_enabled;
     state.chatFilterEnabled = !!msg.chat_filter_enabled;
+    state.imageQuotaBytes = msg.image_quota_bytes || 0;
+    state.imageUsedBytes = msg.image_used_bytes || 0;
     localStorage.setItem(STORAGE_KEY, msg.token);
     el.meUsername.textContent = state.username;
-    el.adminOpenBtn.classList.toggle("hidden", !state.isAdmin);
+    el.adminActionsBtn.classList.toggle("hidden", !state.isAdmin);
     renderChatFilterToggle();
+    updateImageQuotaDisplay();
     el.authScreen.classList.add("hidden");
     el.mainScreen.classList.remove("hidden");
     switchChannel("public");
+  }
+
+  function updateImageQuotaDisplay(){
+    var canSee = state.isAdmin || isModeratorUser(state.username);
+    el.imageQuotaRow.classList.toggle("hidden", !canSee);
+    if (!canSee) return;
+    var usedMb = (state.imageUsedBytes / (1024 * 1024)).toFixed(2);
+    var quotaMb = (state.imageQuotaBytes / (1024 * 1024)).toFixed(0);
+    el.imageQuotaText.textContent = usedMb + " / " + quotaMb + " MB";
   }
 
   function renderChatFilterToggle(){
@@ -942,10 +1184,14 @@
   }
 
   // ---------------------------------------------------------------------
-  // RENDERING HELPERS - crowns + custom colors
+  // RENDERING HELPERS - admin/mod diamonds + custom colors
   // ---------------------------------------------------------------------
   function isAdminUser(username){
     return state.admins.indexOf(username) !== -1;
+  }
+
+  function isModeratorUser(username){
+    return state.moderators.indexOf(username) !== -1;
   }
 
   function colorForUser(username){
@@ -956,11 +1202,17 @@
   function unameFragment(username){
     var frag = document.createDocumentFragment();
     if (isAdminUser(username)) {
-      var crown = document.createElement("span");
-      crown.className = "crown";
-      crown.textContent = "\u25CA";
-      crown.title = "admin";
-      frag.appendChild(crown);
+      var diamond = document.createElement("span");
+      diamond.className = "crown";
+      diamond.textContent = "\u25C6"; // filled diamond - admin
+      diamond.title = "admin";
+      frag.appendChild(diamond);
+    } else if (isModeratorUser(username)) {
+      var hollow = document.createElement("span");
+      hollow.className = "crown";
+      hollow.textContent = "\u25C7"; // empty diamond - moderator
+      hollow.title = "moderator";
+      frag.appendChild(hollow);
     }
     frag.appendChild(document.createTextNode(username));
     return frag;
@@ -1212,7 +1464,7 @@
   }
 
   function canDeleteMessage(m, channelKey){
-    if (state.isAdmin) return true;
+    if (state.isAdmin || isModeratorUser(state.username)) return true;
     if ((channelKey === "dm" || channelKey.indexOf("gc:") === 0) && m.from === state.username) return true;
     return false;
   }
@@ -1504,6 +1756,64 @@
     el.composerImgBtn.disabled = !enabled;
   }
 
+  // ---------------------------------------------------------------------
+  // TYPING INDICATORS
+  // ---------------------------------------------------------------------
+  var typingUsers = {};      // channelKey -> { username: timeoutId }
+  var lastTypingSentAt = 0;  // throttles our own outgoing typing pings
+
+  function typingChannelKeyFromMsg(msg){
+    if (msg.scope === "public") return "public";
+    if (msg.scope === "channel") return msg.channel;
+    if (msg.scope === "gc") return "gc:" + msg.group_id;
+    if (msg.scope === "dm") return msg.from; // DM threads are keyed by the other person's username
+    return null;
+  }
+
+  function onIncomingTyping(msg){
+    if (msg.from === state.username) return;
+    var channelKey = typingChannelKeyFromMsg(msg);
+    if (!channelKey) return;
+    if (!typingUsers[channelKey]) typingUsers[channelKey] = {};
+    if (typingUsers[channelKey][msg.from]) clearTimeout(typingUsers[channelKey][msg.from]);
+    typingUsers[channelKey][msg.from] = setTimeout(function(){
+      if (typingUsers[channelKey]) delete typingUsers[channelKey][msg.from];
+      if (state.activeChannel === channelKey) renderTypingIndicator(channelKey);
+    }, 4000);
+    if (state.activeChannel === channelKey) renderTypingIndicator(channelKey);
+  }
+
+  function renderTypingIndicator(channelKey){
+    var users = typingUsers[channelKey] ? Object.keys(typingUsers[channelKey]) : [];
+    if (!users.length) {
+      el.typingIndicator.textContent = "";
+      el.typingIndicator.classList.add("hidden");
+      return;
+    }
+    var text = users.length === 1
+      ? users[0] + " is typing..."
+      : users.join(", ") + " are typing...";
+    el.typingIndicator.textContent = text;
+    el.typingIndicator.classList.remove("hidden");
+  }
+
+  function maybeSendTyping(){
+    var now = Date.now();
+    if (now - lastTypingSentAt < 2000) return; // throttle to at most once every 2s
+    lastTypingSentAt = now;
+    var channel = state.activeChannel;
+    if (channel === "public") {
+      send({type: "typing", scope: "public"});
+    } else if (ADMIN_CHANNELS.indexOf(channel) !== -1) {
+      if (!state.isAdmin) return; // read-only for non-admins in these channels anyway
+      send({type: "typing", scope: "channel", channel: channel});
+    } else if (channel.indexOf("gc:") === 0) {
+      send({type: "typing", scope: "gc", group_id: parseInt(channel.slice(3), 10)});
+    } else {
+      send({type: "typing", scope: "dm", to: channel});
+    }
+  }
+
   function switchChannel(channel){
     closeEmojiPicker();
     cancelReply();
@@ -1559,6 +1869,7 @@
         send({type:"dm_history", with: channel});
       }
     }
+    renderTypingIndicator(channel);
   }
 
   function renderActiveChannel(){
@@ -1674,6 +1985,7 @@
   el.composerInput.addEventListener("input", function(){
     el.composerInput.style.height = "40px";
     el.composerInput.style.height = Math.min(el.composerInput.scrollHeight, 120) + "px";
+    if (el.composerInput.value.trim()) maybeSendTyping();
   });
 
   // ---------------------------------------------------------------------
@@ -1702,9 +2014,93 @@
   });
 
   // ---------------------------------------------------------------------
+  // IMAGE UPLOAD VIA PASTE / DRAG-AND-DROP
+  // ---------------------------------------------------------------------
+  var IMAGE_UPLOAD_MAX_BYTES = 15 * 1024 * 1024; // must match IMAGE_MAX_UPLOAD_BYTES server-side
+
+  function uploadImageFile(file, captionText){
+    if (!file || !file.type || file.type.indexOf("image/") !== 0) return;
+    if (file.size > IMAGE_UPLOAD_MAX_BYTES) {
+      addSysNote("that image is too large to upload (max " + (IMAGE_UPLOAD_MAX_BYTES / (1024 * 1024)) + "MB)");
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(){
+      var dataUrl = reader.result || "";
+      var comma = dataUrl.indexOf(",");
+      if (comma === -1) return;
+      pendingImageCaption = captionText || "";
+      send({type: "upload_image", mime: file.type, data: dataUrl.slice(comma + 1)});
+    };
+    reader.onerror = function(){
+      addSysNote("couldn't read that image file");
+    };
+    reader.readAsDataURL(file);
+  }
+
+  el.composerInput.addEventListener("paste", function(e){
+    var items = (e.clipboardData && e.clipboardData.items) || [];
+    for (var i = 0; i < items.length; i++){
+      if (items[i].type && items[i].type.indexOf("image/") === 0) {
+        var file = items[i].getAsFile();
+        if (file) {
+          e.preventDefault();
+          uploadImageFile(file, el.composerInput.value.trim());
+          el.composerInput.value = "";
+          el.composerInput.style.height = "40px";
+        }
+        break;
+      }
+    }
+  });
+
+  ["dragenter", "dragover"].forEach(function(evt){
+    el.chatCol.addEventListener(evt, function(e){
+      if (!e.dataTransfer || e.dataTransfer.types.indexOf("Files") === -1) return;
+      e.preventDefault();
+      e.stopPropagation();
+      el.chatCol.classList.add("drag-over");
+    });
+  });
+  ["dragleave", "drop"].forEach(function(evt){
+    el.chatCol.addEventListener(evt, function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      el.chatCol.classList.remove("drag-over");
+    });
+  });
+  el.chatCol.addEventListener("drop", function(e){
+    var files = (e.dataTransfer && e.dataTransfer.files) || [];
+    for (var i = 0; i < files.length; i++){
+      if (files[i].type && files[i].type.indexOf("image/") === 0) {
+        uploadImageFile(files[i], "");
+        break; // one image at a time, same as the paste flow above
+      }
+    }
+  });
+
+  // ---------------------------------------------------------------------
+  // ADMIN ACTIONS MENU (the popup opened by the "Admin Actions" button)
+  // ---------------------------------------------------------------------
+  function closeAdminActionsMenu(){
+    el.adminActionsMenu.classList.add("hidden");
+  }
+  el.adminActionsBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    el.adminActionsMenu.classList.toggle("hidden");
+  });
+  el.adminActionsMenu.addEventListener("click", function(e){
+    e.stopPropagation(); // don't let the document click-outside handler fire on our own menu
+  });
+  document.addEventListener("click", function(){
+    closeAdminActionsMenu();
+  });
+
+  // ---------------------------------------------------------------------
   // ADMIN MODAL WIRING
   // ---------------------------------------------------------------------
-  el.adminOpenBtn.addEventListener("click", function(){
+  el.menuRenameBtn.addEventListener("click", function(){
+    closeAdminActionsMenu();
     el.adminTarget.value = "";
     el.adminNewName.value = "";
     el.adminModalMsg.textContent = "";
@@ -1719,6 +2115,90 @@
     var newName = el.adminNewName.value.trim();
     if (!target || !newName) return;
     send({type:"admin_rename", target: target, new_username: newName});
+  });
+
+  // ---------------------------------------------------------------------
+  // BAN / UNBAN MODAL WIRING
+  // ---------------------------------------------------------------------
+  el.menuBanBtn.addEventListener("click", function(){
+    closeAdminActionsMenu();
+    el.banTarget.value = "";
+    el.banDuration.value = "0";
+    el.banReason.value = "";
+    el.banModalMsg.textContent = "";
+    el.banModalMsg.className = "modal-msg";
+    el.banModal.classList.remove("hidden");
+  });
+  el.banCancel.addEventListener("click", function(){
+    el.banModal.classList.add("hidden");
+  });
+  el.banConfirm.addEventListener("click", function(){
+    var target = el.banTarget.value.trim();
+    if (!target) return;
+    send({
+      type: "admin_ban", target: target,
+      duration_seconds: parseInt(el.banDuration.value, 10) || 0,
+      reason: el.banReason.value.trim()
+    });
+  });
+  el.banUnbanConfirm.addEventListener("click", function(){
+    var target = el.banTarget.value.trim();
+    if (!target) return;
+    send({type:"admin_unban", target: target});
+  });
+
+  // ---------------------------------------------------------------------
+  // MODERATOR MANAGEMENT MODAL WIRING
+  // ---------------------------------------------------------------------
+  el.menuModBtn.addEventListener("click", function(){
+    closeAdminActionsMenu();
+    el.modTarget.value = "";
+    el.modModalMsg.textContent = "";
+    el.modModalMsg.className = "modal-msg";
+    el.modModal.classList.remove("hidden");
+  });
+  el.modCancel.addEventListener("click", function(){
+    el.modModal.classList.add("hidden");
+  });
+  el.modAddConfirm.addEventListener("click", function(){
+    var target = el.modTarget.value.trim();
+    if (!target) return;
+    send({type:"admin_set_moderator", target: target, action: "add"});
+  });
+  el.modRemoveConfirm.addEventListener("click", function(){
+    var target = el.modTarget.value.trim();
+    if (!target) return;
+    send({type:"admin_set_moderator", target: target, action: "remove"});
+  });
+
+  // ---------------------------------------------------------------------
+  // DELETE ACCOUNT MODAL WIRING
+  // ---------------------------------------------------------------------
+  el.menuDeleteBtn.addEventListener("click", function(){
+    closeAdminActionsMenu();
+    el.deleteAccountTarget.value = "";
+    el.deleteAccountModalMsg.textContent = "";
+    el.deleteAccountModalMsg.className = "modal-msg";
+    el.deleteAccountModal.classList.remove("hidden");
+  });
+  el.deleteAccountCancel.addEventListener("click", function(){
+    el.deleteAccountModal.classList.add("hidden");
+  });
+  el.deleteAccountConfirm.addEventListener("click", function(){
+    var target = el.deleteAccountTarget.value.trim();
+    if (!target) return;
+    if (!window.confirm("Permanently delete the account \"" + target + "\"? This can't be undone.")) return;
+    send({type:"admin_delete_account", target: target});
+  });
+
+  // ---------------------------------------------------------------------
+  // KILLSWITCH WIRING
+  // ---------------------------------------------------------------------
+  el.menuKillswitchBtn.addEventListener("click", function(){
+    closeAdminActionsMenu();
+    if (!window.confirm("This immediately shuts down the ENTIRE server process for EVERY connected user. Continue?")) return;
+    if (!window.confirm("Really sure? This can't be undone remotely - someone will need physical/SSH access to start it back up.")) return;
+    send({type:"admin_killswitch"});
   });
 
   // ---------------------------------------------------------------------
@@ -1845,6 +2325,14 @@
   // BOOT
   // ---------------------------------------------------------------------
   connect();
+
+  } // end boot()
+
+  if (document.readyState === "complete") {
+    startBoot();
+  } else {
+    window.addEventListener("load", startBoot);
+  }
 
 })();
 </script>
