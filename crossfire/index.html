@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crossfire</title>
+<style>
+  :root {
+    --bg: #000;
+    --card: #141414;
+    --border: #333;
+    --text: #e8e6e3;
+    --muted: #9a9a9a;
+    --gold: #e8c84a;
+    --gold-dim: #8a7a35;
+    --check: #ff6b5e;
+    --mate: #ff1744;
+    --light: #c9b896;
+    --dark: #6b5c45;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: "Segoe UI", system-ui, sans-serif; }
+  button { font-family: inherit; cursor: pointer; }
+  .page { display: none; min-height: 100%; flex-direction: column; }
+  .page.active { display: flex; }
+  /* Menu */
+  #menuPage { align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  #menuPage .bg-board { position: absolute; inset: 0; opacity: 0.12; pointer-events: none; }
+  .menu-inner { position: relative; z-index: 1; text-align: center; padding: 40px 20px; max-width: 480px; }
+  .menu-title { font-size: 68px; font-weight: 700; color: var(--gold); letter-spacing: 10px; line-height: 1.1; }
+  .menu-sub { color: var(--muted); font-size: 15px; margin: 8px 0 36px; }
+  .menu-btn { display: block; width: 360px; max-width: 90vw; margin: 0 auto 6px; padding: 15px 0; font-size: 20px; font-weight: 700;
+    background: var(--card); border: 1px solid #444; color: var(--text); transition: 0.15s; }
+  .menu-btn:hover { border-color: var(--gold); color: var(--gold); background: #1d1b12; }
+  .menu-cap { color: #8a8a8a; font-size: 12px; margin-bottom: 18px; }
+  /* Story / Versus setup */
+  .setup { max-width: 760px; margin: 0 auto; padding: 24px 30px; width: 100%; }
+  .setup h1 { font-size: 34px; color: var(--gold); margin-bottom: 8px; }
+  .setup .desc { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .setup h3 { font-size: 13px; font-weight: 700; margin: 12px 0 6px; }
+  .seg { display: flex; }
+  .seg button { flex: 1; padding: 10px 8px; background: #181818; border: 1px solid #444; color: var(--text); margin-left: -1px; font-size: 14px; }
+  .seg button:first-child { margin-left: 0; }
+  .seg button:hover { background: #262626; }
+  .seg button.active { background: #2e2a1a; border-color: var(--gold); color: var(--gold); font-weight: 700; }
+  .seg button:disabled { color: #555; border-color: #2a2a2a; background: #111; }
+  .list { background: var(--card); border: 1px solid var(--border); max-height: 280px; overflow-y: auto; margin: 8px 0 16px; }
+  .list-item { padding: 10px 12px; border-bottom: 1px solid #222; cursor: pointer; font-size: 14px; white-space: pre-line; }
+  .list-item:hover { background: #1a1a1a; }
+  .list-item.selected { background: #2e2a1a; color: var(--gold); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .btn { background: #222; border: 1px solid #444; color: var(--text); padding: 10px 14px; font-size: 14px; }
+  .btn:hover { background: #333; }
+  .btn.primary { background: var(--gold); color: #111; border-color: var(--gold); font-weight: 700; }
+  .btn.primary:hover { background: #f3d96b; }
+  .cpu-box.disabled { opacity: 0.45; pointer-events: none; }
+  /* Game */
+  #gamePage { padding: 12px 16px 16px; }
+  .topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .mat-card { background: var(--card); border: 1px solid var(--border); padding: 6px 12px; display: flex; align-items: center; gap: 10px; min-width: 120px; }
+  .mat-swatch { width: 16px; height: 16px; border: 1px solid #888; flex-shrink: 0; }
+  .mat-swatch.w { background: #f2f2f2; }
+  .mat-swatch.b { background: #111; }
+  .mat-name { font-size: 12px; color: #aaa; }
+  .mat-pts { font-size: 26px; font-weight: 700; line-height: 1.1; }
+  .mat-lead { color: #5ccf7c; font-size: 14px; font-weight: 700; min-width: 28px; }
+  .status-wrap { flex: 1; text-align: center; }
+  .status { font-size: 16px; font-weight: 700; }
+  .status.check { color: var(--check); }
+  .status.mate { color: var(--mate); }
+  .status.over { color: var(--gold); }
+  .banner { font-size: 12px; color: var(--gold); margin-top: 2px; }
+  .board-wrap { flex: 1; display: flex; justify-content: center; align-items: center; min-height: 0; position: relative; }
+  #boardCanvas { background: #000; max-width: 100%; max-height: calc(100vh - 160px); cursor: pointer; }
+  .botbar { display: flex; gap: 10px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+  .botbar select { background: #222; border: 1px solid #444; color: var(--text); padding: 9px 12px; font-size: 14px; min-width: 100px; }
+  .botbar .spacer { flex: 1; }
+  /* Modal */
+  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
+  .modal-bg.show { display: flex; }
+  .modal { background: #1a1a1a; border: 1px solid #444; padding: 24px; max-width: 420px; width: 90%; text-align: center; }
+  .modal h2 { font-size: 18px; margin-bottom: 8px; }
+  .modal p { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .modal .row { justify-content: center; }
+  .promo-choices { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .promo-choices button { min-width: 64px; }
+</style>
+</head>
+<body>
+
+<!-- MENU -->
+<div id="menuPage" class="page active">
+  <canvas class="bg-board" id="menuBg"></canvas>
+  <div class="menu-inner">
+    <div class="menu-title">CROSSFIRE</div>
+    <div class="menu-sub">a two-player chess variant</div>
+    <button class="menu-btn" id="btnStory">Story</button>
+    <div class="menu-cap">Five missions on five boards, from Mission 1 or pick one</div>
+    <button class="menu-btn" id="btnVersus">Versus</button>
+    <div class="menu-cap">Play a friend, or the computer, on any board</div>
+    <button class="menu-btn" id="btnQuit">Quit</button>
+  </div>
+</div>
+
+<!-- STORY -->
+<div id="storyPage" class="page">
+  <div class="setup">
+    <h1>Story</h1>
+    <p class="desc">Five missions on five different boards. You play White against the computer.</p>
+    <h3>Computer difficulty</h3>
+    <div class="seg" id="storyLevel"></div>
+    <h3>Missions</h3>
+    <div class="list" id="storyList"></div>
+    <div class="row">
+      <button class="btn primary" id="storyStart">Start Story (Mission 1)</button>
+      <button class="btn" id="storyPlay">Play Selected Mission</button>
+      <div style="flex:1"></div>
+      <button class="btn" id="storyBack">Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- VERSUS -->
+<div id="versusPage" class="page">
+  <div class="setup">
+    <h1>Versus</h1>
+    <h3>Opponent</h3>
+    <div class="seg" id="vsOpp"></div>
+    <div class="cpu-box" id="cpuBox">
+      <h3>You play as</h3>
+      <div class="seg" id="vsSide"></div>
+      <h3>Computer difficulty</h3>
+      <div class="seg" id="vsLevel"></div>
+    </div>
+    <h3>Board</h3>
+    <div class="list" id="vsList"></div>
+    <div class="row">
+      <button class="btn primary" id="vsStart">Start Game</button>
+      <div style="flex:1"></div>
+      <button class="btn" id="vsBack">Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="gamePage" class="page">
+  <div class="topbar">
+    <div class="mat-card" id="blackCard">
+      <div class="mat-swatch b"></div>
+      <div>
+        <div class="mat-name" id="blackName">Black</div>
+        <div class="mat-pts" id="blackPts">0</div>
+      </div>
+      <div class="mat-lead" id="blackLead"></div>
+    </div>
+    <div class="status-wrap">
+      <div class="status" id="status">White to move</div>
+      <div class="banner" id="banner"></div>
+    </div>
+    <div class="mat-card" id="whiteCard">
+      <div class="mat-swatch w"></div>
+      <div>
+        <div class="mat-name" id="whiteName">White</div>
+        <div class="mat-pts" id="whitePts">0</div>
+      </div>
+      <div class="mat-lead" id="whiteLead"></div>
+    </div>
+  </div>
+  <div class="board-wrap">
+    <canvas id="boardCanvas" width="800" height="600"></canvas>
+  </div>
+  <div class="botbar">
+    <select id="levelSelect">
+      <option>Beginner</option><option>Easy</option><option selected>Medium</option><option>Hard</option><option>Expert</option>
+    </select>
+    <div class="spacer"></div>
+    <button class="btn" id="btnMenu">Menu</button>
+    <button class="btn" id="btnNew">New Game</button>
+    <button class="btn" id="btnUndo">Undo</button>
+    <button class="btn" id="btnResign">Resign</button>
+  </div>
+</div>
+
+<!-- Modals -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h2 id="modalTitle"></h2>
+    <p id="modalInfo"></p>
+    <div class="row" id="modalBtns"></div>
+  </div>
+</div>
+<div class="modal-bg" id="promoBg">
+  <div class="modal">
+    <h2>Promotion</h2>
+    <p>Promote to:</p>
+    <div class="promo-choices" id="promoChoices"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================================
+// Crossfire — HTML/JS port of the PyQt6 engine
+// ============================================================================
+const WHITE = 0, BLACK = 1;
+const RANKS = "abcdefghijklmnopqrstuvwxyz";
+const MATERIAL = {K:0, Q:9, C:7, R:5, B:3, N:3, A:2, P:1};
+const PROMO_TYPES = ["Q","R","B","N","A"];
+const LEVELS = {
+  Beginner: {depth:1, time:1.5, margin:250, blunder:0.20, qmax:0},
+  Easy:     {depth:2, time:2.0, margin:90,  blunder:0.05, qmax:2},
+  Medium:   {depth:3, time:3.0, margin:25,  blunder:0.0,  qmax:4},
+  Hard:     {depth:5, time:5.0, margin:8,   blunder:0.0,  qmax:5},
+  Expert:   {depth:8, time:10.0,margin:3,   blunder:0.0,  qmax:6},
+};
+const ORTHO = [[-1,0],[1,0],[0,-1],[0,1]];
+const DIAG  = [[-1,-1],[-1,1],[1,-1],[1,1]];
+const KNIGHT_D = [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+const ARCHER_D = [[-2,0],[2,0],[0,-2],[0,2],[-1,-1],[-1,1],[1,-1],[1,1]];
+const TCODE = {K:1,Q:2,C:3,R:4,B:5,N:6,A:7,P:8};
+const CP = {1:0,2:900,3:700,4:500,5:300,6:300,7:200,8:100};
+const MATE = 100000, INF = 1e7;
+const PROMO_FAST = [2,6]; // Q, N inside search
+
+const PIECE_IMG = {K:{0:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+V2hpdGUga2luZzwvdGl0bGU+PGRlZnM+PGcgaWQ9InBsXzAiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnIGlkPSJraW5nXzAiPjx1c2UgaHJlZj0iI3BsXzAiLz48cmVjdCB4PSItMTYiIHk9Ii05NiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjY4IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Im0tNS05MnY2MG0xMC02MHY2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsLTExNCkiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIj48cGF0aCB0cmFuc2Zvcm09InJvdGF0ZSgtNjgpIiBkPSJtMCAwcS0xNi0yNiAwLTUyIDE2IDI2IDAgNTIiLz48cGF0aCB0cmFuc2Zvcm09InJvdGF0ZSg2OCkiIGQ9Im0wIDBxLTE2LTI2IDAtNTIgMTYgMjYgMCA1MiIvPjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKC00MCkiIGQ9Im0wIDBxLTE2LTMwIDAtNjAgMTYgMzAgMCA2MCIvPjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDQwKSIgZD0ibTAgMHEtMTYtMzAgMC02MCAxNiAzMCAwIDYwIi8+PHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoLTE0KSIgZD0ibTAgMHEtMTYtMzQgMC02NiAxNiAzMiAwIDY2Ii8+PHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoMTQpIiBkPSJtMCAwcS0xNi0zNCAwLTY2IDE2IDMyIDAgNjYiLz48L2c+PHBhdGggZD0ibS0zOC0xMThxMiAyNiAyNiAyOGgyNHEyNC0yIDI2LTI4eiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN5PSItMTM0IiByPSIxNCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCAzNTguMjIpIHNjYWxlKDEuNzc1MykiPjx1c2UgaHJlZj0iI2tpbmdfMCIvPjwvZz48L3N2Zz4K",1:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QmxhY2sga2luZzwvdGl0bGU+PGRlZnM+PGcgaWQ9InBsXzAiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjwvZz48ZyBpZD0ia2luZ18wIj48dXNlIGhyZWY9IiNwbF8wIi8+PHJlY3QgeD0iLTE2IiB5PSItOTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSI2OCIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PHBhdGggZD0ibS01LTkydjYwbTEwLTYwdjYwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsLTExNCkiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCI+PHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoLTY4KSIgZD0ibTAgMHEtMTYtMjYgMC01MiAxNiAyNiAwIDUyIi8+PHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoNjgpIiBkPSJtMCAwcS0xNi0yNiAwLTUyIDE2IDI2IDAgNTIiLz48cGF0aCB0cmFuc2Zvcm09InJvdGF0ZSgtNDApIiBkPSJtMCAwcS0xNi0zMCAwLTYwIDE2IDMwIDAgNjAiLz48cGF0aCB0cmFuc2Zvcm09InJvdGF0ZSg0MCkiIGQ9Im0wIDBxLTE2LTMwIDAtNjAgMTYgMzAgMCA2MCIvPjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKC0xNCkiIGQ9Im0wIDBxLTE2LTM0IDAtNjYgMTYgMzIgMCA2NiIvPjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDE0KSIgZD0ibTAgMHEtMTYtMzQgMC02NiAxNiAzMiAwIDY2Ii8+PC9nPjxwYXRoIGQ9Im0tMzgtMTE4cTIgMjYgMjYgMjhoMjRxMjQtMiAyNi0yOHoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxjaXJjbGUgY3k9Ii0xMzQiIHI9IjE0IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48L2c+PGcgaWQ9InBsXzEiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PGcgaWQ9ImtpbmdfMSI+PHVzZSBocmVmPSIjcGxfMSIvPjxyZWN0IHg9Ii0xNiIgeT0iLTk2IiB3aWR0aD0iMzIiIGhlaWdodD0iNjgiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cGF0aCBkPSJtLTUtOTJ2NjBtMTAtNjB2NjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsLTExNCkiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiPjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKC02OCkiIGQ9Im0wIDBxLTE2LTI2IDAtNTIgMTYgMjYgMCA1MiIvPjxwYXRoIHRyYW5zZm9ybT0icm90YXRlKDY4KSIgZD0ibTAgMHEtMTYtMjYgMC01MiAxNiAyNiAwIDUyIi8+PHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoLTQwKSIgZD0ibTAgMHEtMTYtMzAgMC02MCAxNiAzMCAwIDYwIi8+PHBhdGggdHJhbnNmb3JtPSJyb3RhdGUoNDApIiBkPSJtMCAwcS0xNi0zMCAwLTYwIDE2IDMwIDAgNjAiLz48cGF0aCB0cmFuc2Zvcm09InJvdGF0ZSgtMTQpIiBkPSJtMCAwcS0xNi0zNCAwLTY2IDE2IDMyIDAgNjYiLz48cGF0aCB0cmFuc2Zvcm09InJvdGF0ZSgxNCkiIGQ9Im0wIDBxLTE2LTM0IDAtNjYgMTYgMzIgMCA2NiIvPjwvZz48cGF0aCBkPSJtLTM4LTExOHEyIDI2IDI2IDI4aDI0cTI0LTIgMjYtMjh6IiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PGNpcmNsZSBjeT0iLTEzNCIgcj0iMTQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCAzNTEuNSkgc2NhbGUoMS42OTk5KSI+PHVzZSBocmVmPSIja2luZ18wIi8+PHVzZSBocmVmPSIja2luZ18xIi8+PC9nPjwvc3ZnPgo="},Q:{0:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+V2hpdGUgcXVlZW48L3RpdGxlPjxkZWZzPjxnIGlkPSJwbF8wIj48cmVjdCB4PSItNDQiIHk9Ii0yOCIgd2lkdGg9Ijg4IiBoZWlnaHQ9IjI4IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48ZyBpZD0icXVlZW5fMCI+PHVzZSBocmVmPSIjcGxfMCIvPjxwYXRoIGQ9Im0tMTAtMjh2LTI2bC0zMi02OGg4NGwtMzIgNjh2MjZ6IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Im0tMTAtNTRoMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJtLTQyLTEyMi00LTQ0IDIwIDMwIDQgMTR6IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Im00Mi0xMjIgNC00NC0yMCAzMC00IDE0eiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJtLTM0LTEyMiA2LTU0IDE2IDU0eiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJtMzQtMTIyLTYtNTQtMTYgNTR6IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Im0tMTgtMTIyIDgtNjggMTAgNjh6IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Im0xOC0xMjItOC02OC0xMCA2OHoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibS04LTEyMiA4LTgyIDggODJ6IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48L2RlZnM+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAwIDM1OC40NSkgc2NhbGUoMS41NTM0KSI+PHVzZSBocmVmPSIjcXVlZW5fMCIvPjwvZz48L3N2Zz4K",1:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QmxhY2sgcXVlZW48L3RpdGxlPjxkZWZzPjxnIGlkPSJwbF8wIj48cmVjdCB4PSItNDQiIHk9Ii0yOCIgd2lkdGg9Ijg4IiBoZWlnaHQ9IjI4IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48L2c+PGcgaWQ9InF1ZWVuXzAiPjx1c2UgaHJlZj0iI3BsXzAiLz48cGF0aCBkPSJtLTEwLTI4di0yNmwtMzItNjhoODRsLTMyIDY4djI2eiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PHBhdGggZD0ibS0xMC01NGgyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48cGF0aCBkPSJtLTQyLTEyMi00LTQ0IDIwIDMwIDQgMTR6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48cGF0aCBkPSJtNDItMTIyIDQtNDQtMjAgMzAtNCAxNHoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Im0tMzQtMTIyIDYtNTQgMTYgNTR6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48cGF0aCBkPSJtMzQtMTIyLTYtNTQtMTYgNTR6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48cGF0aCBkPSJtLTE4LTEyMiA4LTY4IDEwIDY4eiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PHBhdGggZD0ibTE4LTEyMi04LTY4LTEwIDY4eiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PHBhdGggZD0ibS04LTEyMiA4LTgyIDggODJ6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48L2c+PGcgaWQ9InBsXzEiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PGcgaWQ9InF1ZWVuXzEiPjx1c2UgaHJlZj0iI3BsXzEiLz48cGF0aCBkPSJtLTEwLTI4di0yNmwtMzItNjhoODRsLTMyIDY4djI2eiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxwYXRoIGQ9Im0tMTAtNTRoMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxwYXRoIGQ9Im0tNDItMTIyLTQtNDQgMjAgMzAgNCAxNHoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cGF0aCBkPSJtNDItMTIyIDQtNDQtMjAgMzAtNCAxNHoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cGF0aCBkPSJtLTM0LTEyMiA2LTU0IDE2IDU0eiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxwYXRoIGQ9Im0zNC0xMjItNi01NC0xNiA1NHoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cGF0aCBkPSJtLTE4LTEyMiA4LTY4IDEwIDY4eiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxwYXRoIGQ9Im0xOC0xMjItOC02OC0xMCA2OHoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cGF0aCBkPSJtLTgtMTIyIDgtODIgOCA4MnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCAzNTIuNTIpIHNjYWxlKDEuNDk1MykiPjx1c2UgaHJlZj0iI3F1ZWVuXzAiLz48dXNlIGhyZWY9IiNxdWVlbl8xIi8+PC9nPjwvc3ZnPgo="},C:{0:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+V2hpdGUgYXJjaGJpc2hvcDwvdGl0bGU+PGRlZnM+PGcgaWQ9InBsXzAiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnIGlkPSJhcmNoYmlzaG9wXzAiPjx1c2UgaHJlZj0iI3BsXzAiLz48cGF0aCBkPSJtLTIwLTI4IDgtOTZoMjRsOCA5NnoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibS01LTI4IDItOTJtOCA5Mi0yLTkyIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibS0yNC0xMjRoMjNsLTExLTM0aC0yM3oiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibTI0LTEyNGgtMjNsMTEtMzRoMjN6IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3k9Ii0xMzYiIHI9IjEyIiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48L2RlZnM+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAwIDM1OCkgc2NhbGUoMikiPjx1c2UgaHJlZj0iI2FyY2hiaXNob3BfMCIvPjwvZz48L3N2Zz4K",1:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QmxhY2sgYXJjaGJpc2hvcDwvdGl0bGU+PGRlZnM+PGcgaWQ9InBsXzAiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjwvZz48ZyBpZD0iYXJjaGJpc2hvcF8wIj48dXNlIGhyZWY9IiNwbF8wIi8+PHBhdGggZD0ibS0yMC0yOCA4LTk2aDI0bDggOTZ6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48cGF0aCBkPSJtLTUtMjggMi05Mm04IDkyLTItOTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PHBhdGggZD0ibS0yNC0xMjRoMjNsLTExLTM0aC0yM3oiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Im0yNC0xMjRoLTIzbDExLTM0aDIzeiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PGNpcmNsZSBjeT0iLTEzNiIgcj0iMTIiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjwvZz48ZyBpZD0icGxfMSI+PHJlY3QgeD0iLTQ0IiB5PSItMjgiIHdpZHRoPSI4OCIgaGVpZ2h0PSIyOCIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjwvZz48ZyBpZD0iYXJjaGJpc2hvcF8xIj48dXNlIGhyZWY9IiNwbF8xIi8+PHBhdGggZD0ibS0yMC0yOCA4LTk2aDI0bDggOTZ6IiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PHBhdGggZD0ibS01LTI4IDItOTJtOCA5Mi0yLTkyIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cGF0aCBkPSJtLTI0LTEyNGgyM2wtMTEtMzRoLTIzeiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxwYXRoIGQ9Im0yNC0xMjRoLTIzbDExLTM0aDIzeiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxjaXJjbGUgY3k9Ii0xMzYiIHI9IjEyIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PC9nPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDAgMzUwLjQ4KSBzY2FsZSgxLjkwNDgpIj48dXNlIGhyZWY9IiNhcmNoYmlzaG9wXzAiLz48dXNlIGhyZWY9IiNhcmNoYmlzaG9wXzEiLz48L2c+PC9zdmc+Cg=="},R:{0:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+V2hpdGUgcm9vazwvdGl0bGU+PGRlZnM+PGcgaWQ9InBsXzAiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnIGlkPSJyb29rXzAiPjx1c2UgaHJlZj0iI3BsXzAiLz48cmVjdCB4PSItMjQiIHk9Ii0xMjIiIHdpZHRoPSI0OCIgaGVpZ2h0PSI5NCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJtLTI0LTEwMmgzMG0tMTIgMjJoMzBtLTQ4IDIyaDMwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHJlY3QgeD0iLTM0IiB5PSItMTUyIiB3aWR0aD0iNjgiIGhlaWdodD0iMzAiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0ibS0xNy0xNTJ2MzBtMTctMzB2MzBtMTctMzB2MzAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCAzNTcuOTIpIHNjYWxlKDIuMDc3OSkiPjx1c2UgaHJlZj0iI3Jvb2tfMCIvPjwvZz48L3N2Zz4K",1:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QmxhY2sgcm9vazwvdGl0bGU+PGRlZnM+PGcgaWQ9InBsXzAiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjwvZz48ZyBpZD0icm9va18wIj48dXNlIGhyZWY9IiNwbF8wIi8+PHJlY3QgeD0iLTI0IiB5PSItMTIyIiB3aWR0aD0iNDgiIGhlaWdodD0iOTQiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Im0tMjQtMTAyaDMwbS0xMiAyMmgzMG0tNDggMjJoMzAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PHJlY3QgeD0iLTM0IiB5PSItMTUyIiB3aWR0aD0iNjgiIGhlaWdodD0iMzAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Im0tMTctMTUydjMwbTE3LTMwdjMwbTE3LTMwdjMwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjwvZz48ZyBpZD0icGxfMSI+PHJlY3QgeD0iLTQ0IiB5PSItMjgiIHdpZHRoPSI4OCIgaGVpZ2h0PSIyOCIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjwvZz48ZyBpZD0icm9va18xIj48dXNlIGhyZWY9IiNwbF8xIi8+PHJlY3QgeD0iLTI0IiB5PSItMTIyIiB3aWR0aD0iNDgiIGhlaWdodD0iOTQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cGF0aCBkPSJtLTI0LTEwMmgzMG0tMTIgMjJoMzBtLTQ4IDIyaDMwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cmVjdCB4PSItMzQiIHk9Ii0xNTIiIHdpZHRoPSI2OCIgaGVpZ2h0PSIzMCIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxwYXRoIGQ9Im0tMTctMTUydjMwbTE3LTMwdjMwbTE3LTMwdjMwIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCAzNTAuMTIpIHNjYWxlKDEuOTc1MykiPjx1c2UgaHJlZj0iI3Jvb2tfMCIvPjx1c2UgaHJlZj0iI3Jvb2tfMSIvPjwvZz48L3N2Zz4K"},B:{0:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+V2hpdGUgYmlzaG9wPC90aXRsZT48ZGVmcz48ZyBpZD0icGxfMCI+PHJlY3QgeD0iLTQ0IiB5PSItMjgiIHdpZHRoPSI4OCIgaGVpZ2h0PSIyOCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PGcgaWQ9ImJpc2hvcF8wIj48dXNlIGhyZWY9IiNwbF8wIi8+PHBhdGggZD0ibS0yNy0yOHExMi0zMiAxNi02NGgyMnE0IDMyIDE2IDY0eiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48cmVjdCB4PSItMTgiIHk9Ii0xMDIiIHdpZHRoPSIzNiIgaGVpZ2h0PSIxMCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJtLTE2LTEwNHEtMTAtMzIgMTYtNjIgMjYgMzAgMTYgNjJ6IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Im0wLTE0MiAxMCAxNG0tNS0xOCAxMCAxNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3k9Ii0xNzIiIHI9IjgiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDAgMzU4LjI0KSBzY2FsZSgxLjc1ODIpIj48dXNlIGhyZWY9IiNiaXNob3BfMCIvPjwvZz48L3N2Zz4K",1:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QmxhY2sgYmlzaG9wPC90aXRsZT48ZGVmcz48ZyBpZD0icGxfMCI+PHJlY3QgeD0iLTQ0IiB5PSItMjgiIHdpZHRoPSI4OCIgaGVpZ2h0PSIyOCIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PC9nPjxnIGlkPSJiaXNob3BfMCI+PHVzZSBocmVmPSIjcGxfMCIvPjxwYXRoIGQ9Im0tMjctMjhxMTItMzIgMTYtNjRoMjJxNCAzMiAxNiA2NHoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxyZWN0IHg9Ii0xOCIgeT0iLTEwMiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjEwIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48cGF0aCBkPSJtLTE2LTEwNHEtMTAtMzIgMTYtNjIgMjYgMzAgMTYgNjJ6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48cGF0aCBkPSJtMC0xNDIgMTAgMTRtLTUtMTggMTAgMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PGNpcmNsZSBjeT0iLTE3MiIgcj0iOCIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PC9nPjxnIGlkPSJwbF8xIj48cmVjdCB4PSItNDQiIHk9Ii0yOCIgd2lkdGg9Ijg4IiBoZWlnaHQ9IjI4IiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PC9nPjxnIGlkPSJiaXNob3BfMSI+PHVzZSBocmVmPSIjcGxfMSIvPjxwYXRoIGQ9Im0tMjctMjhxMTItMzIgMTYtNjRoMjJxNCAzMiAxNiA2NHoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cmVjdCB4PSItMTgiIHk9Ii0xMDIiIHdpZHRoPSIzNiIgaGVpZ2h0PSIxMCIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxwYXRoIGQ9Im0tMTYtMTA0cS0xMC0zMiAxNi02MiAyNiAzMCAxNiA2MnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48cGF0aCBkPSJtMC0xNDIgMTAgMTRtLTUtMTggMTAgMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxjaXJjbGUgY3k9Ii0xNzIiIHI9IjgiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCAzNTEuNTgpIHNjYWxlKDEuNjg0MikiPjx1c2UgaHJlZj0iI2Jpc2hvcF8wIi8+PHVzZSBocmVmPSIjYmlzaG9wXzEiLz48L2c+PC9zdmc+Cg=="},N:{0:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+V2hpdGUga25pZ2h0PC90aXRsZT48ZGVmcz48ZyBpZD0icGxfMCI+PHJlY3QgeD0iLTQ0IiB5PSItMjgiIHdpZHRoPSI4OCIgaGVpZ2h0PSIyOCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PGcgaWQ9ImtuaWdodF8wIj48dXNlIGhyZWY9IiNwbF8wIi8+PHBhdGggZD0ibS0yOC0yOHEyLTMyIDE4LTU2LTIwLTItMzItMTYtMTAtMTAtMi0yMGwxMC0xMCA0LTIyIDE0IDhxNi0xNiAyMi0yNGwyIDE4cTI4IDggMzAgNTAtMiA0MC04IDcyeiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSItMjAiIGN5PSItMTMwIiByPSIzLjUiLz48cGF0aCBkPSJtLTQ2LTExMCAxMiA2bTQ4LTQ0cTEwIDI4IDIgNjBtOC01MnE4IDI0IDIgNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMy41MyAzNTguMTIpIHNjYWxlKDEuODgyNCkiPjx1c2UgaHJlZj0iI2tuaWdodF8wIi8+PC9nPjwvc3ZnPgo=",1:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QmxhY2sga25pZ2h0PC90aXRsZT48ZGVmcz48ZyBpZD0icGxfMCI+PHJlY3QgeD0iLTQ0IiB5PSItMjgiIHdpZHRoPSI4OCIgaGVpZ2h0PSIyOCIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PC9nPjxnIGlkPSJrbmlnaHRfMCI+PHVzZSBocmVmPSIjcGxfMCIvPjxwYXRoIGQ9Im0tMjgtMjhxMi0zMiAxOC01Ni0yMC0yLTMyLTE2LTEwLTEwLTItMjBsMTAtMTAgNC0yMiAxNCA4cTYtMTYgMjItMjRsMiAxOHEyOCA4IDMwIDUwLTIgNDAtOCA3MnoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxjaXJjbGUgY3g9Ii0yMCIgY3k9Ii0xMzAiIHI9IjMuNSIvPjxwYXRoIGQ9Im0tNDYtMTEwIDEyIDZtNDgtNDRxMTAgMjggMiA2MG04LTUycTggMjQgMiA1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48L2c+PGcgaWQ9InBsXzEiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PGcgaWQ9ImtuaWdodF8xIj48dXNlIGhyZWY9IiNwbF8xIi8+PHBhdGggZD0ibS0yOC0yOHEyLTMyIDE4LTU2LTIwLTItMzItMTYtMTAtMTAtMi0yMGwxMC0xMCA0LTIyIDE0IDhxNi0xNiAyMi0yNGwyIDE4cTI4IDggMzAgNTAtMiA0MC04IDcyeiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxjaXJjbGUgY3g9Ii0yMCIgY3k9Ii0xMzAiIHI9IjMuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Im0tNDYtMTEwIDEyIDZtNDgtNDRxMTAgMjggMiA2MG04LTUycTggMjQgMiA1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PC9nPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDMuMzcgMzUxLjAxKSBzY2FsZSgxLjc5NzgpIj48dXNlIGhyZWY9IiNrbmlnaHRfMCIvPjx1c2UgaHJlZj0iI2tuaWdodF8xIi8+PC9nPjwvc3ZnPgo="},A:{0:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+V2hpdGUgYXJjaGVyPC90aXRsZT48ZGVmcz48ZyBpZD0icGxfMCI+PHJlY3QgeD0iLTQ0IiB5PSItMjgiIHdpZHRoPSI4OCIgaGVpZ2h0PSIyOCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PGcgaWQ9InNwaWtlXzAiPjxwYXRoIGQ9Im0xNC02IDQ0IDYtNDQgNnoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnIGlkPSJyYXlfMCI+PHBhdGggZD0ibTE2IDBoNDIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PGcgaWQ9ImFyY2hlcl8wIj48dXNlIGhyZWY9IiNwbF8wIi8+PHBhdGggZD0ibS0zMi0yOCAyNC04OGgxNmwyNCA4OHoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwtMTQwKSI+PHVzZSBocmVmPSIjc3Bpa2VfMCIvPjx1c2UgdHJhbnNmb3JtPSJyb3RhdGUoOTApIiBocmVmPSIjc3Bpa2VfMCIvPjx1c2UgdHJhbnNmb3JtPSJyb3RhdGUoMTgwKSIgaHJlZj0iI3NwaWtlXzAiLz48dXNlIHRyYW5zZm9ybT0icm90YXRlKDI3MCkiIGhyZWY9IiNzcGlrZV8wIi8+PHVzZSB0cmFuc2Zvcm09InJvdGF0ZSg0NSkiIGhyZWY9IiNyYXlfMCIvPjx1c2UgdHJhbnNmb3JtPSJyb3RhdGUoMTM1KSIgaHJlZj0iI3JheV8wIi8+PHVzZSB0cmFuc2Zvcm09InJvdGF0ZSgyMjUpIiBocmVmPSIjcmF5XzAiLz48dXNlIHRyYW5zZm9ybT0icm90YXRlKDMxNSkiIGhyZWY9IiNyYXlfMCIvPjwvZz48Y2lyY2xlIGN5PSItMTQwIiByPSIxNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJtLTE2LTE0MGgzMm0tMTYtMTZ2MzIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCAzNTguNCkgc2NhbGUoMS42KSI+PHVzZSBocmVmPSIjYXJjaGVyXzAiLz48L2c+PC9zdmc+Cg==",1:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QmxhY2sgYXJjaGVyPC90aXRsZT48ZGVmcz48ZyBpZD0icGxfMCI+PHJlY3QgeD0iLTQ0IiB5PSItMjgiIHdpZHRoPSI4OCIgaGVpZ2h0PSIyOCIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PC9nPjxnIGlkPSJzcGlrZV8wIj48cGF0aCBkPSJtMTQtNiA0NCA2LTQ0IDZ6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48L2c+PGcgaWQ9InJheV8wIj48cGF0aCBkPSJtMTYgMGg0MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48L2c+PGcgaWQ9ImFyY2hlcl8wIj48dXNlIGhyZWY9IiNwbF8wIi8+PHBhdGggZD0ibS0zMi0yOCAyNC04OGgxNmwyNCA4OHoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsLTE0MCkiPjx1c2UgaHJlZj0iI3NwaWtlXzAiLz48dXNlIHRyYW5zZm9ybT0icm90YXRlKDkwKSIgaHJlZj0iI3NwaWtlXzAiLz48dXNlIHRyYW5zZm9ybT0icm90YXRlKDE4MCkiIGhyZWY9IiNzcGlrZV8wIi8+PHVzZSB0cmFuc2Zvcm09InJvdGF0ZSgyNzApIiBocmVmPSIjc3Bpa2VfMCIvPjx1c2UgdHJhbnNmb3JtPSJyb3RhdGUoNDUpIiBocmVmPSIjcmF5XzAiLz48dXNlIHRyYW5zZm9ybT0icm90YXRlKDEzNSkiIGhyZWY9IiNyYXlfMCIvPjx1c2UgdHJhbnNmb3JtPSJyb3RhdGUoMjI1KSIgaHJlZj0iI3JheV8wIi8+PHVzZSB0cmFuc2Zvcm09InJvdGF0ZSgzMTUpIiBocmVmPSIjcmF5XzAiLz48L2c+PGNpcmNsZSBjeT0iLTE0MCIgcj0iMTYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Im0tMTYtMTQwaDMybS0xNi0xNnYzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48L2c+PGcgaWQ9InBsXzEiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PGcgaWQ9InNwaWtlXzEiPjxwYXRoIGQ9Im0xNC02IDQ0IDYtNDQgNnoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PGcgaWQ9InJheV8xIj48cGF0aCBkPSJtMTYgMGg0MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PC9nPjxnIGlkPSJhcmNoZXJfMSI+PHVzZSBocmVmPSIjcGxfMSIvPjxwYXRoIGQ9Im0tMzItMjggMjQtODhoMTZsMjQgODh6IiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCwtMTQwKSI+PHVzZSBocmVmPSIjc3Bpa2VfMSIvPjx1c2UgdHJhbnNmb3JtPSJyb3RhdGUoOTApIiBocmVmPSIjc3Bpa2VfMSIvPjx1c2UgdHJhbnNmb3JtPSJyb3RhdGUoMTgwKSIgaHJlZj0iI3NwaWtlXzEiLz48dXNlIHRyYW5zZm9ybT0icm90YXRlKDI3MCkiIGhyZWY9IiNzcGlrZV8xIi8+PHVzZSB0cmFuc2Zvcm09InJvdGF0ZSg0NSkiIGhyZWY9IiNyYXlfMSIvPjx1c2UgdHJhbnNmb3JtPSJyb3RhdGUoMTM1KSIgaHJlZj0iI3JheV8xIi8+PHVzZSB0cmFuc2Zvcm09InJvdGF0ZSgyMjUpIiBocmVmPSIjcmF5XzEiLz48dXNlIHRyYW5zZm9ybT0icm90YXRlKDMxNSkiIGhyZWY9IiNyYXlfMSIvPjwvZz48Y2lyY2xlIGN5PSItMTQwIiByPSIxNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjMuNCIvPjxwYXRoIGQ9Im0tMTYtMTQwaDMybS0xNi0xNnYzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PC9nPjwvZGVmcz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMDAgMzUyLjMxKSBzY2FsZSgxLjUzODUpIj48dXNlIGhyZWY9IiNhcmNoZXJfMCIvPjx1c2UgaHJlZj0iI2FyY2hlcl8xIi8+PC9nPjwvc3ZnPgo="},P:{0:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+V2hpdGUgcGF3bjwvdGl0bGU+PGRlZnM+PGcgaWQ9InBsXzAiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjxnIGlkPSJwYXduXzAiPjx1c2UgaHJlZj0iI3BsXzAiLz48cGF0aCBkPSJtLTI3LTI4cTEyLTMyIDE2LTYyaDIycTQgMzAgMTYgNjJ6IiBmaWxsPSIjZmZmIiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMiIvPjxyZWN0IHg9Ii0xNyIgeT0iLTk4IiB3aWR0aD0iMzQiIGhlaWdodD0iOSIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN5PSItMTE4IiByPSIxOSIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCAzNTcuNykgc2NhbGUoMi4zMDIyKSI+PHVzZSBocmVmPSIjcGF3bl8wIi8+PC9nPjwvc3ZnPgo=",1:"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QmxhY2sgcGF3bjwvdGl0bGU+PGRlZnM+PGcgaWQ9InBsXzAiPjxyZWN0IHg9Ii00NCIgeT0iLTI4IiB3aWR0aD0iODgiIGhlaWdodD0iMjgiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxMCIvPjwvZz48ZyBpZD0icGF3bl8wIj48dXNlIGhyZWY9IiNwbF8wIi8+PHBhdGggZD0ibS0yNy0yOHExMi0zMiAxNi02MmgyMnE0IDMwIDE2IDYyeiIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PHJlY3QgeD0iLTE3IiB5PSItOTgiIHdpZHRoPSIzNCIgaGVpZ2h0PSI5IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMTAiLz48Y2lyY2xlIGN5PSItMTE4IiByPSIxOSIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEwIi8+PC9nPjxnIGlkPSJwbF8xIj48cmVjdCB4PSItNDQiIHk9Ii0yOCIgd2lkdGg9Ijg4IiBoZWlnaHQ9IjI4IiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PC9nPjxnIGlkPSJwYXduXzEiPjx1c2UgaHJlZj0iI3BsXzEiLz48cGF0aCBkPSJtLTI3LTI4cTEyLTMyIDE2LTYyaDIycTQgMzAgMTYgNjJ6IiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PHJlY3QgeD0iLTE3IiB5PSItOTgiIHdpZHRoPSIzNCIgaGVpZ2h0PSI5IiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy40Ii8+PGNpcmNsZSBjeT0iLTExOCIgcj0iMTkiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIzLjQiLz48L2c+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIwMCAzNDkuMTIpIHNjYWxlKDIuMTc2OSkiPjx1c2UgaHJlZj0iI3Bhd25fMCIvPjx1c2UgaHJlZj0iI3Bhd25fMSIvPjwvZz48L3N2Zz4K"}};
+
+// Preload SVG piece images for canvas rendering
+const PIECE_IMGS = {};
+let piecesReady = false;
+(function preloadPieces() {
+  let pending = 0;
+  for (const t of Object.keys(PIECE_IMG)) {
+    PIECE_IMGS[t] = {};
+    for (const c of [0, 1]) {
+      pending++;
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        pending--;
+        if (pending === 0) {
+          piecesReady = true;
+          if (typeof drawBoard === 'function' && document.getElementById('gamePage')?.classList.contains('active'))
+            drawBoard();
+        }
+      };
+      img.src = PIECE_IMG[t][c];
+      PIECE_IMGS[t][c] = img;
+    }
+  }
+})();
+
+
+const VARIANTS = [
+  {key:"battle", title:"The Battle",
+   fen:"nqkn/rbbr/pppp/4/4/4/4/PPPP/RBBR/NKQN w CQK^cqk^ - 0 1", promo:"rank"},
+  {key:"origin", title:"Origin",
+   fen:"rbnqknbr/pppppppp/8/8/8/8/PPPPPPPP/RBNQKNBR w CQK^cqk^ - 0 1", promo:"rank"},
+  {key:"royal_war", title:"The Royal War",
+   fen:"aaa/a1a/nqckn/rbpbr/ppppppp/9/9/9/9/PPPPPPP/RBPBR/NKCQN/A1A/AAA w CQK^cqk^ - 0 1", promo:"tip"},
+  {key:"grand_complex", title:"The Grand Complex",
+   fen:"r3r3r/abqbcbkba/ranaranar/ppppppppp/9/9/9/9/9/9/9/9/PPPPPPPPP/RANARANAR/ABQBCBKBA/R3R3R w CQK^cqk^ - 0 1", promo:"rank"},
+  {key:"supreme", title:"Crossfire Supreme",
+   fen:"r2r2r2r2r/2b1b1b1b1b2/ancqcb1bckcna/rabrbarabrbar/ppppppppppppp/p1p1p1p1p1p1p/13/13/13/13/13/13/13/13/P1P1P1P1P1P1P/PPPPPPPPPPPPP/RABRBARABRBAR/ANCQCB1BCKCNA/2B1B1B1B1B2/R2R2R2R2R w CQK^cqk^ - 0 1", promo:"rank"},
+];
+const DEFAULT_VARIANT = 2;
+
+// Geometry (filled by setVariant)
+let CUR = null, NR = 0, NF = 0, FILE_LO = [], FILE_HI = [], TOP_F = 0;
+let ALL_SQUARES = [], PAWN_START = {0:new Set(),1:new Set()}, PAWN_HOME = {0:1,1:1};
+let PROMO_SQ = {0:new Set(),1:new Set()}, FC = 0, WF = 0, RC = 0;
+// Engine tables
+let IDX = {}, NSQ = 0;
+let RAYS_O, RAYS_D, RAYS_ALL, NEIGH, KN, AR;
+let FWD1, FWD2, PCAP, PSTART, EPV, PROMO, VALT;
+
+function opposite(c) { return c === WHITE ? BLACK : WHITE; }
+function parseRow(row) {
+  const cells = []; let col = 0, num = "";
+  for (const ch of row) {
+    if (/\d/.test(ch)) { num += ch; continue; }
+    if (num) { col += parseInt(num,10); num = ""; }
+    cells.push([col, ch]); col++;
+  }
+  if (num) col += parseInt(num,10);
+  return [cells, col];
+}
+function isValid(ri, f) { return ri >= 0 && ri < NR && f >= FILE_LO[ri] && f <= FILE_HI[ri]; }
+function sqName(sq) { return RANKS[sq[0]] + sq[1]; }
+function parseSq(s) { return [RANKS.indexOf(s[0]), parseInt(s.slice(1),10)]; }
+function variantInfo(v) {
+  const placement = v.fen.split(" ")[0];
+  const rows = placement.split("/");
+  const widths = rows.map(r => parseRow(r)[1]);
+  const pieces = [...placement].filter(ch => /[A-Z]/.test(ch)).length;
+  const shape = new Set(widths).size > 1 ? " diamond" : "";
+  return `${rows.length} x ${Math.max(...widths)}${shape} board  ·  ${widths.reduce((a,b)=>a+b,0)} squares  ·  ${pieces} pieces a side`;
+}
+
+function setVariant(v) {
+  CUR = v;
+  const parsed = v.fen.split(" ")[0].split("/").map(parseRow);
+  const widths = parsed.map(p => p[1]).reverse();
+  NR = widths.length;
+  FILE_LO = widths.map(w => -Math.floor((w-1)/2));
+  FILE_HI = FILE_LO.map((lo,i) => lo + widths[i] - 1);
+  TOP_F = Math.max(...FILE_HI);
+  NF = TOP_F - Math.min(...FILE_LO) + 1;
+  ALL_SQUARES = [];
+  for (let ri = 0; ri < NR; ri++)
+    for (let f = FILE_LO[ri]; f <= FILE_HI[ri]; f++) ALL_SQUARES.push([ri,f]);
+  const starts = {0:new Set(), 1:new Set()};
+  parsed.forEach((p, idx) => {
+    const ri = NR - 1 - idx;
+    for (const [col, ch] of p[0]) {
+      if (ch === "P" || ch === "p")
+        starts[ch === "P" ? WHITE : BLACK].add(`${ri},${FILE_LO[ri]+col}`);
+    }
+  });
+  PAWN_START = {0:new Set(),1:new Set()};
+  for (const c of [WHITE,BLACK])
+    for (const s of starts[c]) { const [r,f] = s.split(",").map(Number); PAWN_START[c].add([r,f]); }
+  PAWN_HOME = {
+    0: Math.min(...[...PAWN_START[0]].map(s=>s[0]), 1),
+    1: Math.max(...[...PAWN_START[1]].map(s=>s[0]), NR-2),
+  };
+  const far = {0: NR-1, 1: 0};
+  if (v.promo === "tip") {
+    PROMO_SQ = {0:new Set([[far[0],-1],[far[0],0],[far[0],1]]),
+                1:new Set([[far[1],-1],[far[1],0],[far[1],1]])};
+  } else {
+    PROMO_SQ = {};
+    for (const c of [WHITE,BLACK]) {
+      const s = new Set();
+      for (let f = FILE_LO[far[c]]; f <= FILE_HI[far[c]]; f++) s.add([far[c],f]);
+      PROMO_SQ[c] = s;
+    }
+  }
+  FC = (Math.min(...FILE_LO) + Math.max(...FILE_HI)) / 2;
+  WF = NF; RC = (NR - 1) / 2;
+  initEngineTables();
+}
+
+function isPawnStart(sq, color) {
+  return [...PAWN_START[color]].some(s => s[0]===sq[0] && s[1]===sq[1]);
+}
+function inPromo(sq, color) {
+  return [...PROMO_SQ[color]].some(s => s[0]===sq[0] && s[1]===sq[1]);
+}
+
+// ---- Board ----
+class Board {
+  constructor() {
+    this.pieces = new Map(); // key "ri,f" -> {type,color}
+    this.sideToMove = WHITE;
+    this.enPassantTarget = null;
+    this.halfmoveClock = 0;
+    this.fullmoveNumber = 1;
+    this.rotationRights = "CQK^cqk^";
+  }
+  key(sq) { return sq[0]+","+sq[1]; }
+  get(sq) { return this.pieces.get(this.key(sq)) || null; }
+  set(sq, piece) {
+    const k = this.key(sq);
+    if (!piece) this.pieces.delete(k); else this.pieces.set(k, piece);
+  }
+  copy() {
+    const b = new Board();
+    b.pieces = new Map(this.pieces);
+    b.sideToMove = this.sideToMove;
+    b.enPassantTarget = this.enPassantTarget ? [...this.enPassantTarget] : null;
+    b.halfmoveClock = this.halfmoveClock;
+    b.fullmoveNumber = this.fullmoveNumber;
+    b.rotationRights = this.rotationRights;
+    return b;
+  }
+  findKing(color) {
+    for (const [k,p] of this.pieces)
+      if (p.type === "K" && p.color === color) return k.split(",").map(Number);
+    return null;
+  }
+  material(color) {
+    let s = 0;
+    for (const p of this.pieces.values())
+      if (p.color === color && p.type !== "K") s += MATERIAL[p.type] || 0;
+    return s;
+  }
+  static fromFen(fen) {
+    const parts = fen.split(" ");
+    const b = new Board();
+    b.sideToMove = parts[1] === "w" ? WHITE : BLACK;
+    b.rotationRights = parts[2] || "CQK^cqk^";
+    if (parts[3] && parts[3] !== "-") b.enPassantTarget = parseSq(parts[3]);
+    b.halfmoveClock = parseInt(parts[4]||"0",10);
+    b.fullmoveNumber = parseInt(parts[5]||"1",10);
+    parts[0].split("/").forEach((row, idx) => {
+      const ri = NR - 1 - idx;
+      const [cells] = parseRow(row);
+      for (const [col, ch] of cells) {
+        const color = /[A-Z]/.test(ch) ? WHITE : BLACK;
+        b.set([ri, FILE_LO[ri]+col], {type: ch.toUpperCase(), color});
+      }
+    });
+    return b;
+  }
+  static starting() { return Board.fromFen(CUR.fen); }
+}
+
+// ---- Move generation ----
+function neighbors(sq) {
+  const [ri,f] = sq, out = [];
+  for (let dr=-1; dr<=1; dr++) for (let df=-1; df<=1; df++) {
+    if (!dr && !df) continue;
+    if (isValid(ri+dr, f+df)) out.push([ri+dr, f+df]);
+  }
+  return out;
+}
+function slide(b, sq, dirs, color) {
+  const [ri,f] = sq, out = [];
+  for (const [dr,df] of dirs) {
+    let k = 1;
+    while (true) {
+      const r = ri+dr*k, ff = f+df*k;
+      if (!isValid(r,ff)) break;
+      const p = b.get([r,ff]);
+      if (p) { if (p.color !== color) out.push([r,ff]); break; }
+      out.push([r,ff]); k++;
+    }
+  }
+  return out;
+}
+function jumpTargets(sq, deltas) {
+  const [ri,f] = sq;
+  return deltas.map(([dr,df]) => [ri+dr,f+df]).filter(([r,ff]) => isValid(r,ff));
+}
+
+function pawnMoves(b, sq, color) {
+  const out = [], [ri,f] = sq, d = color === WHITE ? 1 : -1;
+  const rk = k => { const r = ri + d*k; return (r>=0 && r<NR) ? r : null; };
+  const r1 = rk(1);
+  if (r1 !== null && isValid(r1,f) && !b.get([r1,f])) {
+    out.push({from:sq, to:[r1,f]});
+    if (isPawnStart(sq, color)) {
+      const r2 = rk(2);
+      if (r2 !== null && isValid(r2,f) && !b.get([r2,f]))
+        out.push({from:sq, to:[r2,f], isDouble:true});
+    }
+  }
+  // hop over friendly pawn
+  if (isPawnStart(sq, color) && r1 !== null && isValid(r1,f)) {
+    const front = b.get([r1,f]);
+    if (front && front.type === "P") {
+      const r2 = rk(2);
+      if (r2 !== null && isValid(r2,f) && !b.get([r2,f]))
+        out.push({from:sq, to:[r2,f], isHop:true});
+    }
+  }
+  if (r1 !== null) {
+    for (const df of [-1,1]) {
+      const tf = f + df;
+      if (!isValid(r1,tf)) continue;
+      const target = [r1,tf];
+      const p = b.get(target);
+      if (p && p.color !== color) out.push({from:sq, to:target, captured:p});
+      if (b.enPassantTarget && b.enPassantTarget[0]===r1 && b.enPassantTarget[1]===tf)
+        out.push({from:sq, to:target, isEnPassant:true});
+    }
+  }
+  return out;
+}
+
+function genPieceMoves(b, sq, piece) {
+  const {type:t, color} = piece, out = [];
+  const addTargets = targets => {
+    for (const tsq of targets) {
+      const p = b.get(tsq);
+      if (p && p.color === color) continue;
+      out.push({from:sq, to:tsq, captured:p||undefined});
+    }
+  };
+  const addSlides = dirs => {
+    for (const tsq of slide(b, sq, dirs, color))
+      out.push({from:sq, to:tsq, captured:b.get(tsq)||undefined});
+  };
+  if (t==="K") addTargets(neighbors(sq));
+  else if (t==="Q") addSlides([...ORTHO,...DIAG]);
+  else if (t==="R") addSlides(ORTHO);
+  else if (t==="B") addSlides(DIAG);
+  else if (t==="N") addTargets(jumpTargets(sq, KNIGHT_D));
+  else if (t==="C") { addSlides(DIAG); addTargets(jumpTargets(sq, KNIGHT_D)); }
+  else if (t==="A") addTargets(jumpTargets(sq, ARCHER_D));
+  else if (t==="P") out.push(...pawnMoves(b, sq, color));
+  return out;
+}
+
+// Rotation
+function _is(p, t, color) { return p && p.type===t && p.color===color; }
+function findRotationTrio(b, color) {
+  const t = color === WHITE ? 1 : -1;
+  for (let ri = 0; ri < NR; ri++) {
+    const g = ri+t, z = ri-t;
+    const o = b.get([ri,-1]), d = b.get([ri,0]), m = b.get([ri,1]);
+    let vert;
+    if (color === WHITE) vert = _is(o,"K",color) && _is(d,"C",color) && _is(m,"Q",color);
+    else vert = _is(o,"Q",color) && _is(d,"C",color) && _is(m,"K",color);
+    if (vert) {
+      if (!isValid(g,0) || !isValid(z,0)) continue;
+      if (b.get([g,0]) || b.get([z,0])) continue;
+      return {mode:"to_vertical", rank:ri, front:g, back:z,
+              squares:[[ri,-1],[ri,0],[ri,1],[g,0],[z,0]]};
+    }
+    if (!isValid(g,0)||!isValid(z,0)||!isValid(ri,-1)||!isValid(ri,1)) continue;
+    const n = b.get([g,0]), y = b.get([ri,0]), r = b.get([z,0]);
+    if (_is(n,"C",color) && _is(y,"Q",color) && _is(r,"K",color)) {
+      if (b.get([ri,-1]) || b.get([ri,1])) continue;
+      return {mode:"to_horizontal", rank:ri, front:g, back:z,
+              squares:[[g,0],[ri,0],[z,0],[ri,-1],[ri,1]]};
+    }
+  }
+  return null;
+}
+function generateRotation(b, color) {
+  const trio = findRotationTrio(b, color);
+  if (!trio) return null;
+  return {from:trio.squares[0], to:trio.squares[0], isRotation:true};
+}
+
+// Apply / legality
+function applyMove(b, mv) {
+  const nb = b.copy();
+  const side = nb.sideToMove;
+  if (mv.isRotation) {
+    const trio = findRotationTrio(nb, side);
+    if (!trio) throw new Error("Invalid rotation");
+    const {rank:ri, front:g, back:z, mode} = trio;
+    if (mode === "to_vertical") {
+      for (const f of [-1,0,1]) nb.set([ri,f], null);
+      nb.set([g,0], {type:"C",color:side});
+      nb.set([ri,0], {type:"Q",color:side});
+      nb.set([z,0], {type:"K",color:side});
+    } else {
+      for (const sq of [[g,0],[ri,0],[z,0]]) nb.set(sq, null);
+      if (side === WHITE) {
+        nb.set([ri,-1], {type:"K",color:side});
+        nb.set([ri,0], {type:"C",color:side});
+        nb.set([ri,1], {type:"Q",color:side});
+      } else {
+        nb.set([ri,-1], {type:"Q",color:side});
+        nb.set([ri,0], {type:"C",color:side});
+        nb.set([ri,1], {type:"K",color:side});
+      }
+    }
+    nb.enPassantTarget = null;
+    nb.halfmoveClock++;
+  } else {
+    const piece = nb.get(mv.from);
+    if (!piece) throw new Error("No piece");
+    if (mv.isEnPassant) {
+      const [ri,f] = mv.to;
+      const vr = ri + (side===BLACK ? 1 : -1);
+      if (vr>=0 && vr<NR) nb.set([vr,f], null);
+    }
+    if (mv.captured) nb.set(mv.to, null);
+    nb.set(mv.from, null);
+    if (piece.type==="P" && inPromo(mv.to, side))
+      nb.set(mv.to, {type: mv.promotion || "Q", color:side});
+    else nb.set(mv.to, piece);
+    nb.enPassantTarget = null;
+    if (mv.isDouble)
+      nb.enPassantTarget = [mv.from[0] + (side===WHITE?1:-1), mv.from[1]];
+    if (piece.type==="P" || mv.captured || mv.isEnPassant) nb.halfmoveClock = 0;
+    else nb.halfmoveClock++;
+  }
+  nb.sideToMove = opposite(side);
+  if (nb.sideToMove === WHITE) nb.fullmoveNumber++;
+  return nb;
+}
+
+function attackersOf(b, sq, byColor, firstOnly=false) {
+  const out = [], [ri,f] = sq;
+  const firstPiece = (dr,df) => {
+    let k=1;
+    while (true) {
+      const r=ri+dr*k, ff=f+df*k;
+      if (!isValid(r,ff)) return null;
+      const p = b.get([r,ff]);
+      if (p) return [[r,ff], p];
+      k++;
+    }
+  };
+  for (const [dirs, kinds] of [[[...ORTHO],["Q","R"]], [[...DIAG],["Q","B","C"]]]) {
+    for (const [dr,df] of dirs) {
+      const hit = firstPiece(dr,df);
+      if (hit && hit[1].color===byColor && kinds.includes(hit[1].type)) {
+        out.push(hit[0]); if (firstOnly) return out;
+      }
+    }
+  }
+  for (const [deltas, kinds] of [[KNIGHT_D,["N","C"]],[ARCHER_D,["A"]]]) {
+    for (const tsq of jumpTargets(sq, deltas)) {
+      const p = b.get(tsq);
+      if (p && p.color===byColor && kinds.includes(p.type)) {
+        out.push(tsq); if (firstOnly) return out;
+      }
+    }
+  }
+  for (const tsq of neighbors(sq)) {
+    const p = b.get(tsq);
+    if (p && p.color===byColor && p.type==="K") { out.push(tsq); if (firstOnly) return out; }
+  }
+  const d = byColor===WHITE ? 1 : -1;
+  for (const df of [-1,1]) {
+    const psq = [ri-d, f+df];
+    const p = b.get(psq);
+    if (p && p.color===byColor && p.type==="P") { out.push(psq); if (firstOnly) return out; }
+  }
+  return out;
+}
+function isSquareAttacked(b, sq, byColor) { return attackersOf(b,sq,byColor,true).length > 0; }
+function isInCheck(b, color) {
+  const k = b.findKing(color);
+  return k && isSquareAttacked(b, k, opposite(color));
+}
+
+function generateLegalMoves(b) {
+  const side = b.sideToMove, legal = [];
+  for (const [k,p] of b.pieces) {
+    if (p.color !== side) continue;
+    const sq = k.split(",").map(Number);
+    for (const mv of genPieceMoves(b, sq, p)) {
+      if (p.type==="P" && inPromo(mv.to, side)) {
+        for (const pt of PROMO_TYPES) {
+          const pm = {...mv, promotion:pt};
+          if (!isInCheck(applyMove(b,pm), side)) legal.push(pm);
+        }
+      } else if (!isInCheck(applyMove(b,mv), side)) legal.push(mv);
+    }
+  }
+  const rot = generateRotation(b, side);
+  if (rot && !isInCheck(applyMove(b,rot), side)) legal.push(rot);
+  return legal;
+}
+
+// ---- Engine tables & Searcher ----
+function pst(t, color, ri, f) {
+  if (t===1) return 0;
+  if (t===8) {
+    const adv = color===WHITE ? (ri - PAWN_HOME[WHITE]) : (PAWN_HOME[BLACK] - ri);
+    const prog = Math.min(Math.max(adv,0),10);
+    return 4*prog + Math.floor(prog*prog/2);
+  }
+  const dx = Math.abs(f - FC) / (WF/2);
+  const dy = Math.abs(ri - RC) / (NR/2);
+  const cen = Math.max(12 - 14*dx - 12*dy, -8);
+  const w = {2:0.4,3:1.0,4:0.3,5:1.0,6:1.0,7:0.8}[t];
+  return Math.floor(cen * w);
+}
+
+function initEngineTables() {
+  IDX = {}; ALL_SQUARES.forEach((sq,i) => IDX[sq[0]+","+sq[1]] = i);
+  NSQ = ALL_SQUARES.length;
+  const ro=[], rd=[], ra=[], ne=[], kn=[], ar=[];
+  for (const [ri,f] of ALL_SQUARES) {
+    const ray = (dr,df) => {
+      const out=[]; let k=1;
+      while (true) {
+        const r=ri+dr*k, ff=f+df*k;
+        if (!( (r+","+ff) in IDX )) break;
+        out.push(IDX[r+","+ff]); k++;
+      }
+      return out;
+    };
+    const o = ORTHO.map(([dr,df])=>ray(dr,df)).filter(r=>r.length);
+    const d = DIAG.map(([dr,df])=>ray(dr,df)).filter(r=>r.length);
+    ro.push(o); rd.push(d); ra.push([...o,...d]);
+    ne.push(neighbors([ri,f]).map(s=>IDX[s[0]+","+s[1]]));
+    kn.push(jumpTargets([ri,f],KNIGHT_D).map(s=>IDX[s[0]+","+s[1]]));
+    ar.push(jumpTargets([ri,f],ARCHER_D).map(s=>IDX[s[0]+","+s[1]]));
+  }
+  RAYS_O=ro; RAYS_D=rd; RAYS_ALL=ra; NEIGH=ne; KN=kn; AR=ar;
+  FWD1=[]; FWD2=[]; PCAP=[]; PSTART=[]; EPV=[]; PROMO=[];
+  for (const c of [WHITE,BLACK]) {
+    const d = c===WHITE?1:-1;
+    const a1=[],a2=[],a3=[],a4=[],a5=[],prm=new Set();
+    for (const [ri,f] of ALL_SQUARES) {
+      a1.push(IDX[(ri+d)+","+f] ?? -1);
+      a2.push(IDX[(ri+2*d)+","+f] ?? -1);
+      a3.push([-1,1].filter(df=>(ri+d)+","+(f+df) in IDX).map(df=>IDX[(ri+d)+","+(f+df)]));
+      a4.push(isPawnStart([ri,f],c));
+      a5.push(IDX[(ri-d)+","+f] ?? -1);
+    }
+    for (const s of PROMO_SQ[c]) prm.add(IDX[s[0]+","+s[1]]);
+    FWD1.push(a1); FWD2.push(a2); PCAP.push(a3); PSTART.push(a4); EPV.push(a5); PROMO.push(prm);
+  }
+  VALT = Array.from({length:25},()=>[]);
+  for (let t=1;t<=8;t++) for (const color of [WHITE,BLACK]) {
+    const sign = color===WHITE?1:-1;
+    VALT[t+16*color] = ALL_SQUARES.map(([ri,f]) => sign * (CP[t] + pst(t,color,ri,f)));
+  }
+}
+
+class Searcher {
+  constructor(cancelled, deadline, qmax) {
+    this.cancelled = cancelled; this.deadline = deadline; this.qmax = qmax;
+    this.nodes = 0; this.b = new Int8Array(NSQ); this.side=0; this.ep=-1; this.score=0;
+  }
+  load(board) {
+    this.b.fill(0);
+    for (const [k,p] of board.pieces) {
+      const i = IDX[k];
+      this.b[i] = TCODE[p.type] + (p.color===BLACK ? 16 : 0);
+    }
+    this.side = board.sideToMove;
+    this.ep = board.enPassantTarget ? (IDX[board.enPassantTarget[0]+","+board.enPassantTarget[1]] ?? -1) : -1;
+    this.score = 0;
+    for (let i=0;i<NSQ;i++) if (this.b[i]) this.score += VALT[this.b[i]][i];
+  }
+  tick() {
+    if (this.cancelled() || performance.now()/1000 > this.deadline) throw "abort";
+  }
+  evaluate() { return this.side===0 ? this.score : -this.score; }
+  gen(capsOnly=false) {
+    const b=this.b, side=this.side, ep=this.ep;
+    const caps=[], quiets=[];
+    const fw1=FWD1[side], fw2=FWD2[side], pcp=PCAP[side], pst=PSTART[side], prm=PROMO[side];
+    for (let sq=0; sq<NSQ; sq++) {
+      const p = b[sq];
+      if (!p || (p>>4)!==side) continue;
+      const t = p & 15;
+      if (t===8) {
+        const f1 = fw1[sq];
+        if (f1>=0) {
+          const q1 = b[f1];
+          if (q1===0) {
+            if (prm.has(f1)) for (const pc of PROMO_FAST) caps.push([8000+CP[pc],sq,f1,0,pc]);
+            else if (!capsOnly) {
+              quiets.push([0,sq,f1,0,0]);
+              if (pst[sq]) { const f2=fw2[sq]; if (f2>=0&&b[f2]===0) quiets.push([0,sq,f2,1,0]); }
+            }
+          } else if (pst[sq] && !capsOnly && (q1&15)===8) {
+            const f2=fw2[sq]; if (f2>=0&&b[f2]===0) quiets.push([0,sq,f2,2,0]);
+          }
+        }
+        for (const to of pcp[sq]) {
+          const q = b[to];
+          if (q) {
+            if ((q>>4)!==side) {
+              if ((q&15)===1) return null;
+              if (prm.has(to)) for (const pc of PROMO_FAST) caps.push([9000+CP[q&15]+CP[pc],sq,to,0,pc]);
+              else caps.push([CP[q&15]*10-100,sq,to,0,0]);
+            }
+          } else if (to===ep) caps.push([900,sq,to,3,0]);
+        }
+        continue;
+      }
+      let jumps = null;
+      if (t===1) jumps=NEIGH[sq];
+      else if (t===6||t===3) jumps=KN[sq];
+      else if (t===7) jumps=AR[sq];
+      if (jumps) for (const to of jumps) {
+        const q=b[to];
+        if (q===0) { if (!capsOnly) quiets.push([0,sq,to,0,0]); }
+        else if ((q>>4)!==side) {
+          if ((q&15)===1) return null;
+          caps.push([CP[q&15]*10 - CP[t],sq,to,0,0]);
+        }
+      }
+      let rays = null;
+      if (t===2) rays=RAYS_ALL[sq];
+      else if (t===4) rays=RAYS_O[sq];
+      else if (t===5||t===3) rays=RAYS_D[sq];
+      if (rays) for (const ray of rays) for (const to of ray) {
+        const q=b[to];
+        if (q===0) { if (!capsOnly) quiets.push([0,sq,to,0,0]); }
+        else {
+          if ((q>>4)!==side) {
+            if ((q&15)===1) return null;
+            caps.push([CP[q&15]*10 - CP[t],sq,to,0,0]);
+          }
+          break;
+        }
+      }
+    }
+    caps.sort((a,b)=>b[0]-a[0]);
+    if (!capsOnly) caps.push(...quiets);
+    return caps;
+  }
+  make(mv) {
+    const [,frm,to,flag,promo] = mv;
+    const b=this.b, side=this.side;
+    const p=b[frm], cap=b[to];
+    const oldEp=this.ep, oldScore=this.score;
+    let score=oldScore, victim=-1;
+    if (flag===3) {
+      victim = EPV[side][to];
+      const c = b[victim]; b[victim]=0; score -= VALT[c][victim];
+    } else if (cap) score -= VALT[cap][to];
+    b[frm]=0;
+    if (promo) {
+      const np = promo + (side?16:0);
+      b[to]=np; score += VALT[np][to] - VALT[p][frm];
+    } else {
+      b[to]=p; score += VALT[p][to] - VALT[p][frm];
+    }
+    this.score=score;
+    this.ep = flag===1 ? FWD1[side][frm] : -1;
+    this.side ^= 1;
+    return [cap, victim, oldEp, oldScore];
+  }
+  unmake(mv, undo) {
+    const [,frm,to,flag,promo] = mv;
+    const [cap,victim,oldEp,oldScore] = undo;
+    this.side ^= 1;
+    let p = this.b[to];
+    if (promo) p = 8 + (this.side?16:0);
+    this.b[frm]=p;
+    if (flag===3) { this.b[to]=0; this.b[victim]=cap; }
+    else this.b[to]=cap;
+    this.ep=oldEp; this.score=oldScore;
+  }
+  qsearch(alpha, beta, ply, qd) {
+    this.nodes++;
+    if (!(this.nodes & 255)) this.tick();
+    const moves = this.gen(true);
+    if (moves === null) return MATE - ply;
+    let stand = this.evaluate();
+    if (qd >= this.qmax || stand >= beta) return stand;
+    if (stand > alpha) alpha = stand;
+    for (const mv of moves) {
+      const u = this.make(mv);
+      const sc = -this.qsearch(-beta, -alpha, ply+1, qd+1);
+      this.unmake(mv, u);
+      if (sc > alpha) { alpha = sc; if (alpha >= beta) break; }
+    }
+    return alpha;
+  }
+  search(depth, alpha, beta, ply) {
+    this.nodes++;
+    if (!(this.nodes & 255)) this.tick();
+    if (depth <= 0) return this.qsearch(alpha, beta, ply, 0);
+    const moves = this.gen();
+    if (moves === null) return MATE - ply;
+    let best = -INF, legal = false;
+    const illegal = -(MATE - ply - 1);
+    for (const mv of moves) {
+      const u = this.make(mv);
+      const sc = -this.search(depth-1, -beta, -alpha, ply+1);
+      this.unmake(mv, u);
+      if (sc !== illegal) legal = true;
+      if (sc > best) {
+        best = sc;
+        if (sc > alpha) { alpha = sc; if (alpha >= beta) break; }
+      }
+    }
+    if (!legal) {
+      this.side ^= 1;
+      const attacked = this.gen(true) === null;
+      this.side ^= 1;
+      return attacked ? -(MATE - ply) : 0;
+    }
+    return best;
+  }
+}
+
+function badStalemate(child, me) {
+  const opp = child.sideToMove;
+  if (isInCheck(child, opp) || generateLegalMoves(child).length) return false;
+  return child.material(me) <= child.material(opp);
+}
+
+function chooseMove(board, level="Medium", cancelled=()=>false, timeLimit=null) {
+  const cfg = LEVELS[level];
+  const legal = generateLegalMoves(board);
+  if (!legal.length) return null;
+  if (legal.length === 1) return legal[0];
+  if (cfg.blunder && Math.random() < cfg.blunder) return legal[Math.floor(Math.random()*legal.length)];
+  const me = board.sideToMove;
+  const entries = [];
+  for (const mv of legal) {
+    const child = applyMove(board, mv);
+    if (isInCheck(child, child.sideToMove) && !generateLegalMoves(child).length) return mv;
+    entries.push([mv, child]);
+  }
+  entries.sort((a,b) => {
+    const ca = a[0].captured ? (CP[TCODE[a[0].captured.type]]||0) : 0;
+    const cb = b[0].captured ? (CP[TCODE[b[0].captured.type]]||0) : 0;
+    return cb - ca;
+  });
+  const deadline = performance.now()/1000 + (timeLimit || cfg.time);
+  const s = new Searcher(cancelled, deadline, cfg.qmax);
+  let results = null, order = entries;
+  for (let depth=1; depth<=cfg.depth; depth++) {
+    const cur = [];
+    let best = -INF;
+    try {
+      for (const [mv, child] of order) {
+        s.load(child);
+        const lo = best===-INF ? -INF : best - cfg.margin - 1;
+        const sc = -s.search(depth-1, -INF, -lo, 1);
+        cur.push([sc, mv, child]);
+        if (sc > best) best = sc;
+      }
+    } catch(e) { if (e!=="abort") throw e; break; }
+    results = cur;
+    order = cur.slice().sort((a,b)=>b[0]-a[0]).map(r=>[r[1],r[2]]);
+    if (best >= MATE-100 || performance.now()/1000 > deadline) break;
+  }
+  if (cancelled()) return null;
+  if (!results) return entries[0][0];
+  results.sort((a,b)=>b[0]-a[0]);
+  const top = results[0][0];
+  const k = results.filter(r => r[0] >= top - cfg.margin).length;
+  const picks = results.slice(0,k);
+  for (let i=picks.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [picks[i],picks[j]]=[picks[j],picks[i]]; }
+  for (const [,mv,child] of [...picks, ...results.slice(k)]) {
+    if (!badStalemate(child, me)) return mv;
+  }
+  return results[0][1];
+}
+
+// ============================================================================
+// UI State
+// ============================================================================
+let board = null, legal = [], selected = null, targets = [], history = [];
+let lastMove = null, gameOver = false, resignedBy = null;
+let inCheck = false, mate = false, stalemate = false, kingSq = null, attackers = [];
+let mode = "pvp", humanColor = WHITE, level = "Medium", thinking = false;
+let session = null, aiGen = 0;
+const CELL = 48, PAD = 28;
+
+function boardPixelSize() {
+  return [PAD*2 + CELL*NR, PAD*2 + CELL*NF];
+}
+
+// ---- Rendering ----
+const canvas = document.getElementById("boardCanvas");
+const ctx = canvas.getContext("2d");
+const LIGHT = "#c9b896", DARK = "#6b5c45";
+const GOLD = "#e8c84a", PURPLE = "#9b59b6";
+const CHECK_RED = "#e53935", MATE_RED = "#8b0000", ATTACKER = "#ff9800";
+
+// Cardinal uses bishop+knight feel; Archer uses spade-ish marker. Labels drawn under.
+
+function drawBoard() {
+  const [bw, bh] = boardPixelSize();
+  const maxW = Math.min(window.innerWidth - 40, 900);
+  const maxH = Math.min(window.innerHeight - 160, 700);
+  const s = Math.min(maxW / bw, maxH / bh);
+  canvas.width = Math.floor(bw * s);
+  canvas.height = Math.floor(bh * s);
+  ctx.setTransform(s, 0, 0, s, 0, 0);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, bw, bh);
+
+  const rotReady = new Set();
+  if (!gameOver && legal.some(m => m.isRotation)) {
+    const trio = findRotationTrio(board, board.sideToMove);
+    if (trio) for (const sq of trio.squares) {
+      const p = board.get(sq);
+      if (p && p.color === board.sideToMove && ["K","Q","C"].includes(p.type))
+        rotReady.add(sq[0]+","+sq[1]);
+    }
+  }
+  const targetInfo = {};
+  if (selected) {
+    for (const m of targets) {
+      if (m.isRotation) continue;
+      const isCap = board.get(m.to) || m.isEnPassant;
+      const k = m.to[0]+","+m.to[1];
+      targetInfo[k] = targetInfo[k] || isCap;
+    }
+  }
+
+  for (const sq of ALL_SQUARES) {
+    const [ri,f] = sq;
+    const x = PAD + CELL * (NR - 1 - ri);
+    const y = PAD + CELL * (TOP_F - f);
+    const light = (ri + f + TOP_F) % 2 === 0;
+    ctx.fillStyle = light ? LIGHT : DARK;
+    ctx.fillRect(x, y, CELL, CELL);
+
+    // last move
+    if (lastMove && !lastMove.isRotation &&
+        ((lastMove.from[0]===ri&&lastMove.from[1]===f) || (lastMove.to[0]===ri&&lastMove.to[1]===f))) {
+      ctx.strokeStyle = "rgba(232,200,74,0.55)";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x+1, y+1, CELL-2, CELL-2);
+    }
+
+    // check / mate
+    const isKing = kingSq && kingSq[0]===ri && kingSq[1]===f;
+    if (isKing) {
+      if (mate) {
+        ctx.fillStyle = "rgba(139,0,0,0.88)";
+        ctx.fillRect(x, y, CELL, CELL);
+        ctx.strokeStyle = "#ff1744";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(x+2, y+2, CELL-4, CELL-4);
+      } else {
+        const g = ctx.createRadialGradient(x+CELL/2,y+CELL/2,0, x+CELL/2,y+CELL/2, CELL*0.75);
+        g.addColorStop(0, "rgba(255,40,40,0.92)");
+        g.addColorStop(0.55, "rgba(255,40,40,0.55)");
+        g.addColorStop(1, "rgba(255,40,40,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(x, y, CELL, CELL);
+        ctx.strokeStyle = CHECK_RED;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(x+1.5, y+1.5, CELL-3, CELL-3);
+      }
+    } else if (attackers.some(a => a[0]===ri && a[1]===f)) {
+      ctx.strokeStyle = ATTACKER;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(x+1.5, y+1.5, CELL-3, CELL-3);
+    }
+
+    const sk = ri+","+f;
+    if (rotReady.has(sk)) {
+      ctx.strokeStyle = PURPLE;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(x+1.5, y+1.5, CELL-3, CELL-3);
+    }
+    if (selected && selected[0]===ri && selected[1]===f) {
+      ctx.strokeStyle = GOLD;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(x+1.5, y+1.5, CELL-3, CELL-3);
+    }
+
+    // piece (SVG artwork from original web build)
+    const pc = board.get(sq);
+    if (pc) {
+      const img = PIECE_IMGS[pc.type] && PIECE_IMGS[pc.type][pc.color];
+      if (img && img.complete && img.naturalWidth) {
+        const m = CELL * 0.78;
+        ctx.drawImage(img, x + (CELL - m) / 2, y + (CELL - m) / 2, m, m);
+      } else {
+        // fallback while loading
+        ctx.fillStyle = pc.color === WHITE ? "#f5f5f0" : "#222";
+        ctx.font = `bold ${Math.floor(CELL*0.5)}px sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(pc.type, x + CELL/2, y + CELL/2);
+      }
+    }
+
+    // move markers
+    if (sk in targetInfo) {
+      if (targetInfo[sk]) {
+        ctx.strokeStyle = "rgba(220,80,80,0.7)";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(x+CELL/2, y+CELL/2, CELL/2-6, 0, Math.PI*2);
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = "rgba(80,180,120,0.55)";
+        ctx.beginPath();
+        ctx.arc(x+CELL/2, y+CELL/2, 7, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // + / # badge
+    if (isKing) {
+      const bx = x + CELL - 15, by = y + 1;
+      ctx.beginPath();
+      ctx.arc(bx+7, by+7, 7, 0, Math.PI*2);
+      ctx.fillStyle = mate ? "#b71c1c" : "#e53935";
+      ctx.fill();
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = "#fff";
+      ctx.font = "bold 11px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(mate ? "#" : "+", bx+7, by+7);
+    }
+  }
+}
+
+function hitTest(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  const [bw, bh] = boardPixelSize();
+  const s = canvas.width / bw;
+  const bx = (clientX - rect.left) * (bw / canvas.width);
+  const by = (clientY - rect.top) * (bh / canvas.height);
+  if (bx < PAD || by < PAD) return null;
+  const col = Math.floor((bx - PAD) / CELL);
+  const row = Math.floor((by - PAD) / CELL);
+  const ri = NR - 1 - col;
+  const f = TOP_F - row;
+  if (!isValid(ri, f)) return null;
+  return [ri, f];
+}
+
+// ---- Game control ----
+function refreshState(emitOnly=false) {
+  if (!emitOnly) {
+    legal = generateLegalMoves(board);
+    inCheck = isInCheck(board, board.sideToMove);
+    mate = inCheck && !legal.length;
+    stalemate = !inCheck && !legal.length;
+    kingSq = inCheck ? board.findKing(board.sideToMove) : null;
+    attackers = kingSq ? attackersOf(board, kingSq, opposite(board.sideToMove)) : [];
+    if (mate || stalemate) gameOver = true;
+  }
+  emitStatus();
+  drawBoard();
+}
+
+function emitStatus() {
+  document.getElementById("whitePts").textContent = board.material(WHITE);
+  document.getElementById("blackPts").textContent = board.material(BLACK);
+  const w = board.material(WHITE), k = board.material(BLACK);
+  document.getElementById("whiteLead").textContent = w > k ? `+${w-k}` : "";
+  document.getElementById("blackLead").textContent = k > w ? `+${k-w}` : "";
+
+  const st = document.getElementById("status");
+  st.className = "status";
+  const think = thinking ? "  (thinking…)" : "";
+  const sideName = board.sideToMove === WHITE ? "White" : "Black";
+  if (resignedBy !== null) {
+    const winner = resignedBy === WHITE ? "Black" : "White";
+    st.textContent = `${winner} wins by resignation`;
+    st.classList.add("over");
+  } else if (mate) {
+    const winner = board.sideToMove === WHITE ? "Black" : "White";
+    st.textContent = `Checkmate — ${winner} wins`;
+    st.classList.add("mate");
+  } else if (stalemate) {
+    st.textContent = stalemateText();
+    st.classList.add("over");
+  } else if (inCheck) {
+    st.textContent = `${sideName} to move — CHECK${think}`;
+    st.classList.add("check");
+  } else {
+    st.textContent = `${sideName} to move${think}`;
+  }
+}
+
+function stalemateText() {
+  const w = board.material(WHITE), k = board.material(BLACK);
+  if (w > k) return "Stalemate — White wins on material";
+  if (k > w) return "Stalemate — Black wins on material";
+  return "Stalemate — draw (equal material)";
+}
+
+function doMove(mv) {
+  history.push([board.copy(), mv]);
+  board = applyMove(board, mv);
+  lastMove = mv;
+  selected = null;
+  targets = [];
+  refreshState();
+  maybeAI();
+  if (mate || stalemate) {
+    let win, msg;
+    if (mate) {
+      win = opposite(board.sideToMove);
+      msg = `Checkmate! ${win===WHITE?"White":"Black"} wins.`;
+    } else {
+      const w = board.material(WHITE), k = board.material(BLACK);
+      win = w > k ? WHITE : (k > w ? BLACK : -1);
+      msg = stalemateText();
+    }
+    setTimeout(() => onGameEnded(win, msg), 80);
+  }
+}
+
+function newGame() {
+  cancelAI();
+  board = Board.starting();
+  selected = null; targets = []; history = []; lastMove = null;
+  gameOver = false; resignedBy = null;
+  refreshState();
+  maybeAI();
+}
+
+function undo() {
+  if (!history.length) return;
+  cancelAI();
+  [board] = history.pop();
+  while (mode==="ai" && board.sideToMove !== humanColor && history.length) {
+    [board] = history.pop();
+  }
+  lastMove = history.length ? history[history.length-1][1] : null;
+  selected = null; targets = [];
+  gameOver = false; resignedBy = null;
+  refreshState();
+  maybeAI();
+}
+
+function resign() {
+  if (gameOver) return;
+  cancelAI();
+  gameOver = true;
+  resignedBy = mode==="ai" ? humanColor : board.sideToMove;
+  emitStatus();
+  drawBoard();
+  const win = opposite(resignedBy);
+  setTimeout(() => onGameEnded(win, `${win===WHITE?"White":"Black"} wins by resignation`), 60);
+}
+
+function humanTurn() {
+  if (mode === "pvp") return true;
+  return board.sideToMove === humanColor && !thinking;
+}
+
+function cancelAI() { aiGen++; thinking = false; }
+
+function maybeAI() {
+  if (mode !== "ai" || gameOver || board.sideToMove === humanColor) return;
+  const gen = ++aiGen;
+  thinking = true;
+  emitStatus();
+  drawBoard();
+  // run AI off the main thread-ish via setTimeout so UI updates
+  setTimeout(() => {
+    if (gen !== aiGen) return;
+    let mv = null;
+    try {
+      mv = chooseMove(board, level, () => gen !== aiGen);
+    } catch(e) {
+      console.error(e);
+      const leg = generateLegalMoves(board);
+      mv = leg.length ? leg[Math.floor(Math.random()*leg.length)] : null;
+    }
+    if (gen !== aiGen || !mv || gameOver) return;
+    thinking = false;
+    doMove(mv);
+  }, 30);
+}
+
+// ---- Click handling ----
+canvas.addEventListener("click", e => {
+  if (gameOver || !humanTurn()) return;
+  const sq = hitTest(e.clientX, e.clientY);
+  if (!sq) return;
+  onClick(sq);
+});
+
+function ownRotationSquares() {
+  const side = board.sideToMove;
+  const trio = findRotationTrio(board, side);
+  if (!trio) return [];
+  return trio.squares.filter(s => {
+    const p = board.get(s);
+    return p && p.color===side && ["K","Q","C"].includes(p.type);
+  });
+}
+
+function onClick(sq) {
+  const side = board.sideToMove;
+  const piece = board.get(sq);
+  const rotSqs = ownRotationSquares();
+
+  if (selected) {
+    const rot = targets.find(m => m.isRotation);
+    if (rot && rotSqs.some(s => s[0]===sq[0]&&s[1]===sq[1]) && !(selected[0]===sq[0]&&selected[1]===sq[1])) {
+      doMove(rot); return;
+    }
+    const cands = targets.filter(m => !m.isRotation && m.to[0]===sq[0] && m.to[1]===sq[1]);
+    if (cands.length) {
+      let mv = cands[0];
+      const selPiece = board.get(selected);
+      if (selPiece && selPiece.type==="P" && inPromo(sq, side)) {
+        askPromotion().then(pt => {
+          if (!pt) return;
+          doMove({...mv, promotion:pt});
+        });
+        return;
+      }
+      doMove(mv); return;
+    }
+    if (piece && piece.color === side) select(sq);
+    else { selected=null; targets=[]; drawBoard(); }
+  } else if (piece && piece.color === side) {
+    select(sq);
+  } else {
+    selected=null; targets=[]; drawBoard();
+  }
+}
+
+function select(sq) {
+  selected = sq;
+  const trio = findRotationTrio(board, board.sideToMove);
+  targets = legal.filter(m =>
+    (!m.isRotation && m.from[0]===sq[0] && m.from[1]===sq[1]) ||
+    (m.isRotation && trio && trio.squares.some(s => s[0]===sq[0]&&s[1]===sq[1]))
+  );
+  drawBoard();
+}
+
+function askPromotion() {
+  return new Promise(resolve => {
+    const bg = document.getElementById("promoBg");
+    const box = document.getElementById("promoChoices");
+    box.innerHTML = "";
+    const names = {Q:"Queen",R:"Rook",B:"Bishop",N:"Knight",A:"Archer"};
+    for (const pt of PROMO_TYPES) {
+      const b = document.createElement("button");
+      b.className = "btn";
+      b.textContent = names[pt];
+      b.onclick = () => { bg.classList.remove("show"); resolve(pt); };
+      box.appendChild(b);
+    }
+    bg.classList.add("show");
+  });
+}
+
+// ---- Navigation & session ----
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function leaveGame() {
+  cancelAI();
+  session = null;
+}
+
+function showMainMenu() { leaveGame(); showPage("menuPage"); drawMenuBg(); }
+function showStoryMenu() { leaveGame(); showPage("storyPage"); }
+function showVersusMenu() { leaveGame(); showPage("versusPage"); updateCpuBox(); }
+
+function updateNames() {
+  if (mode === "ai") {
+    const you = "(you)", cpu = `(computer – ${level})`;
+    document.getElementById("whiteName").textContent = "White " + (humanColor===WHITE?you:cpu);
+    document.getElementById("blackName").textContent = "Black " + (humanColor===BLACK?you:cpu);
+  } else {
+    document.getElementById("whiteName").textContent = "White";
+    document.getElementById("blackName").textContent = "Black";
+  }
+}
+
+function updateBanner() {
+  const el = document.getElementById("banner");
+  if (!session) { el.textContent = ""; return; }
+  if (session.kind === "story") {
+    const i = session.index;
+    if (session.campaign)
+      el.textContent = `STORY  ·  Mission ${i+1} of ${VARIANTS.length}: ${VARIANTS[i].title}`;
+    else
+      el.textContent = `Mission ${i+1}: ${VARIANTS[i].title}  (single mission)`;
+  } else {
+    const opp = session.mode==="ai" ? "Player vs Computer" : "Player vs Player";
+    el.textContent = `VERSUS  ·  ${opp}  ·  ${VARIANTS[session.index].title}`;
+  }
+}
+
+function enterGame(m, color, lvl, variant) {
+  mode = m; humanColor = color; level = lvl;
+  document.getElementById("levelSelect").value = lvl;
+  document.getElementById("levelSelect").style.display = m==="ai" ? "" : "none";
+  if (variant !== CUR) setVariant(variant);
+  updateNames();
+  updateBanner();
+  showPage("gamePage");
+  newGame();
+}
+
+function startMission(index, lvl, campaign) {
+  session = {kind:"story", index, level:lvl, campaign};
+  enterGame("ai", WHITE, lvl, VARIANTS[index]);
+}
+
+function startVersus(m, color, lvl, index) {
+  session = {kind:"versus", mode:m, color, level:lvl, index};
+  enterGame(m, color, lvl, VARIANTS[index]);
+}
+
+function showModal(title, info, buttons) {
+  return new Promise(resolve => {
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalInfo").textContent = info || "";
+    const box = document.getElementById("modalBtns");
+    box.innerHTML = "";
+    buttons.forEach((label, i) => {
+      const b = document.createElement("button");
+      b.className = "btn" + (i===0 ? " primary" : "");
+      b.textContent = label;
+      b.onclick = () => { document.getElementById("modalBg").classList.remove("show"); resolve(i); };
+      box.appendChild(b);
+    });
+    document.getElementById("modalBg").classList.add("show");
+  });
+}
+
+async function onGameEnded(winner, msg) {
+  if (!session) return;
+  if (session.kind === "versus") {
+    const c = await showModal(msg, "", ["Play Again", "Main Menu", "Close"]);
+    if (c===0) newGame();
+    else if (c===1) showMainMenu();
+    return;
+  }
+  const i = session.index;
+  const v = VARIANTS[i];
+  const total = VARIANTS.length;
+  if (winner === WHITE) {
+    if (session.campaign && i < total-1) {
+      const nxt = VARIANTS[i+1];
+      const c = await showModal(`${msg}\n\nMission ${i+1} complete: ${v.title}`,
+        `Next: Mission ${i+2} – ${nxt.title}`,
+        ["Next Mission", "Story Menu", "Stay Here"]);
+      if (c===0) startMission(i+1, session.level, true);
+      else if (c===1) showStoryMenu();
+    } else if (session.campaign) {
+      const c = await showModal(`${msg}\n\nStory complete! You conquered all ${total} missions.`, "",
+        ["Play Again From Mission 1", "Story Menu", "Close"]);
+      if (c===0) startMission(0, session.level, true);
+      else if (c===1) showStoryMenu();
+    } else {
+      const c = await showModal(`${msg}\n\nMission complete: ${v.title}`, "",
+        ["Play Again", "Story Menu", "Close"]);
+      if (c===0) newGame();
+      else if (c===1) showStoryMenu();
+    }
+  } else {
+    const what = winner === -1 ? "Draw" : "Mission failed";
+    const c = await showModal(`${msg}\n\n${what}: ${v.title}`, "",
+      ["Retry Mission", "Story Menu", "Close"]);
+    if (c===0) newGame();
+    else if (c===1) showStoryMenu();
+  }
+}
+
+// ---- Setup pages ----
+function makeSeg(el, labels, active=0) {
+  el.innerHTML = "";
+  labels.forEach((lab, i) => {
+    const b = document.createElement("button");
+    b.textContent = lab;
+    if (i===active) b.classList.add("active");
+    b.onclick = () => {
+      el.querySelectorAll("button").forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      el.dispatchEvent(new CustomEvent("change", {detail:i}));
+    };
+    el.appendChild(b);
+  });
+  el.getIndex = () => [...el.children].findIndex(c => c.classList.contains("active"));
+  el.getText = () => el.children[el.getIndex()].textContent;
+}
+function fillList(el, items, selected=0) {
+  el.innerHTML = "";
+  items.forEach((text, i) => {
+    const d = document.createElement("div");
+    d.className = "list-item" + (i===selected?" selected":"");
+    d.textContent = text;
+    d.onclick = () => {
+      el.querySelectorAll(".list-item").forEach(x=>x.classList.remove("selected"));
+      d.classList.add("selected");
+    };
+    d.ondblclick = () => el.dispatchEvent(new CustomEvent("activate"));
+    el.appendChild(d);
+  });
+  el.getIndex = () => Math.max(0, [...el.children].findIndex(c => c.classList.contains("selected")));
+}
+
+function initSetup() {
+  makeSeg(document.getElementById("storyLevel"), Object.keys(LEVELS), 2);
+  fillList(document.getElementById("storyList"),
+    VARIANTS.map((v,i) => `Mission ${i+1}: ${v.title}\n${variantInfo(v)}`), 0);
+
+  makeSeg(document.getElementById("vsOpp"), ["Player vs Player", "Player vs Computer"], 0);
+  makeSeg(document.getElementById("vsSide"), ["White", "Black"], 0);
+  makeSeg(document.getElementById("vsLevel"), Object.keys(LEVELS), 2);
+  fillList(document.getElementById("vsList"),
+    VARIANTS.map((v,i) => `${v.title}${i===DEFAULT_VARIANT?"  (original board)":""}\n${variantInfo(v)}`),
+    DEFAULT_VARIANT);
+
+  document.getElementById("vsOpp").addEventListener("change", updateCpuBox);
+  updateCpuBox();
+}
+
+function updateCpuBox() {
+  const on = document.getElementById("vsOpp").getIndex() === 1;
+  document.getElementById("cpuBox").classList.toggle("disabled", !on);
+}
+
+// ---- Menu background diamond ----
+function drawMenuBg() {
+  const c = document.getElementById("menuBg");
+  c.width = window.innerWidth; c.height = window.innerHeight;
+  const cx = c.getContext("2d");
+  const widths = [3,3,5,5,7,9,9,9,9,7,5,5,3,3];
+  const cell = Math.min(c.width*0.94/14, c.height*0.9/9);
+  const x0 = (c.width - cell*14)/2;
+  const cy = c.height/2;
+  cx.globalAlpha = 0.15;
+  widths.forEach((n, col) => {
+    const top = cy - n*cell/2;
+    for (let k=0;k<n;k++) {
+      cx.fillStyle = (col+k)%2===0 ? LIGHT : DARK;
+      cx.fillRect(x0+col*cell, top+k*cell, cell, cell);
+    }
+  });
+}
+
+// ---- Wire events ----
+document.getElementById("btnStory").onclick = showStoryMenu;
+document.getElementById("btnVersus").onclick = showVersusMenu;
+document.getElementById("btnQuit").onclick = () => { if (confirm("Close Crossfire?")) window.close(); };
+
+document.getElementById("storyBack").onclick = showMainMenu;
+document.getElementById("storyStart").onclick = () => {
+  startMission(0, document.getElementById("storyLevel").getText(), true);
+};
+document.getElementById("storyPlay").onclick = () => {
+  startMission(document.getElementById("storyList").getIndex(),
+    document.getElementById("storyLevel").getText(), false);
+};
+document.getElementById("storyList").addEventListener("activate", () => {
+  startMission(document.getElementById("storyList").getIndex(),
+    document.getElementById("storyLevel").getText(), false);
+});
+
+document.getElementById("vsBack").onclick = showMainMenu;
+document.getElementById("vsStart").onclick = () => {
+  const m = document.getElementById("vsOpp").getIndex()===1 ? "ai" : "pvp";
+  const color = document.getElementById("vsSide").getIndex()===0 ? WHITE : BLACK;
+  startVersus(m, color, document.getElementById("vsLevel").getText(),
+    document.getElementById("vsList").getIndex());
+};
+document.getElementById("vsList").addEventListener("activate", () => {
+  document.getElementById("vsStart").click();
+});
+
+document.getElementById("btnMenu").onclick = async () => {
+  if (history.length && !gameOver) {
+    const c = await showModal("Abandon the game in progress?", "", ["Yes", "No"]);
+    if (c !== 0) return;
+  }
+  showMainMenu();
+};
+document.getElementById("btnNew").onclick = () => newGame();
+document.getElementById("btnUndo").onclick = () => undo();
+document.getElementById("btnResign").onclick = () => resign();
+document.getElementById("levelSelect").onchange = e => {
+  level = e.target.value;
+  if (session) session.level = level;
+  updateNames();
+};
+
+window.addEventListener("resize", () => {
+  if (document.getElementById("gamePage").classList.contains("active")) drawBoard();
+  if (document.getElementById("menuPage").classList.contains("active")) drawMenuBg();
+});
+window.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    if (document.getElementById("gamePage").classList.contains("active"))
+      document.getElementById("btnMenu").click();
+    else if (!document.getElementById("menuPage").classList.contains("active"))
+      showMainMenu();
+  }
+});
+
+// Boot
+setVariant(VARIANTS[DEFAULT_VARIANT]);
+initSetup();
+drawMenuBg();
+</script>
+</body>
+</html>
