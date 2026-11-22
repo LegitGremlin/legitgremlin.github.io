@@ -1,0 +1,1102 @@
+{
+ "blocks": [
+  {
+   "id": "gremcraft:stone",
+   "numeric": 1,
+   "name": "Stone",
+   "tiles": {
+    "all": "stone"
+   },
+   "hardness": 1.5,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "drops": [
+    {
+     "item": "gremcraft:cobblestone"
+    }
+   ],
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:grass",
+   "numeric": 2,
+   "name": "Grass Block",
+   "tiles": {
+    "top": "grass_top",
+    "bottom": "dirt",
+    "side": "grass_side"
+   },
+   "hardness": 0.6,
+   "tool": "shovel",
+   "drops": [
+    {
+     "item": "gremcraft:dirt"
+    }
+   ],
+   "till_to": "gremcraft:farmland"
+  },
+  {
+   "id": "gremcraft:dirt",
+   "numeric": 3,
+   "name": "Dirt",
+   "tiles": {
+    "all": "dirt"
+   },
+   "hardness": 0.5,
+   "tool": "shovel",
+   "till_to": "gremcraft:farmland"
+  },
+  {
+   "id": "gremcraft:cobblestone",
+   "numeric": 4,
+   "name": "Cobblestone",
+   "tiles": {
+    "all": "cobblestone"
+   },
+   "hardness": 2.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:planks",
+   "numeric": 5,
+   "name": "Oak Planks",
+   "tiles": {
+    "all": "planks"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:bedrock",
+   "numeric": 7,
+   "name": "Bedrock",
+   "tiles": {
+    "all": "bedrock"
+   },
+   "hardness": -1
+  },
+  {
+   "id": "gremcraft:water",
+   "numeric": 9,
+   "name": "Water",
+   "tiles": {
+    "all": "water"
+   },
+   "hardness": -1,
+   "render": "fluid",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 3,
+   "alpha": 0.62,
+   "swim": "water",
+   "selectable": false,
+   "replaceable": true,
+   "no_item": true
+  },
+  {
+   "id": "gremcraft:lava",
+   "numeric": 11,
+   "name": "Lava",
+   "tiles": {
+    "all": "lava"
+   },
+   "hardness": -1,
+   "render": "fluid",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "light_emission": 15,
+   "swim": "lava",
+   "selectable": false,
+   "replaceable": true,
+   "no_item": true,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:sand",
+   "numeric": 12,
+   "name": "Sand",
+   "tiles": {
+    "all": "sand"
+   },
+   "hardness": 0.5,
+   "tool": "shovel"
+  },
+  {
+   "id": "gremcraft:gravel",
+   "numeric": 13,
+   "name": "Gravel",
+   "tiles": {
+    "all": "gravel"
+   },
+   "hardness": 0.6,
+   "tool": "shovel"
+  },
+  {
+   "id": "gremcraft:gold_ore",
+   "numeric": 14,
+   "name": "Gold Ore",
+   "tiles": {
+    "all": "gold_ore"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 2,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:iron_ore",
+   "numeric": 15,
+   "name": "Iron Ore",
+   "tiles": {
+    "all": "iron_ore"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:coal_ore",
+   "numeric": 16,
+   "name": "Coal Ore",
+   "tiles": {
+    "all": "coal_ore"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "drops": [
+    {
+     "item": "gremcraft:coal"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:log",
+   "numeric": 17,
+   "name": "Oak Log",
+   "tiles": {
+    "top": "log_top",
+    "bottom": "log_top",
+    "side": "log_side"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:leaves",
+   "numeric": 18,
+   "name": "Oak Leaves",
+   "tiles": {
+    "all": "leaves"
+   },
+   "hardness": 0.2,
+   "opaque": false,
+   "light_opacity": 1,
+   "cull_same": true,
+   "drops": [
+    {
+     "item": "gremcraft:apple",
+     "chance": 0.005
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:glass",
+   "numeric": 20,
+   "name": "Glass",
+   "tiles": {
+    "all": "glass"
+   },
+   "hardness": 0.3,
+   "opaque": false,
+   "light_opacity": 0,
+   "cull_same": true,
+   "drops": []
+  },
+  {
+   "id": "gremcraft:bricks",
+   "numeric": 45,
+   "name": "Bricks",
+   "tiles": {
+    "all": "bricks"
+   },
+   "hardness": 2.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:tnt",
+   "numeric": 46,
+   "name": "TNT",
+   "tiles": {
+    "top": "tnt_top",
+    "bottom": "tnt_bottom",
+    "side": "tnt_side"
+   },
+   "hardness": 0.0
+  },
+  {
+   "id": "gremcraft:torch",
+   "numeric": 50,
+   "name": "Torch",
+   "tiles": {
+    "all": "torch"
+   },
+   "hardness": 0.0,
+   "render": "torch",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "light_emission": 14,
+   "selectable": true,
+   "emissive": true,
+   "box": [
+    7,
+    0,
+    7,
+    9,
+    10,
+    9
+   ]
+  },
+  {
+   "id": "gremcraft:chest",
+   "numeric": 54,
+   "name": "Chest",
+   "tiles": {
+    "top": "chest_top",
+    "bottom": "chest_top",
+    "side": "chest_side",
+    "front": "chest_front"
+   },
+   "hardness": 2.5,
+   "tool": "axe",
+   "fuel_ticks": 300,
+   "render": "box",
+   "box": [
+    1,
+    0,
+    1,
+    15,
+    14,
+    15
+   ],
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "chest",
+   "tile_entity": "chest"
+  },
+  {
+   "id": "gremcraft:diamond_ore",
+   "numeric": 56,
+   "name": "Diamond Ore",
+   "tiles": {
+    "all": "diamond_ore"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 2,
+   "requires_tool": true,
+   "drops": [
+    {
+     "item": "gremcraft:diamond"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:crafting_table",
+   "numeric": 58,
+   "name": "Crafting Table",
+   "tiles": {
+    "top": "crafting_top",
+    "bottom": "planks",
+    "side": "crafting_side",
+    "front": "crafting_front"
+   },
+   "hardness": 2.5,
+   "tool": "axe",
+   "fuel_ticks": 300,
+   "interact": "crafting_table"
+  },
+  {
+   "id": "gremcraft:furnace",
+   "numeric": 61,
+   "name": "Furnace",
+   "tiles": {
+    "top": "furnace_top",
+    "bottom": "furnace_top",
+    "side": "furnace_side",
+    "front": "furnace_front"
+   },
+   "hardness": 3.5,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "interact": "furnace",
+   "lit_variant": "gremcraft:lit_furnace",
+   "tile_entity": "furnace"
+  },
+  {
+   "id": "gremcraft:lit_furnace",
+   "numeric": 62,
+   "name": "Lit Furnace",
+   "tiles": {
+    "top": "furnace_top",
+    "bottom": "furnace_top",
+    "side": "furnace_side",
+    "front": "furnace_front_lit"
+   },
+   "hardness": 3.5,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "interact": "furnace",
+   "light_emission": 13,
+   "drops": [
+    {
+     "item": "gremcraft:furnace"
+    }
+   ],
+   "no_item": true,
+   "tile_entity": "furnace"
+  },
+  {
+   "id": "gremcraft:redstone_ore",
+   "numeric": 73,
+   "name": "Redstone Ore",
+   "tiles": {
+    "all": "redstone_ore"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 2,
+   "requires_tool": true,
+   "drops": [
+    {
+     "item": "gremcraft:redstone",
+     "count": 4
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:snow_block",
+   "numeric": 80,
+   "name": "Snow Block",
+   "tiles": {
+    "all": "snow"
+   },
+   "hardness": 0.2,
+   "tool": "shovel"
+  },
+  {
+   "id": "gremcraft:emerald_ore",
+   "numeric": 129,
+   "name": "Emerald Ore",
+   "tiles": {
+    "all": "emerald_ore"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 2,
+   "requires_tool": true,
+   "drops": [
+    {
+     "item": "gremcraft:emerald"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:birch_planks",
+   "numeric": 136,
+   "name": "Birch Planks",
+   "tiles": {
+    "all": "planks_birch"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:spruce_planks",
+   "numeric": 137,
+   "name": "Spruce Planks",
+   "tiles": {
+    "all": "planks_spruce"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:birch_log",
+   "numeric": 138,
+   "name": "Birch Log",
+   "tiles": {
+    "top": "log_birch_top",
+    "bottom": "log_birch_top",
+    "side": "log_birch_side"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:spruce_log",
+   "numeric": 139,
+   "name": "Spruce Log",
+   "tiles": {
+    "top": "log_spruce_top",
+    "bottom": "log_spruce_top",
+    "side": "log_spruce_side"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:birch_leaves",
+   "numeric": 140,
+   "name": "Birch Leaves",
+   "tiles": {
+    "all": "leaves_birch"
+   },
+   "hardness": 0.2,
+   "opaque": false,
+   "light_opacity": 1,
+   "cull_same": true,
+   "drops": []
+  },
+  {
+   "id": "gremcraft:spruce_leaves",
+   "numeric": 141,
+   "name": "Spruce Leaves",
+   "tiles": {
+    "all": "leaves_spruce"
+   },
+   "hardness": 0.2,
+   "opaque": false,
+   "light_opacity": 1,
+   "cull_same": true,
+   "drops": []
+  },
+  {
+   "id": "gremcraft:snowy_grass",
+   "numeric": 142,
+   "name": "Snowy Grass Block",
+   "tiles": {
+    "top": "snow",
+    "bottom": "dirt",
+    "side": "grass_side_snowed"
+   },
+   "hardness": 0.6,
+   "tool": "shovel",
+   "drops": [
+    {
+     "item": "gremcraft:dirt"
+    }
+   ],
+   "till_to": "gremcraft:farmland"
+  },
+  {
+   "id": "gremcraft:wool",
+   "numeric": 35,
+   "name": "Wool",
+   "tiles": {
+    "all": "wool_white"
+   },
+   "hardness": 0.8
+  },
+  {
+   "id": "gremcraft:oak_stairs",
+   "numeric": 53,
+   "name": "Oak Stairs",
+   "tiles": {
+    "all": "planks"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "stairs",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:spruce_stairs",
+   "numeric": 134,
+   "name": "Spruce Stairs",
+   "tiles": {
+    "all": "planks_spruce"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "stairs",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:birch_stairs",
+   "numeric": 135,
+   "name": "Birch Stairs",
+   "tiles": {
+    "all": "planks_birch"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "stairs",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:cobblestone_stairs",
+   "numeric": 67,
+   "name": "Cobblestone Stairs",
+   "tiles": {
+    "all": "cobblestone"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "stairs",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:stone_stairs",
+   "numeric": 109,
+   "name": "Stone Stairs",
+   "tiles": {
+    "all": "stone"
+   },
+   "hardness": 1.5,
+   "render": "shape",
+   "shape": "stairs",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:brick_stairs",
+   "numeric": 108,
+   "name": "Brick Stairs",
+   "tiles": {
+    "all": "bricks"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "stairs",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:oak_fence",
+   "numeric": 85,
+   "name": "Oak Fence",
+   "tiles": {
+    "all": "planks"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300,
+   "render": "shape",
+   "shape": "fence",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "item_sprite": "item_fence_oak"
+  },
+  {
+   "id": "gremcraft:oak_fence_gate",
+   "numeric": 107,
+   "name": "Oak Fence Gate",
+   "tiles": {
+    "all": "planks"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300,
+   "render": "shape",
+   "shape": "gate",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "gate",
+   "item_sprite": "item_gate_oak"
+  },
+  {
+   "id": "gremcraft:spruce_fence",
+   "numeric": 188,
+   "name": "Spruce Fence",
+   "tiles": {
+    "all": "planks_spruce"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300,
+   "render": "shape",
+   "shape": "fence",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "item_sprite": "item_fence_spruce"
+  },
+  {
+   "id": "gremcraft:spruce_fence_gate",
+   "numeric": 183,
+   "name": "Spruce Fence Gate",
+   "tiles": {
+    "all": "planks_spruce"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300,
+   "render": "shape",
+   "shape": "gate",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "gate",
+   "item_sprite": "item_gate_spruce"
+  },
+  {
+   "id": "gremcraft:birch_fence",
+   "numeric": 189,
+   "name": "Birch Fence",
+   "tiles": {
+    "all": "planks_birch"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300,
+   "render": "shape",
+   "shape": "fence",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "item_sprite": "item_fence_birch"
+  },
+  {
+   "id": "gremcraft:birch_fence_gate",
+   "numeric": 184,
+   "name": "Birch Fence Gate",
+   "tiles": {
+    "all": "planks_birch"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300,
+   "render": "shape",
+   "shape": "gate",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "gate",
+   "item_sprite": "item_gate_birch"
+  },
+  {
+   "id": "gremcraft:bed",
+   "numeric": 26,
+   "name": "Bed",
+   "tiles": {
+    "all": "bed_top_foot"
+   },
+   "hardness": 0.2,
+   "render": "shape",
+   "shape": "bed",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "bed",
+   "item_sprite": "item_bed"
+  },
+  {
+   "id": "gremcraft:tall_grass",
+   "numeric": 31,
+   "name": "Grass",
+   "tiles": {
+    "all": "tall_grass"
+   },
+   "hardness": 0.0,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": true,
+   "no_item": true,
+   "box": [
+    2,
+    0,
+    2,
+    14,
+    13,
+    14
+   ],
+   "drops": [
+    {
+     "item": "gremcraft:wheat_seeds",
+     "chance": 0.25
+    }
+   ],
+   "support": [
+    "gremcraft:grass",
+    "gremcraft:dirt",
+    "gremcraft:snowy_grass",
+    "gremcraft:farmland"
+   ]
+  },
+  {
+   "id": "gremcraft:farmland",
+   "numeric": 60,
+   "name": "Farmland",
+   "tiles": {
+    "top": "farmland_top",
+    "bottom": "dirt",
+    "side": "dirt"
+   },
+   "hardness": 0.6,
+   "tool": "shovel",
+   "render": "box",
+   "box": [
+    0,
+    0,
+    0,
+    16,
+    15,
+    16
+   ],
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "no_item": true,
+   "drops": [
+    {
+     "item": "gremcraft:dirt"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:wheat",
+   "numeric": 59,
+   "name": "Wheat Crops",
+   "tiles": {
+    "all": "wheat_7"
+   },
+   "hardness": 0.0,
+   "render": "plant",
+   "plant": "crop",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "no_item": true,
+   "box": [
+    0,
+    0,
+    0,
+    16,
+    12,
+    16
+   ],
+   "random_tick": true,
+   "support": [
+    "gremcraft:farmland"
+   ],
+   "crop": {
+    "stages": 8,
+    "seed": "gremcraft:wheat_seeds",
+    "product": "gremcraft:wheat",
+    "tiles": "wheat_"
+   }
+  },
+  {
+   "id": "gremcraft:oak_slab",
+   "numeric": 196,
+   "name": "Oak Slab",
+   "tiles": {
+    "all": "planks"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "slab",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "double": "gremcraft:planks",
+   "tool": "axe",
+   "fuel_ticks": 150
+  },
+  {
+   "id": "gremcraft:birch_slab",
+   "numeric": 197,
+   "name": "Birch Slab",
+   "tiles": {
+    "all": "planks_birch"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "slab",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "double": "gremcraft:birch_planks",
+   "tool": "axe",
+   "fuel_ticks": 150
+  },
+  {
+   "id": "gremcraft:spruce_slab",
+   "numeric": 198,
+   "name": "Spruce Slab",
+   "tiles": {
+    "all": "planks_spruce"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "slab",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "double": "gremcraft:spruce_planks",
+   "tool": "axe",
+   "fuel_ticks": 150
+  },
+  {
+   "id": "gremcraft:stone_slab",
+   "numeric": 199,
+   "name": "Stone Slab",
+   "tiles": {
+    "all": "stone"
+   },
+   "hardness": 1.5,
+   "render": "shape",
+   "shape": "slab",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "double": "gremcraft:stone",
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:cobblestone_slab",
+   "numeric": 200,
+   "name": "Cobblestone Slab",
+   "tiles": {
+    "all": "cobblestone"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "slab",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "double": "gremcraft:cobblestone",
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:brick_slab",
+   "numeric": 201,
+   "name": "Brick Slab",
+   "tiles": {
+    "all": "bricks"
+   },
+   "hardness": 2.0,
+   "render": "shape",
+   "shape": "slab",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "double": "gremcraft:bricks",
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:ruin_slab",
+   "numeric": 202,
+   "name": "Ruin Brick Slab",
+   "tiles": {
+    "all": "ruin_bricks"
+   },
+   "hardness": 3.0,
+   "render": "shape",
+   "shape": "slab",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 15,
+   "double": "gremcraft:ruin_bricks",
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:oak_door",
+   "numeric": 206,
+   "name": "Oak Door",
+   "tiles": {
+    "all": "door_oak_lower",
+    "upper": "door_oak_upper",
+    "edge": "planks"
+   },
+   "hardness": 3.0,
+   "tool": "axe",
+   "fuel_ticks": 200,
+   "render": "shape",
+   "shape": "door",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "door",
+   "item_sprite": "item_oak_door"
+  },
+  {
+   "id": "gremcraft:birch_door",
+   "numeric": 207,
+   "name": "Birch Door",
+   "tiles": {
+    "all": "door_birch_lower",
+    "upper": "door_birch_upper",
+    "edge": "planks_birch"
+   },
+   "hardness": 3.0,
+   "tool": "axe",
+   "fuel_ticks": 200,
+   "render": "shape",
+   "shape": "door",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "door",
+   "item_sprite": "item_birch_door"
+  },
+  {
+   "id": "gremcraft:spruce_door",
+   "numeric": 208,
+   "name": "Spruce Door",
+   "tiles": {
+    "all": "door_spruce_lower",
+    "upper": "door_spruce_upper",
+    "edge": "planks_spruce"
+   },
+   "hardness": 3.0,
+   "tool": "axe",
+   "fuel_ticks": 200,
+   "render": "shape",
+   "shape": "door",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "door",
+   "item_sprite": "item_spruce_door"
+  },
+  {
+   "id": "gremcraft:compacted_silt",
+   "numeric": 190,
+   "name": "Compacted Silt",
+   "tiles": {
+    "all": "compacted_silt"
+   },
+   "hardness": 40.0,
+   "tool": "pickaxe",
+   "harvest_level": 3,
+   "requires_tool": true,
+   "min_tier": 3
+  },
+  {
+   "id": "gremcraft:ashstone",
+   "numeric": 191,
+   "name": "Ashstone",
+   "tiles": {
+    "all": "ashstone"
+   },
+   "hardness": 2.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:ember_crystal",
+   "numeric": 192,
+   "name": "Ember Crystal",
+   "tiles": {
+    "all": "ember_crystal"
+   },
+   "hardness": 0.6,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "light_emission": 14,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:ruin_bricks",
+   "numeric": 193,
+   "name": "Ruin Bricks",
+   "tiles": {
+    "all": "ruin_bricks"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:ruin_carved",
+   "numeric": 194,
+   "name": "Carved Ruin Bricks",
+   "tiles": {
+    "all": "ruin_carved"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true,
+   "light_emission": 6,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:altar",
+   "numeric": 195,
+   "name": "Ritual Altar",
+   "tiles": {
+    "top": "altar_top",
+    "bottom": "ruin_bricks",
+    "side": "altar_side"
+   },
+   "hardness": 5.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true,
+   "interact": "altar",
+   "light_emission": 8,
+   "emissive": true
+  }
+ ]
+}

@@ -1,0 +1,667 @@
+{
+ "items": [
+  {
+   "id": "gremcraft:stick",
+   "name": "Stick",
+   "sprite": "item_stick",
+   "max_stack": 64,
+   "fuel_ticks": 100
+  },
+  {
+   "id": "gremcraft:coal",
+   "name": "Coal",
+   "sprite": "item_coal",
+   "max_stack": 64,
+   "fuel_ticks": 1600
+  },
+  {
+   "id": "gremcraft:iron_ingot",
+   "name": "Iron Ingot",
+   "sprite": "item_iron_ingot",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:gold_ingot",
+   "name": "Gold Ingot",
+   "sprite": "item_gold_ingot",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:diamond",
+   "name": "Diamond",
+   "sprite": "item_diamond",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:emerald",
+   "name": "Emerald",
+   "sprite": "item_emerald",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:redstone",
+   "name": "Redstone",
+   "sprite": "item_redstone",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:leather",
+   "name": "Leather",
+   "sprite": "item_leather",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:apple",
+   "name": "Apple",
+   "sprite": "item_apple",
+   "max_stack": 64,
+   "food": {
+    "hunger": 4,
+    "saturation": 2.4
+   }
+  },
+  {
+   "id": "gremcraft:rotten_flesh",
+   "name": "Rotten Flesh",
+   "sprite": "item_rotten_flesh",
+   "max_stack": 64,
+   "food": {
+    "hunger": 4,
+    "saturation": 0.8
+   }
+  },
+  {
+   "id": "gremcraft:bone",
+   "name": "Bone",
+   "sprite": "item_bone",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:wheat_seeds",
+   "name": "Wheat Seeds",
+   "sprite": "item_wheat_seeds",
+   "max_stack": 64,
+   "places": "gremcraft:wheat"
+  },
+  {
+   "id": "gremcraft:wheat",
+   "name": "Wheat",
+   "sprite": "item_wheat",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:bread",
+   "name": "Bread",
+   "sprite": "item_bread",
+   "max_stack": 64,
+   "food": {
+    "hunger": 5,
+    "saturation": 6.0
+   }
+  },
+  {
+   "id": "gremcraft:porkchop_raw",
+   "name": "Raw Porkchop",
+   "sprite": "item_porkchop_raw",
+   "max_stack": 64,
+   "food": {
+    "hunger": 3,
+    "saturation": 1.8
+   }
+  },
+  {
+   "id": "gremcraft:porkchop_cooked",
+   "name": "Cooked Porkchop",
+   "sprite": "item_porkchop_cooked",
+   "max_stack": 64,
+   "food": {
+    "hunger": 8,
+    "saturation": 12.8
+   }
+  },
+  {
+   "id": "gremcraft:beef_raw",
+   "name": "Raw Beef",
+   "sprite": "item_beef_raw",
+   "max_stack": 64,
+   "food": {
+    "hunger": 3,
+    "saturation": 1.8
+   }
+  },
+  {
+   "id": "gremcraft:steak",
+   "name": "Steak",
+   "sprite": "item_steak",
+   "max_stack": 64,
+   "food": {
+    "hunger": 8,
+    "saturation": 12.8
+   }
+  },
+  {
+   "id": "gremcraft:mutton_raw",
+   "name": "Raw Mutton",
+   "sprite": "item_mutton_raw",
+   "max_stack": 64,
+   "food": {
+    "hunger": 2,
+    "saturation": 1.2
+   }
+  },
+  {
+   "id": "gremcraft:mutton_cooked",
+   "name": "Cooked Mutton",
+   "sprite": "item_mutton_cooked",
+   "max_stack": 64,
+   "food": {
+    "hunger": 6,
+    "saturation": 9.6
+   }
+  },
+  {
+   "id": "gremcraft:tablet_fragment",
+   "name": "Tablet Fragment",
+   "sprite": "item_tablet_fragment",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:ancient_tablet",
+   "name": "Ancient Tablet",
+   "sprite": "item_ancient_tablet",
+   "max_stack": 1
+  },
+  {
+   "id": "gremcraft:ashen_heart",
+   "name": "Ashen Heart",
+   "sprite": "item_ashen_heart",
+   "max_stack": 1
+  },
+  {
+   "id": "gremcraft:pickaxe_wood",
+   "name": "Wooden Pickaxe",
+   "sprite": "item_pickaxe_wood",
+   "max_stack": 1,
+   "durability": 59,
+   "damage": 2,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 0,
+    "speed": 2.0
+   }
+  },
+  {
+   "id": "gremcraft:axe_wood",
+   "name": "Wooden Axe",
+   "sprite": "item_axe_wood",
+   "max_stack": 1,
+   "durability": 59,
+   "damage": 3,
+   "tool": {
+    "kind": "axe",
+    "tier": 0,
+    "speed": 2.0
+   }
+  },
+  {
+   "id": "gremcraft:shovel_wood",
+   "name": "Wooden Shovel",
+   "sprite": "item_shovel_wood",
+   "max_stack": 1,
+   "durability": 59,
+   "damage": 1,
+   "tool": {
+    "kind": "shovel",
+    "tier": 0,
+    "speed": 2.0
+   }
+  },
+  {
+   "id": "gremcraft:sword_wood",
+   "name": "Wooden Sword",
+   "sprite": "item_sword_wood",
+   "max_stack": 1,
+   "durability": 59,
+   "damage": 4,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_wood",
+   "name": "Wooden Hoe",
+   "sprite": "item_hoe_wood",
+   "max_stack": 1,
+   "durability": 59,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 0,
+    "speed": 2.0
+   },
+   "use": "till"
+  },
+  {
+   "id": "gremcraft:pickaxe_stone",
+   "name": "Stone Pickaxe",
+   "sprite": "item_pickaxe_stone",
+   "max_stack": 1,
+   "durability": 131,
+   "damage": 3,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 1,
+    "speed": 4.0
+   }
+  },
+  {
+   "id": "gremcraft:axe_stone",
+   "name": "Stone Axe",
+   "sprite": "item_axe_stone",
+   "max_stack": 1,
+   "durability": 131,
+   "damage": 4,
+   "tool": {
+    "kind": "axe",
+    "tier": 1,
+    "speed": 4.0
+   }
+  },
+  {
+   "id": "gremcraft:shovel_stone",
+   "name": "Stone Shovel",
+   "sprite": "item_shovel_stone",
+   "max_stack": 1,
+   "durability": 131,
+   "damage": 2,
+   "tool": {
+    "kind": "shovel",
+    "tier": 1,
+    "speed": 4.0
+   }
+  },
+  {
+   "id": "gremcraft:sword_stone",
+   "name": "Stone Sword",
+   "sprite": "item_sword_stone",
+   "max_stack": 1,
+   "durability": 131,
+   "damage": 5,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_stone",
+   "name": "Stone Hoe",
+   "sprite": "item_hoe_stone",
+   "max_stack": 1,
+   "durability": 131,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 1,
+    "speed": 4.0
+   },
+   "use": "till"
+  },
+  {
+   "id": "gremcraft:pickaxe_iron",
+   "name": "Iron Pickaxe",
+   "sprite": "item_pickaxe_iron",
+   "max_stack": 1,
+   "durability": 250,
+   "damage": 4,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 2,
+    "speed": 6.0
+   }
+  },
+  {
+   "id": "gremcraft:axe_iron",
+   "name": "Iron Axe",
+   "sprite": "item_axe_iron",
+   "max_stack": 1,
+   "durability": 250,
+   "damage": 5,
+   "tool": {
+    "kind": "axe",
+    "tier": 2,
+    "speed": 6.0
+   }
+  },
+  {
+   "id": "gremcraft:shovel_iron",
+   "name": "Iron Shovel",
+   "sprite": "item_shovel_iron",
+   "max_stack": 1,
+   "durability": 250,
+   "damage": 3,
+   "tool": {
+    "kind": "shovel",
+    "tier": 2,
+    "speed": 6.0
+   }
+  },
+  {
+   "id": "gremcraft:sword_iron",
+   "name": "Iron Sword",
+   "sprite": "item_sword_iron",
+   "max_stack": 1,
+   "durability": 250,
+   "damage": 6,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_iron",
+   "name": "Iron Hoe",
+   "sprite": "item_hoe_iron",
+   "max_stack": 1,
+   "durability": 250,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 2,
+    "speed": 6.0
+   },
+   "use": "till"
+  },
+  {
+   "id": "gremcraft:pickaxe_gold",
+   "name": "Gold Pickaxe",
+   "sprite": "item_pickaxe_gold",
+   "max_stack": 1,
+   "durability": 32,
+   "damage": 2,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 0,
+    "speed": 12.0
+   }
+  },
+  {
+   "id": "gremcraft:axe_gold",
+   "name": "Gold Axe",
+   "sprite": "item_axe_gold",
+   "max_stack": 1,
+   "durability": 32,
+   "damage": 3,
+   "tool": {
+    "kind": "axe",
+    "tier": 0,
+    "speed": 12.0
+   }
+  },
+  {
+   "id": "gremcraft:shovel_gold",
+   "name": "Gold Shovel",
+   "sprite": "item_shovel_gold",
+   "max_stack": 1,
+   "durability": 32,
+   "damage": 1,
+   "tool": {
+    "kind": "shovel",
+    "tier": 0,
+    "speed": 12.0
+   }
+  },
+  {
+   "id": "gremcraft:sword_gold",
+   "name": "Gold Sword",
+   "sprite": "item_sword_gold",
+   "max_stack": 1,
+   "durability": 32,
+   "damage": 4,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_gold",
+   "name": "Gold Hoe",
+   "sprite": "item_hoe_gold",
+   "max_stack": 1,
+   "durability": 32,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 0,
+    "speed": 12.0
+   },
+   "use": "till"
+  },
+  {
+   "id": "gremcraft:pickaxe_diamond",
+   "name": "Diamond Pickaxe",
+   "sprite": "item_pickaxe_diamond",
+   "max_stack": 1,
+   "durability": 1561,
+   "damage": 5,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 3,
+    "speed": 8.0
+   }
+  },
+  {
+   "id": "gremcraft:axe_diamond",
+   "name": "Diamond Axe",
+   "sprite": "item_axe_diamond",
+   "max_stack": 1,
+   "durability": 1561,
+   "damage": 6,
+   "tool": {
+    "kind": "axe",
+    "tier": 3,
+    "speed": 8.0
+   }
+  },
+  {
+   "id": "gremcraft:shovel_diamond",
+   "name": "Diamond Shovel",
+   "sprite": "item_shovel_diamond",
+   "max_stack": 1,
+   "durability": 1561,
+   "damage": 4,
+   "tool": {
+    "kind": "shovel",
+    "tier": 3,
+    "speed": 8.0
+   }
+  },
+  {
+   "id": "gremcraft:sword_diamond",
+   "name": "Diamond Sword",
+   "sprite": "item_sword_diamond",
+   "max_stack": 1,
+   "durability": 1561,
+   "damage": 7,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_diamond",
+   "name": "Diamond Hoe",
+   "sprite": "item_hoe_diamond",
+   "max_stack": 1,
+   "durability": 1561,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 3,
+    "speed": 8.0
+   },
+   "use": "till"
+  },
+  {
+   "id": "gremcraft:helmet_leather",
+   "name": "Leather Helmet",
+   "sprite": "item_helmet_leather",
+   "max_stack": 1,
+   "durability": 55,
+   "armor": {
+    "slot": "head",
+    "points": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_leather",
+   "name": "Leather Chestplate",
+   "sprite": "item_chestplate_leather",
+   "max_stack": 1,
+   "durability": 80,
+   "armor": {
+    "slot": "chest",
+    "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:leggings_leather",
+   "name": "Leather Leggings",
+   "sprite": "item_leggings_leather",
+   "max_stack": 1,
+   "durability": 75,
+   "armor": {
+    "slot": "legs",
+    "points": 2
+   }
+  },
+  {
+   "id": "gremcraft:boots_leather",
+   "name": "Leather Boots",
+   "sprite": "item_boots_leather",
+   "max_stack": 1,
+   "durability": 65,
+   "armor": {
+    "slot": "feet",
+    "points": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_iron",
+   "name": "Iron Helmet",
+   "sprite": "item_helmet_iron",
+   "max_stack": 1,
+   "durability": 165,
+   "armor": {
+    "slot": "head",
+    "points": 2
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_iron",
+   "name": "Iron Chestplate",
+   "sprite": "item_chestplate_iron",
+   "max_stack": 1,
+   "durability": 240,
+   "armor": {
+    "slot": "chest",
+    "points": 6
+   }
+  },
+  {
+   "id": "gremcraft:leggings_iron",
+   "name": "Iron Leggings",
+   "sprite": "item_leggings_iron",
+   "max_stack": 1,
+   "durability": 225,
+   "armor": {
+    "slot": "legs",
+    "points": 5
+   }
+  },
+  {
+   "id": "gremcraft:boots_iron",
+   "name": "Iron Boots",
+   "sprite": "item_boots_iron",
+   "max_stack": 1,
+   "durability": 195,
+   "armor": {
+    "slot": "feet",
+    "points": 2
+   }
+  },
+  {
+   "id": "gremcraft:helmet_gold",
+   "name": "Gold Helmet",
+   "sprite": "item_helmet_gold",
+   "max_stack": 1,
+   "durability": 77,
+   "armor": {
+    "slot": "head",
+    "points": 2
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_gold",
+   "name": "Gold Chestplate",
+   "sprite": "item_chestplate_gold",
+   "max_stack": 1,
+   "durability": 112,
+   "armor": {
+    "slot": "chest",
+    "points": 5
+   }
+  },
+  {
+   "id": "gremcraft:leggings_gold",
+   "name": "Gold Leggings",
+   "sprite": "item_leggings_gold",
+   "max_stack": 1,
+   "durability": 105,
+   "armor": {
+    "slot": "legs",
+    "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:boots_gold",
+   "name": "Gold Boots",
+   "sprite": "item_boots_gold",
+   "max_stack": 1,
+   "durability": 91,
+   "armor": {
+    "slot": "feet",
+    "points": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_diamond",
+   "name": "Diamond Helmet",
+   "sprite": "item_helmet_diamond",
+   "max_stack": 1,
+   "durability": 363,
+   "armor": {
+    "slot": "head",
+    "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_diamond",
+   "name": "Diamond Chestplate",
+   "sprite": "item_chestplate_diamond",
+   "max_stack": 1,
+   "durability": 528,
+   "armor": {
+    "slot": "chest",
+    "points": 8
+   }
+  },
+  {
+   "id": "gremcraft:leggings_diamond",
+   "name": "Diamond Leggings",
+   "sprite": "item_leggings_diamond",
+   "max_stack": 1,
+   "durability": 495,
+   "armor": {
+    "slot": "legs",
+    "points": 6
+   }
+  },
+  {
+   "id": "gremcraft:boots_diamond",
+   "name": "Diamond Boots",
+   "sprite": "item_boots_diamond",
+   "max_stack": 1,
+   "durability": 429,
+   "armor": {
+    "slot": "feet",
+    "points": 3
+   }
+  }
+ ]
+}
