@@ -1,0 +1,1862 @@
+{
+ "tags": {
+  "planks": [
+   "gremcraft:planks",
+   "gremcraft:birch_planks",
+   "gremcraft:spruce_planks"
+  ]
+ },
+ "recipes": [
+  {
+   "id": "gremcraft:planks",
+   "type": "shapeless",
+   "ingredients": [
+    {
+     "item": "gremcraft:log",
+     "count": 1
+    }
+   ],
+   "result": {
+    "item": "gremcraft:planks",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:birch_planks",
+   "type": "shapeless",
+   "ingredients": [
+    {
+     "item": "gremcraft:birch_log",
+     "count": 1
+    }
+   ],
+   "result": {
+    "item": "gremcraft:birch_planks",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:spruce_planks",
+   "type": "shapeless",
+   "ingredients": [
+    {
+     "item": "gremcraft:spruce_log",
+     "count": 1
+    }
+   ],
+   "result": {
+    "item": "gremcraft:spruce_planks",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:sticks",
+   "type": "shaped",
+   "grid": [
+    [
+     "P"
+    ],
+    [
+     "P"
+    ]
+   ],
+   "key": {
+    "P": "#planks"
+   },
+   "result": {
+    "item": "gremcraft:stick",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:crafting_table",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "P"
+    ],
+    [
+     "P",
+     "P"
+    ]
+   ],
+   "key": {
+    "P": "#planks"
+   },
+   "result": {
+    "item": "gremcraft:crafting_table",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chest",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "P",
+     "P"
+    ],
+    [
+     "P",
+     " ",
+     "P"
+    ],
+    [
+     "P",
+     "P",
+     "P"
+    ]
+   ],
+   "key": {
+    "P": "#planks"
+   },
+   "result": {
+    "item": "gremcraft:chest",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:furnace",
+   "type": "shaped",
+   "grid": [
+    [
+     "C",
+     "C",
+     "C"
+    ],
+    [
+     "C",
+     " ",
+     "C"
+    ],
+    [
+     "C",
+     "C",
+     "C"
+    ]
+   ],
+   "key": {
+    "C": "gremcraft:cobblestone"
+   },
+   "result": {
+    "item": "gremcraft:furnace",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:torch",
+   "type": "shaped",
+   "grid": [
+    [
+     "C"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "C": "gremcraft:coal",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:torch",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:pickaxe_wood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "#planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_wood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_wood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "#planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_wood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_wood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "#planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_wood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_wood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "#planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_wood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_wood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "#planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_wood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:pickaxe_stone",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:cobblestone",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_stone",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_stone",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:cobblestone",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_stone",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_stone",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:cobblestone",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_stone",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_stone",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:cobblestone",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_stone",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_stone",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:cobblestone",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_stone",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:pickaxe_iron",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_iron",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_iron",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_iron",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_iron",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_iron",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_iron",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_iron",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_iron",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_iron",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:pickaxe_gold",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:gold_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_gold",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_gold",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:gold_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_gold",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_gold",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:gold_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_gold",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_gold",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:gold_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_gold",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_gold",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:gold_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_gold",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:pickaxe_diamond",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:diamond",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_diamond",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:diamond",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_diamond",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:diamond",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_diamond",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:diamond",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_diamond",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:diamond",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_leather",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:leather"
+   },
+   "result": {
+    "item": "gremcraft:helmet_leather",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_leather",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:leather"
+   },
+   "result": {
+    "item": "gremcraft:chestplate_leather",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:leggings_leather",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:leather"
+   },
+   "result": {
+    "item": "gremcraft:leggings_leather",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:boots_leather",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:leather"
+   },
+   "result": {
+    "item": "gremcraft:boots_leather",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_iron",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:helmet_iron",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_iron",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:chestplate_iron",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:leggings_iron",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:leggings_iron",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:boots_iron",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:boots_iron",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_gold",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:gold_ingot"
+   },
+   "result": {
+    "item": "gremcraft:helmet_gold",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_gold",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:gold_ingot"
+   },
+   "result": {
+    "item": "gremcraft:chestplate_gold",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:leggings_gold",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:gold_ingot"
+   },
+   "result": {
+    "item": "gremcraft:leggings_gold",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:boots_gold",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:gold_ingot"
+   },
+   "result": {
+    "item": "gremcraft:boots_gold",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_diamond",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:diamond"
+   },
+   "result": {
+    "item": "gremcraft:helmet_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_diamond",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:diamond"
+   },
+   "result": {
+    "item": "gremcraft:chestplate_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:leggings_diamond",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:diamond"
+   },
+   "result": {
+    "item": "gremcraft:leggings_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:boots_diamond",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:diamond"
+   },
+   "result": {
+    "item": "gremcraft:boots_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:bread",
+   "type": "shaped",
+   "grid": [
+    [
+     "W",
+     "W",
+     "W"
+    ]
+   ],
+   "key": {
+    "W": "gremcraft:wheat"
+   },
+   "result": {
+    "item": "gremcraft:bread",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:oak_stairs",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:planks"
+   },
+   "result": {
+    "item": "gremcraft:oak_stairs",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:spruce_stairs",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:spruce_planks"
+   },
+   "result": {
+    "item": "gremcraft:spruce_stairs",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:birch_stairs",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:birch_planks"
+   },
+   "result": {
+    "item": "gremcraft:birch_stairs",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:cobblestone_stairs",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:cobblestone"
+   },
+   "result": {
+    "item": "gremcraft:cobblestone_stairs",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:stone_stairs",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:stone"
+   },
+   "result": {
+    "item": "gremcraft:stone_stairs",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:brick_stairs",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     " "
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:bricks"
+   },
+   "result": {
+    "item": "gremcraft:brick_stairs",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:oak_fence",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "S",
+     "P"
+    ],
+    [
+     "P",
+     "S",
+     "P"
+    ]
+   ],
+   "key": {
+    "P": "gremcraft:planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:oak_fence",
+    "count": 2
+   }
+  },
+  {
+   "id": "gremcraft:oak_fence_gate",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "P",
+     "S"
+    ],
+    [
+     "S",
+     "P",
+     "S"
+    ]
+   ],
+   "key": {
+    "P": "gremcraft:planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:oak_fence_gate",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:spruce_fence",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "S",
+     "P"
+    ],
+    [
+     "P",
+     "S",
+     "P"
+    ]
+   ],
+   "key": {
+    "P": "gremcraft:spruce_planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:spruce_fence",
+    "count": 2
+   }
+  },
+  {
+   "id": "gremcraft:spruce_fence_gate",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "P",
+     "S"
+    ],
+    [
+     "S",
+     "P",
+     "S"
+    ]
+   ],
+   "key": {
+    "P": "gremcraft:spruce_planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:spruce_fence_gate",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:birch_fence",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "S",
+     "P"
+    ],
+    [
+     "P",
+     "S",
+     "P"
+    ]
+   ],
+   "key": {
+    "P": "gremcraft:birch_planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:birch_fence",
+    "count": 2
+   }
+  },
+  {
+   "id": "gremcraft:birch_fence_gate",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "P",
+     "S"
+    ],
+    [
+     "S",
+     "P",
+     "S"
+    ]
+   ],
+   "key": {
+    "P": "gremcraft:birch_planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:birch_fence_gate",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:oak_slab",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:planks"
+   },
+   "result": {
+    "item": "gremcraft:oak_slab",
+    "count": 6
+   }
+  },
+  {
+   "id": "gremcraft:birch_slab",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:birch_planks"
+   },
+   "result": {
+    "item": "gremcraft:birch_slab",
+    "count": 6
+   }
+  },
+  {
+   "id": "gremcraft:spruce_slab",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:spruce_planks"
+   },
+   "result": {
+    "item": "gremcraft:spruce_slab",
+    "count": 6
+   }
+  },
+  {
+   "id": "gremcraft:stone_slab",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:stone"
+   },
+   "result": {
+    "item": "gremcraft:stone_slab",
+    "count": 6
+   }
+  },
+  {
+   "id": "gremcraft:cobblestone_slab",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:cobblestone"
+   },
+   "result": {
+    "item": "gremcraft:cobblestone_slab",
+    "count": 6
+   }
+  },
+  {
+   "id": "gremcraft:brick_slab",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:bricks"
+   },
+   "result": {
+    "item": "gremcraft:brick_slab",
+    "count": 6
+   }
+  },
+  {
+   "id": "gremcraft:ruin_slab",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:ruin_bricks"
+   },
+   "result": {
+    "item": "gremcraft:ruin_slab",
+    "count": 6
+   }
+  },
+  {
+   "id": "gremcraft:oak_door",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:planks"
+   },
+   "result": {
+    "item": "gremcraft:oak_door",
+    "count": 3
+   }
+  },
+  {
+   "id": "gremcraft:birch_door",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:birch_planks"
+   },
+   "result": {
+    "item": "gremcraft:birch_door",
+    "count": 3
+   }
+  },
+  {
+   "id": "gremcraft:spruce_door",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:spruce_planks"
+   },
+   "result": {
+    "item": "gremcraft:spruce_door",
+    "count": 3
+   }
+  },
+  {
+   "id": "gremcraft:tablet_fragment",
+   "type": "shaped",
+   "grid": [
+    [
+     "B",
+     "R",
+     "B"
+    ],
+    [
+     "R",
+     "D",
+     "R"
+    ],
+    [
+     "B",
+     "R",
+     "B"
+    ]
+   ],
+   "key": {
+    "B": "gremcraft:bone",
+    "R": "gremcraft:redstone",
+    "D": "gremcraft:diamond"
+   },
+   "result": {
+    "item": "gremcraft:tablet_fragment",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:ancient_tablet",
+   "type": "shaped",
+   "grid": [
+    [
+     "F",
+     "F",
+     "F"
+    ],
+    [
+     "F",
+     "F",
+     "F"
+    ],
+    [
+     "F",
+     "F",
+     "F"
+    ]
+   ],
+   "key": {
+    "F": "gremcraft:tablet_fragment"
+   },
+   "result": {
+    "item": "gremcraft:ancient_tablet",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:bed",
+   "type": "shaped",
+   "grid": [
+    [
+     "W",
+     "W",
+     "W"
+    ],
+    [
+     "P",
+     "P",
+     "P"
+    ]
+   ],
+   "key": {
+    "W": "gremcraft:wool",
+    "P": "#planks"
+   },
+   "result": {
+    "item": "gremcraft:bed",
+    "count": 1
+   }
+  }
+ ],
+ "smelting": [
+  {
+   "input": "gremcraft:iron_ore",
+   "output": "gremcraft:iron_ingot",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:gold_ore",
+   "output": "gremcraft:gold_ingot",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:sand",
+   "output": "gremcraft:glass",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:cobblestone",
+   "output": "gremcraft:stone",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:porkchop_raw",
+   "output": "gremcraft:porkchop_cooked",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:beef_raw",
+   "output": "gremcraft:steak",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:mutton_raw",
+   "output": "gremcraft:mutton_cooked",
+   "ticks": 200
+  }
+ ]
+}
