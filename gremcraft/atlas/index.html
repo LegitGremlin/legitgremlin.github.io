@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GremCraft — Atlas</title>
+  <style>
+    :root {
+      --bg: #14110e;
+      --surface: #1c1814;
+      --raised: #26201b;
+      --slot: #171310;
+      --border: #362e26;
+      --fg: #f4ecdf;
+      --muted: #a39788;
+      --accent: #e0b15a;
+      --accent-ink: #14110e;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-display: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    main {
+      max-width: 72rem;
+      margin: 0 auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      main {
+        padding: 1.5rem;
+      }
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .eyebrow {
+      font-family: var(--font-display);
+      color: var(--accent);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      color: var(--fg);
+      margin-top: 0.25rem;
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 1.875rem;
+      }
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    .search-label {
+      width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .search-label {
+        width: 18rem;
+      }
+    }
+
+    .search-input {
+      background-color: var(--surface);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      width: 100%;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .search-input::placeholder {
+      color: var(--muted);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      color: var(--fg);
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .filter-btn.active {
+      background-color: var(--accent);
+      color: var(--accent-ink);
+      border-color: var(--accent);
+    }
+
+    .workspace {
+      display: grid;
+      align-items: start;
+      gap: 1rem;
+    }
+
+    @media (min-width: 1024px) {
+      .workspace {
+        grid-template-columns: minmax(0, 1fr) 22rem;
+      }
+    }
+
+    .catalog-panel {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+    }
+
+    .status-msg {
+      color: var(--muted);
+      padding: 2rem 0.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+
+    .tile-grid {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .tile-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 768px) {
+      .tile-grid {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+    }
+
+    .item-btn {
+      display: flex;
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      background-color: var(--slot);
+      padding: 0.25rem;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .item-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .item-btn.active {
+      border-color: var(--accent);
+      background-color: var(--raised);
+    }
+
+    .recipe-panel {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      position: sticky;
+      top: 1rem;
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
+
+    .recipe-header {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .recipe-header-empty {
+      margin-bottom: 1rem;
+    }
+
+    .preview-box {
+      background-color: var(--slot);
+      border: 1px solid var(--border);
+      display: flex;
+      width: 3.5rem;
+      height: 3.5rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .recipe-title {
+      font-family: var(--font-display);
+      color: var(--fg);
+      font-size: 1.125rem;
+      line-height: 1.3;
+    }
+
+    .recipe-meta {
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .recipe-empty-hint {
+      color: var(--muted);
+      margin-top: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    .crafting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .crafting-grid {
+      background-color: var(--raised);
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.375rem;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+    }
+
+    .craft-slot {
+      background-color: var(--slot);
+      border: 1px solid var(--border);
+      position: relative;
+      display: flex;
+      width: 3.5rem;
+      height: 3.5rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.375rem;
+    }
+
+    .slot-note {
+      color: var(--accent);
+      position: absolute;
+      right: 0.125rem;
+      bottom: 0;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+
+    .arrow {
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      user-select: none;
+    }
+
+    .output-slot {
+      background-color: var(--slot);
+      border: 1px solid var(--border);
+      position: relative;
+      display: flex;
+      width: 4rem;
+      height: 4rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+    }
+
+    .result-count {
+      color: var(--fg);
+      position: absolute;
+      right: 0.25rem;
+      bottom: 0.125rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    .caption {
+      color: var(--muted);
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .ingredients-list {
+      list-style: none;
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .ingredient-item {
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .ingredient-note {
+      color: var(--muted);
+    }
+
+    .sprite {
+      display: inline-block;
+      background-image: url("./atlas.png");
+      background-repeat: no-repeat;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      flex-shrink: 0;
+    }
+
+    .sprite-fallback {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">GREMCRAFT</p>
+        <h1>Atlas</h1>
+        <p class="subtitle" id="tile-count">Loading atlas…</p>
+      </div>
+      <label class="search-label">
+        <span class="sr-only">Search items</span>
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search blocks and items"
+          class="search-input"
+          autocomplete="off"
+        />
+      </label>
+    </header>
+
+    <div class="filters" id="filter-bar" role="group" aria-label="Filter tiles"></div>
+
+    <div class="workspace">
+      <section class="catalog-panel" id="catalog-panel">
+        <p class="status-msg">Loading tiles…</p>
+      </section>
+      <aside class="recipe-panel" id="recipe-panel"></aside>
+    </div>
+  </main>
+
+  <script>
+    const FILTERS = [
+      ["all", "All"],
+      ["block", "Blocks"],
+      ["item", "Items"],
+      ["crafted", "Craftable"]
+    ];
+
+    const state = {
+      items: [],
+      itemMap: new Map(),
+      recipes: {},
+      sheetWidth: 0,
+      sheetHeight: 0,
+      defaultTileSize: 16,
+      query: "",
+      filter: "all",
+      selected: null
+    };
+
+    const tileCountEl = document.getElementById("tile-count");
+    const searchInputEl = document.getElementById("search-input");
+    const filterBarEl = document.getElementById("filter-bar");
+    const catalogPanelEl = document.getElementById("catalog-panel");
+    const recipePanelEl = document.getElementById("recipe-panel");
+
+    function humanizeKey(key) {
+      return key
+        .replace(/\.[^.]+$/, "")
+        .replace(/[_-]+/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+    }
+
+    function normalizeFrame(entry, index, defaultTileSize, cols) {
+      const f = entry.frame || entry;
+      const w = f.w ?? f.width ?? defaultTileSize;
+      const h = f.h ?? f.height ?? defaultTileSize;
+
+      let x = f.x;
+      let y = f.y;
+
+      // Support grid coordinates (col/row) or linear index if pixel x/y aren't given
+      if (x === undefined || y === undefined) {
+        if (entry.col !== undefined && entry.row !== undefined) {
+          x = entry.col * w;
+          y = entry.row * h;
+        } else if (cols > 0) {
+          x = (index % cols) * w;
+          y = Math.floor(index / cols) * h;
+        } else {
+          x = 0;
+          y = 0;
+        }
+      }
+
+      return { x, y, w, h };
+    }
+
+    function parseAtlas(atlasData, sheetWidth, sheetHeight) {
+      const defaultTileSize =
+        atlasData.tileSize ??
+        atlasData.tileWidth ??
+        atlasData.meta?.tileSize ??
+        16;
+
+      const metaW = atlasData.meta?.size?.w ?? atlasData.width ?? sheetWidth;
+      const metaH = atlasData.meta?.size?.h ?? atlasData.height ?? sheetHeight;
+      const cols = metaW && defaultTileSize ? Math.floor(metaW / defaultTileSize) : 0;
+
+      let rawEntries = [];
+      if (Array.isArray(atlasData)) {
+        rawEntries = atlasData;
+      } else if (Array.isArray(atlasData.items)) {
+        rawEntries = atlasData.items;
+      } else if (Array.isArray(atlasData.tiles)) {
+        rawEntries = atlasData.tiles;
+      } else if (atlasData.frames && typeof atlasData.frames === "object") {
+        rawEntries = Object.entries(atlasData.frames).map(([key, val]) => ({
+          key,
+          ...val
+        }));
+      } else if (atlasData.sprites && typeof atlasData.sprites === "object") {
+        rawEntries = Object.entries(atlasData.sprites).map(([key, val]) => ({
+          key,
+          ...val
+        }));
+      } else if (typeof atlasData === "object" && atlasData !== null) {
+        rawEntries = Object.entries(atlasData)
+          .filter(([k]) => !["meta", "tileSize", "tileWidth", "tileHeight", "width", "height"].includes(k))
+          .map(([key, val]) => ({
+            key,
+            ...(typeof val === "object" ? val : {})
+          }));
+      }
+
+      return rawEntries.map((entry, index) => {
+        const key = entry.key ?? entry.id ?? entry.name ?? `tile_${index}`;
+        const frame = normalizeFrame(entry, index, defaultTileSize, cols);
+        return {
+          key,
+          name: entry.name ?? humanizeKey(key),
+          kind: entry.kind ?? entry.type ?? "block",
+          crafted: Boolean(entry.crafted),
+          frame,
+          sheetW: metaW || sheetWidth,
+          sheetH: metaH || sheetHeight
+        };
+      });
+    }
+
+    function parseRecipes(recipesData) {
+      if (!recipesData) return {};
+      if (Array.isArray(recipesData)) {
+        const map = {};
+        for (const r of recipesData) {
+          const k = r.resultKey ?? r.key ?? r.id ?? r.output;
+          if (k) map[k] = r;
+        }
+        return map;
+      }
+      if (recipesData.recipes && typeof recipesData.recipes === "object") {
+        return recipesData.recipes;
+      }
+      return recipesData;
+    }
+
+    function craftFor(key) {
+      return state.recipes[key] || null;
+    }
+
+    function createSprite(name, size) {
+      const entry = state.itemMap.get(name);
+      if (!entry || !entry.sheetW || !entry.sheetH) {
+        const fallback = document.createElement("span");
+        fallback.className = "sprite-fallback";
+        fallback.style.width = `${size}px`;
+        fallback.style.height = `${size}px`;
+        fallback.textContent = "?";
+        return fallback;
+      }
+
+      const { x, y, w, h } = entry.frame;
+      const scaleX = size / w;
+      const scaleY = size / h;
+
+      const span = document.createElement("span");
+      span.className = "sprite";
+      span.style.width = `${size}px`;
+      span.style.height = `${size}px`;
+      span.style.backgroundSize = `${entry.sheetW * scaleX}px ${entry.sheetH * scaleY}px`;
+      span.style.backgroundPosition = `-${x * scaleX}px -${y * scaleY}px`;
+      return span;
+    }
+
+    function getVisibleItems() {
+      const q = state.query.trim().toLowerCase();
+      return state.items.filter((item) => {
+        if (state.filter === "block" && item.kind !== "block") return false;
+        if (state.filter === "item" && item.kind !== "item") return false;
+        if (state.filter === "crafted" && !item.crafted) return false;
+        if (q && !item.name.toLowerCase().includes(q) && !item.key.toLowerCase().includes(q)) {
+          return false;
+        }
+        return true;
+      });
+    }
+
+    function uniqueSlots(slots) {
+      const seen = new Set();
+      const out = [];
+      for (const slot of slots) {
+        if (!slot) continue;
+        const label = slot.label ?? state.itemMap.get(slot.key)?.name ?? slot.key ?? "";
+        const id = `${slot.key ?? ""}:${label}`;
+        if (seen.has(id)) continue;
+        seen.add(id);
+        out.push({ ...slot, label });
+      }
+      return out;
+    }
+
+    function renderFilters() {
+      filterBarEl.innerHTML = "";
+      for (const [id, label] of FILTERS) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `filter-btn${state.filter === id ? " active" : ""}`;
+        btn.textContent = label;
+        btn.addEventListener("click", () => {
+          state.filter = id;
+          renderFilters();
+          renderCatalog();
+        });
+        filterBarEl.appendChild(btn);
+      }
+    }
+
+    function renderCatalog() {
+      const visible = getVisibleItems();
+      catalogPanelEl.innerHTML = "";
+
+      if (visible.length === 0) {
+        const p = document.createElement("p");
+        p.className = "status-msg";
+        p.textContent = "No tiles match.";
+        catalogPanelEl.appendChild(p);
+        return;
+      }
+
+      const ul = document.createElement("ul");
+      ul.className = "tile-grid";
+
+      for (const item of visible) {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        const active = item.key === state.selected;
+
+        btn.type = "button";
+        btn.className = `item-btn${active ? " active" : ""}`;
+        btn.setAttribute("aria-pressed", String(active));
+        btn.title = item.name;
+
+        btn.appendChild(createSprite(item.key, 40));
+
+        const sr = document.createElement("span");
+        sr.className = "sr-only";
+        sr.textContent = item.name;
+        btn.appendChild(sr);
+
+        btn.addEventListener("click", () => {
+          state.selected = item.key;
+          renderCatalog();
+          renderRecipePanel();
+        });
+
+        li.appendChild(btn);
+        ul.appendChild(li);
+      }
+
+      catalogPanelEl.appendChild(ul);
+    }
+
+    function renderRecipePanel() {
+      const item = state.itemMap.get(state.selected) ?? null;
+      const craft = item ? craftFor(item.key) : null;
+      const rawSlots = craft?.slots ?? [];
+      const slots = Array.from({ length: 9 }, (_, i) => {
+        const s = rawSlots[i] ?? null;
+        if (!s) return null;
+        return typeof s === "string" ? { key: s, label: state.itemMap.get(s)?.name ?? humanizeKey(s) } : s;
+      });
+
+      recipePanelEl.innerHTML = "";
+
+      if (item) {
+        const header = document.createElement("div");
+        header.className = "recipe-header";
+
+        const preview = document.createElement("span");
+        preview.className = "preview-box";
+        preview.appendChild(createSprite(item.key, 40));
+
+        const info = document.createElement("div");
+        const h2 = document.createElement("h2");
+        h2.className = "recipe-title";
+        h2.textContent = item.name;
+
+        const meta = document.createElement("p");
+        meta.className = "recipe-meta";
+        meta.textContent = `${item.kind === "item" ? "Item" : "Block"}${
+          item.crafted || craft ? " · has recipe" : " · no recipe"
+        }`;
+
+        info.appendChild(h2);
+        info.appendChild(meta);
+        header.appendChild(preview);
+        header.appendChild(info);
+        recipePanelEl.appendChild(header);
+      } else {
+        const header = document.createElement("div");
+        header.className = "recipe-header-empty";
+
+        const h2 = document.createElement("h2");
+        h2.className = "recipe-title";
+        h2.textContent = "Crafting";
+
+        const hint = document.createElement("p");
+        hint.className = "recipe-empty-hint";
+        hint.textContent = "The table is empty until you pick a tile.";
+
+        header.appendChild(h2);
+        header.appendChild(hint);
+        recipePanelEl.appendChild(header);
+      }
+
+      const row = document.createElement("div");
+      row.className = "crafting-row";
+
+      const grid = document.createElement("div");
+      grid.className = "crafting-grid";
+      grid.setAttribute("aria-label", "Crafting table");
+
+      for (const slot of slots) {
+        const cell = document.createElement("div");
+        cell.className = "craft-slot";
+
+        if (slot?.key) {
+          cell.appendChild(createSprite(slot.key, 36));
+        }
+        if (slot?.note) {
+          const star = document.createElement("span");
+          star.className = "slot-note";
+          star.textContent = "*";
+          cell.appendChild(star);
+        }
+        grid.appendChild(cell);
+      }
+
+      const arrow = document.createElement("div");
+      arrow.className = "arrow";
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = "→";
+
+      const output = document.createElement("div");
+      output.className = "output-slot";
+      const resultKey = craft?.resultKey ?? (craft ? item?.key : null);
+      if (resultKey) {
+        output.appendChild(createSprite(resultKey, 40));
+      }
+      if (craft && craft.resultCount > 1) {
+        const badge = document.createElement("span");
+        badge.className = "result-count";
+        badge.textContent = String(craft.resultCount);
+        output.appendChild(badge);
+      }
+
+      row.appendChild(grid);
+      row.appendChild(arrow);
+      row.appendChild(output);
+      recipePanelEl.appendChild(row);
+
+      const caption = document.createElement("p");
+      caption.className = "caption";
+      if (item && craft) {
+        caption.textContent = craft.caption ?? "Crafting recipe.";
+      } else if (item) {
+        caption.textContent = "This tile is not a crafting or furnace result.";
+      } else {
+        caption.textContent = "Output appears beside the table.";
+      }
+      recipePanelEl.appendChild(caption);
+
+      if (craft) {
+        const ul = document.createElement("ul");
+        ul.className = "ingredients-list";
+
+        for (const slot of uniqueSlots(slots)) {
+          const li = document.createElement("li");
+          li.className = "ingredient-item";
+
+          if (slot.key) {
+            li.appendChild(createSprite(slot.key, 20));
+          }
+
+          const text = document.createElement("span");
+          text.textContent = slot.label;
+
+          if (slot.note) {
+            const note = document.createElement("span");
+            note.className = "ingredient-note";
+            note.textContent = " · any matching plank";
+            text.appendChild(note);
+          }
+
+          li.appendChild(text);
+          ul.appendChild(li);
+        }
+
+        recipePanelEl.appendChild(ul);
+      }
+    }
+
+    function loadImageDimensions(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
+        img.onerror = () => reject(new Error(`Failed to load ${src}`));
+        img.src = src;
+      });
+    }
+
+    async function init() {
+      renderFilters();
+      renderRecipePanel();
+
+      searchInputEl.addEventListener("input", (e) => {
+        state.query = e.target.value;
+        renderCatalog();
+      });
+
+      try {
+        const [atlasRes, recipesRes, imgDims] = await Promise.all([
+          fetch("./atlas.json"),
+          fetch("./recipes.json"),
+          loadImageDimensions("./atlas.png")
+        ]);
+
+        if (!atlasRes.ok) throw new Error(`atlas.json HTTP ${atlasRes.status}`);
+        if (!recipesRes.ok) throw new Error(`recipes.json HTTP ${recipesRes.status}`);
+
+        const [atlasData, recipesData] = await Promise.all([
+          atlasRes.json(),
+          recipesRes.json()
+        ]);
+
+        state.sheetWidth = imgDims.width;
+        state.sheetHeight = imgDims.height;
+        state.recipes = parseRecipes(recipesData);
+        state.items = parseAtlas(atlasData, imgDims.width, imgDims.height).map((item) => ({
+          ...item,
+          crafted: item.crafted || Boolean(state.recipes[item.key])
+        }));
+        state.itemMap = new Map(state.items.map((item) => [item.key, item]));
+
+        tileCountEl.textContent = `${state.items.length} tiles. Click one to fill the crafting table.`;
+        renderCatalog();
+        renderRecipePanel();
+      } catch (err) {
+        console.error(err);
+        tileCountEl.textContent = "Failed to load atlas data.";
+        catalogPanelEl.innerHTML = `<p class="status-msg">Could not load <code>atlas.png</code>, <code>atlas.json</code>, or <code>recipes.json</code>. Make sure you are serving this directory over HTTP (not <code>file://</code>).</p>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
