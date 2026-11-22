@@ -229,17 +229,15 @@
       top: 1rem;
       border-radius: 0.75rem;
       padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
     }
 
     .recipe-header {
-      margin-bottom: 1rem;
       display: flex;
       align-items: center;
       gap: 0.75rem;
-    }
-
-    .recipe-header-empty {
-      margin-bottom: 1rem;
     }
 
     .preview-box {
@@ -266,8 +264,13 @@
       font-size: 0.75rem;
     }
 
+    .recipe-empty-hint {
+      color: var(--muted);
+      margin-top: 0.25rem;
+      font-size: 0.875rem;
+    }
+
     .variants-row {
-      margin-bottom: 0.85rem;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -292,10 +295,53 @@
       color: var(--fg);
     }
 
-    .recipe-empty-hint {
+    .stats-section {
+      border-top: 1px solid var(--border);
+      padding-top: 0.75rem;
+    }
+
+    .stats-heading {
+      font-family: var(--font-display);
       color: var(--muted);
-      margin-top: 0.25rem;
-      font-size: 0.875rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.375rem 0.5rem;
+    }
+
+    .stat-box {
+      background-color: var(--slot);
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      padding: 0.35rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-box.wide {
+      grid-column: 1 / -1;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.68rem;
+      line-height: 1.2;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      color: var(--fg);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 0.1rem;
+      word-break: break-word;
     }
 
     .crafting-row {
@@ -366,13 +412,11 @@
 
     .caption {
       color: var(--muted);
-      margin-top: 0.75rem;
       font-size: 0.875rem;
     }
 
     .ingredients-list {
       list-style: none;
-      margin-top: 0.75rem;
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
@@ -449,7 +493,6 @@
       ["crafted", "Craftable"]
     ];
 
-    // Suffixes that represent directional faces or block states of a base block
     const FACE_SUFFIXES = [
       "_front_lit",
       "_front",
@@ -463,7 +506,6 @@
       "_foot"
     ];
 
-    // Preferred display face when grouping variants into a base block
     const PREFERRED_FACES = [
       "_front",
       "_side",
@@ -561,7 +603,6 @@
         const repSprite = spriteMap.get(repKey);
         const isItem = groupKey.startsWith("item_");
 
-        // Also register groupKey in spriteMap using its representative frame
         if (!spriteMap.has(groupKey) && repSprite) {
           spriteMap.set(groupKey, { ...repSprite, key: groupKey });
         }
@@ -573,6 +614,7 @@
           name: humanizeKey(groupKey),
           kind: isItem ? "item" : "block",
           crafted: false,
+          factors: {},
           frame: repSprite.frame,
           sheetW: totalW,
           sheetH: totalH
@@ -590,14 +632,204 @@
       const grouped = stripFaceSuffix(base);
       if (itemMap.has(grouped)) return grouped;
 
+      if (base === "log" && itemMap.has("log")) return "log";
       if (base === "log" && itemMap.has("log_side")) return "log_side";
+      if (base === "birch_log" && itemMap.has("log_birch")) return "log_birch";
       if (base === "birch_log" && itemMap.has("log_birch_side")) return "log_birch_side";
+      if (base === "spruce_log" && itemMap.has("log_spruce")) return "log_spruce";
       if (base === "spruce_log" && itemMap.has("log_spruce_side")) return "log_spruce_side";
       if (base === "wool" && itemMap.has("wool_white")) return "wool_white";
 
-      // If a recipe references a specific face tile directly, keep its sprite lookup intact
       if (spriteMap.has(base)) return base;
       return grouped;
+    }
+
+    function mergeFactorsIntoItems(items, itemMap, spriteMap, blocksData, itemsData) {
+      const blocks = Array.isArray(blocksData?.blocks) ? blocksData.blocks : [];
+      const itemDefs = Array.isArray(itemsData?.items) ? itemsData.items : [];
+
+      for (const def of itemDefs) {
+        const baseId = stripNamespace(def.id);
+        const targetKey = itemMap.has(`item_${baseId}`)
+          ? `item_${baseId}`
+          : itemMap.has(baseId)
+            ? baseId
+            : `item_${baseId}`;
+
+        const spriteKey = def.sprite && spriteMap.has(def.sprite)
+          ? def.sprite
+          : spriteMap.has(targetKey)
+            ? targetKey
+            : null;
+        const spriteInfo = spriteKey ? spriteMap.get(spriteKey) : null;
+
+        let entry = itemMap.get(targetKey);
+        if (!entry) {
+          entry = {
+            key: targetKey,
+            spriteKey: spriteKey ?? targetKey,
+            variants: spriteKey ? [spriteKey] : [],
+            name: def.name ?? humanizeKey(targetKey),
+            kind: "item",
+            crafted: false,
+            factors: {},
+            frame: spriteInfo?.frame ?? { x: 0, y: 0, w: 16, h: 16 },
+            sheetW: spriteInfo?.sheetW ?? 0,
+            sheetH: spriteInfo?.sheetH ?? 0
+          };
+          itemMap.set(targetKey, entry);
+          items.push(entry);
+        } else {
+          entry.name = def.name ?? entry.name;
+          entry.kind = "item";
+          if (spriteKey) {
+            entry.spriteKey = spriteKey;
+            entry.frame = spriteInfo.frame;
+            entry.sheetW = spriteInfo.sheetW;
+            entry.sheetH = spriteInfo.sheetH;
+          }
+        }
+
+        entry.factors = { ...entry.factors, ...def };
+      }
+
+      for (const blk of blocks) {
+        const baseId = stripNamespace(blk.id);
+        const groupedId = stripFaceSuffix(baseId);
+        let entry = itemMap.get(baseId) ?? itemMap.get(groupedId);
+
+        const preferredSprite =
+          blk.item_sprite && spriteMap.has(blk.item_sprite)
+            ? blk.item_sprite
+            : blk.tiles?.front && spriteMap.has(blk.tiles.front)
+              ? blk.tiles.front
+              : blk.tiles?.all && spriteMap.has(blk.tiles.all)
+                ? blk.tiles.all
+                : blk.tiles?.side && spriteMap.has(blk.tiles.side)
+                  ? blk.tiles.side
+                  : null;
+
+        const spriteInfo = preferredSprite ? spriteMap.get(preferredSprite) : null;
+
+        if (!entry) {
+          entry = {
+            key: baseId,
+            spriteKey: preferredSprite ?? baseId,
+            variants: preferredSprite ? [preferredSprite] : [],
+            name: blk.name ?? humanizeKey(baseId),
+            kind: "block",
+            crafted: false,
+            factors: {},
+            frame: spriteInfo?.frame ?? { x: 0, y: 0, w: 16, h: 16 },
+            sheetW: spriteInfo?.sheetW ?? 0,
+            sheetH: spriteInfo?.sheetH ?? 0
+          };
+          itemMap.set(baseId, entry);
+          items.push(entry);
+        } else {
+          entry.name = blk.name ?? entry.name;
+          entry.kind = "block";
+          if (spriteInfo && !blk.tiles?.front && !blk.tiles?.side) {
+            entry.spriteKey = preferredSprite;
+            entry.frame = spriteInfo.frame;
+            entry.sheetW = spriteInfo.sheetW;
+            entry.sheetH = spriteInfo.sheetH;
+          }
+        }
+
+        entry.factors = { ...entry.factors, ...blk };
+      }
+    }
+
+    function getFactorItems(item) {
+      const f = item.factors || {};
+      const rows = [];
+
+      // Item / Tool / Weapon / Armor / Food factors
+      if (f.max_stack !== undefined) {
+        rows.push({ label: "Max Stack", value: String(f.max_stack) });
+      }
+      if (f.durability !== undefined) {
+        rows.push({ label: "Durability", value: `${f.durability} uses` });
+      }
+      if (f.damage !== undefined) {
+        rows.push({ label: "Damage", value: String(f.damage) });
+      }
+      if (f.weapon) {
+        rows.push({ label: "Combat", value: "Melee Weapon" });
+      }
+      if (f.tool && typeof f.tool === "object") {
+        rows.push({
+          label: "Tool",
+          value: `${humanizeKey(f.tool.kind)} · Tier ${f.tool.tier} · ${f.tool.speed}x speed`
+        });
+      }
+      if (f.armor && typeof f.armor === "object") {
+        rows.push({
+          label: "Armor",
+          value: `${humanizeKey(f.armor.slot)} · +${f.armor.points} points`
+        });
+      }
+      if (f.food && typeof f.food === "object") {
+        rows.push({
+          label: "Food",
+          value: `+${f.food.hunger} hunger · ${f.food.saturation} sat`
+        });
+      }
+      if (f.fuel_ticks !== undefined) {
+        rows.push({ label: "Fuel", value: `${f.fuel_ticks} ticks` });
+      }
+      if (f.use) {
+        rows.push({ label: "Use Action", value: humanizeKey(f.use) });
+      }
+      if (f.places) {
+        rows.push({ label: "Places", value: humanizeKey(f.places) });
+      }
+
+      // Block factors
+      if (f.hardness !== undefined) {
+        rows.push({
+          label: "Hardness",
+          value: f.hardness < 0 ? "Unbreakable" : String(f.hardness)
+        });
+      }
+      if (typeof f.tool === "string") {
+        const req = f.requires_tool ? " (Required)" : "";
+        const tier = f.harvest_level !== undefined ? ` · Lv.${f.harvest_level}` : "";
+        rows.push({ label: "Best Tool", value: `${humanizeKey(f.tool)}${tier}${req}` });
+      } else if (f.harvest_level !== undefined) {
+        rows.push({ label: "Harvest Level", value: `Lv.${f.harvest_level}` });
+      }
+      if (f.light_emission !== undefined && f.light_emission > 0) {
+        rows.push({ label: "Light Emission", value: String(f.light_emission) });
+      }
+      if (f.light_opacity !== undefined) {
+        rows.push({ label: "Light Opacity", value: String(f.light_opacity) });
+      }
+      if (f.interact) {
+        rows.push({ label: "Interact", value: humanizeKey(f.interact) });
+      }
+      if (f.till_to) {
+        rows.push({ label: "Tills Into", value: humanizeKey(f.till_to) });
+      }
+      if (f.double) {
+        rows.push({ label: "Double Block", value: humanizeKey(f.double) });
+      }
+      if (Array.isArray(f.drops) && f.drops.length > 0) {
+        const dropText = f.drops
+          .map((d) => {
+            const name = humanizeKey(d.item);
+            const count = d.count && d.count > 1 ? ` ×${d.count}` : "";
+            const chance = d.chance !== undefined ? ` (${Math.round(d.chance * 1000) / 10}%)` : "";
+            return `${name}${count}${chance}`;
+          })
+          .join(", ");
+        rows.push({ label: "Drops", value: dropText, wide: true });
+      } else if (Array.isArray(f.drops) && f.drops.length === 0) {
+        rows.push({ label: "Drops", value: "None", wide: true });
+      }
+
+      return rows;
     }
 
     function resolveToken(token, tags, itemMap, spriteMap) {
@@ -869,9 +1101,42 @@
 
           recipePanelEl.appendChild(vRow);
         }
+
+        const factorRows = getFactorItems(item);
+        if (factorRows.length > 0) {
+          const statsSec = document.createElement("div");
+          statsSec.className = "stats-section";
+
+          const heading = document.createElement("h3");
+          heading.className = "stats-heading";
+          heading.textContent = "Properties";
+          statsSec.appendChild(heading);
+
+          const statsUl = document.createElement("ul");
+          statsUl.className = "stats-list";
+
+          for (const row of factorRows) {
+            const box = document.createElement("li");
+            box.className = `stat-box${row.wide ? " wide" : ""}`;
+
+            const lbl = document.createElement("span");
+            lbl.className = "stat-label";
+            lbl.textContent = row.label;
+
+            const val = document.createElement("span");
+            val.className = "stat-value";
+            val.textContent = row.value;
+
+            box.appendChild(lbl);
+            box.appendChild(val);
+            statsUl.appendChild(box);
+          }
+
+          statsSec.appendChild(statsUl);
+          recipePanelEl.appendChild(statsSec);
+        }
       } else {
         const header = document.createElement("div");
-        header.className = "recipe-header-empty";
 
         const h2 = document.createElement("h2");
         h2.className = "recipe-title";
@@ -981,6 +1246,16 @@
       });
     }
 
+    async function fetchJsonOptional(url) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        return await res.json();
+      } catch {
+        return null;
+      }
+    }
+
     async function init() {
       renderFilters();
       renderRecipePanel();
@@ -991,9 +1266,11 @@
       });
 
       try {
-        const [atlasRes, recipesRes, imgDims] = await Promise.all([
+        const [atlasRes, recipesRes, blocksData, itemsData, imgDims] = await Promise.all([
           fetch("./atlas.json"),
           fetch("./recipes.json"),
+          fetchJsonOptional("./blocks.json"),
+          fetchJsonOptional("./items.json"),
           loadImageDimensions("./atlas.png")
         ]);
 
@@ -1007,6 +1284,9 @@
 
         const { items, spriteMap } = parseAtlas(atlasData, imgDims.width, imgDims.height);
         const itemMap = new Map(items.map((item) => [item.key, item]));
+
+        mergeFactorsIntoItems(items, itemMap, spriteMap, blocksData, itemsData);
+
         const recipes = buildRecipeMap(recipesData, itemMap, spriteMap);
 
         for (const item of items) {
