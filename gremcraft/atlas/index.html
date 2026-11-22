@@ -493,6 +493,8 @@
       ["crafted", "Craftable"]
     ];
 
+    const EXCLUDED_TILE_PATTERNS = [/^crack_\d+$/];
+
     const PART_SUFFIXES = ["_foot", "_head", "_upper", "_lower"];
     const FACE_SUFFIXES = [
       "_front_lit",
@@ -528,6 +530,10 @@
     const catalogPanelEl = document.getElementById("catalog-panel");
     const recipePanelEl = document.getElementById("recipe-panel");
 
+    function isExcludedTile(key) {
+      return EXCLUDED_TILE_PATTERNS.some((re) => re.test(key));
+    }
+
     function stripNamespace(id) {
       return String(id ?? "").replace(/^gremcraft:/, "");
     }
@@ -535,13 +541,11 @@
     function normalizeGroupKey(rawKey) {
       let k = stripNamespace(rawKey);
 
-      // Normalize door_<wood> / door_<wood>_lower / door_<wood>_upper -> <wood>_door
       const doorMatch = k.match(/^door_([a-z0-9_]+?)(?:_(?:lower|upper))?$/);
       if (doorMatch) {
         return `${doorMatch[1]}_door`;
       }
 
-      // Strip piece suffixes first (e.g. bed_side_foot -> bed_side, bed_top_head -> bed_top)
       for (const suffix of PART_SUFFIXES) {
         if (k.endsWith(suffix)) {
           k = k.slice(0, -suffix.length);
@@ -549,7 +553,6 @@
         }
       }
 
-      // Then strip directional face suffixes (e.g. bed_side -> bed, furnace_front -> furnace)
       for (const suffix of FACE_SUFFIXES) {
         if (k.endsWith(suffix)) {
           k = k.slice(0, -suffix.length);
@@ -601,6 +604,8 @@
           sheetH: totalH
         };
         spriteMap.set(rawKey, spriteInfo);
+
+        if (isExcludedTile(rawKey)) continue;
 
         const groupKey = rawKey.startsWith("item_") ? rawKey : normalizeGroupKey(rawKey);
         if (!groups.has(groupKey)) {
@@ -709,7 +714,6 @@
         const baseId = stripNamespace(blk.id);
         const groupedId = normalizeGroupKey(baseId);
 
-        // If a standalone item_<id> exists (e.g. item_oak_door), remove the standalone item so it merges into the block
         const standaloneItemKey = `item_${baseId}`;
         if (itemMap.has(standaloneItemKey) && standaloneItemKey !== baseId) {
           const standalone = itemMap.get(standaloneItemKey);
