@@ -493,28 +493,21 @@
       ["crafted", "Craftable"]
     ];
 
+    const PART_SUFFIXES = ["_foot", "_head", "_upper", "_lower"];
     const FACE_SUFFIXES = [
       "_front_lit",
       "_front",
       "_side",
       "_top",
       "_bottom",
-      "_end",
-      "_upper",
-      "_lower",
-      "_head",
-      "_foot"
+      "_end"
     ];
 
     const PREFERRED_FACES = [
+      "_top",
       "_front",
       "_side",
-      "_top",
       "_end",
-      "_upper",
-      "_lower",
-      "_head",
-      "_foot",
       "_bottom",
       "_front_lit"
     ];
@@ -539,13 +532,32 @@
       return String(id ?? "").replace(/^gremcraft:/, "");
     }
 
-    function stripFaceSuffix(key) {
-      for (const suffix of FACE_SUFFIXES) {
-        if (key.endsWith(suffix)) {
-          return key.slice(0, -suffix.length);
+    function normalizeGroupKey(rawKey) {
+      let k = stripNamespace(rawKey);
+
+      // Normalize door_<wood> / door_<wood>_lower / door_<wood>_upper -> <wood>_door
+      const doorMatch = k.match(/^door_([a-z0-9_]+?)(?:_(?:lower|upper))?$/);
+      if (doorMatch) {
+        return `${doorMatch[1]}_door`;
+      }
+
+      // Strip piece suffixes first (e.g. bed_side_foot -> bed_side, bed_top_head -> bed_top)
+      for (const suffix of PART_SUFFIXES) {
+        if (k.endsWith(suffix)) {
+          k = k.slice(0, -suffix.length);
+          break;
         }
       }
-      return key;
+
+      // Then strip directional face suffixes (e.g. bed_side -> bed, furnace_front -> furnace)
+      for (const suffix of FACE_SUFFIXES) {
+        if (k.endsWith(suffix)) {
+          k = k.slice(0, -suffix.length);
+          break;
+        }
+      }
+
+      return k;
     }
 
     function humanizeKey(key) {
@@ -590,7 +602,7 @@
         };
         spriteMap.set(rawKey, spriteInfo);
 
-        const groupKey = rawKey.startsWith("item_") ? rawKey : stripFaceSuffix(rawKey);
+        const groupKey = rawKey.startsWith("item_") ? rawKey : normalizeGroupKey(rawKey);
         if (!groups.has(groupKey)) {
           groups.set(groupKey, []);
         }
@@ -629,7 +641,7 @@
       if (itemMap.has(base)) return base;
       if (itemMap.has(`item_${base}`)) return `item_${base}`;
 
-      const grouped = stripFaceSuffix(base);
+      const grouped = normalizeGroupKey(base);
       if (itemMap.has(grouped)) return grouped;
 
       if (base === "log" && itemMap.has("log")) return "log";
@@ -695,7 +707,17 @@
 
       for (const blk of blocks) {
         const baseId = stripNamespace(blk.id);
-        const groupedId = stripFaceSuffix(baseId);
+        const groupedId = normalizeGroupKey(baseId);
+
+        // If a standalone item_<id> exists (e.g. item_oak_door), remove the standalone item so it merges into the block
+        const standaloneItemKey = `item_${baseId}`;
+        if (itemMap.has(standaloneItemKey) && standaloneItemKey !== baseId) {
+          const standalone = itemMap.get(standaloneItemKey);
+          const idx = items.indexOf(standalone);
+          if (idx !== -1) items.splice(idx, 1);
+          itemMap.delete(standaloneItemKey);
+        }
+
         let entry = itemMap.get(baseId) ?? itemMap.get(groupedId);
 
         const preferredSprite =
@@ -727,9 +749,14 @@
           itemMap.set(baseId, entry);
           items.push(entry);
         } else {
+          if (entry.key !== baseId) {
+            itemMap.delete(entry.key);
+            entry.key = baseId;
+            itemMap.set(baseId, entry);
+          }
           entry.name = blk.name ?? entry.name;
           entry.kind = "block";
-          if (spriteInfo && !blk.tiles?.front && !blk.tiles?.side) {
+          if (spriteInfo) {
             entry.spriteKey = preferredSprite;
             entry.frame = spriteInfo.frame;
             entry.sheetW = spriteInfo.sheetW;
@@ -745,7 +772,6 @@
       const f = item.factors || {};
       const rows = [];
 
-      // Item / Tool / Weapon / Armor / Food factors
       if (f.max_stack !== undefined) {
         rows.push({ label: "Max Stack", value: String(f.max_stack) });
       }
@@ -786,7 +812,6 @@
         rows.push({ label: "Places", value: humanizeKey(f.places) });
       }
 
-      // Block factors
       if (f.hardness !== undefined) {
         rows.push({
           label: "Hardness",
