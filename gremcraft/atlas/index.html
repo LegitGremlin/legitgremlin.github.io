@@ -266,6 +266,32 @@
       font-size: 0.75rem;
     }
 
+    .variants-row {
+      margin-bottom: 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .variants-label {
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-right: 0.25rem;
+    }
+
+    .variant-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background-color: var(--raised);
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      padding: 0.2rem 0.4rem;
+      font-size: 0.72rem;
+      color: var(--fg);
+    }
+
     .recipe-empty-hint {
       color: var(--muted);
       margin-top: 0.25rem;
@@ -423,9 +449,38 @@
       ["crafted", "Craftable"]
     ];
 
+    // Suffixes that represent directional faces or block states of a base block
+    const FACE_SUFFIXES = [
+      "_front_lit",
+      "_front",
+      "_side",
+      "_top",
+      "_bottom",
+      "_end",
+      "_upper",
+      "_lower",
+      "_head",
+      "_foot"
+    ];
+
+    // Preferred display face when grouping variants into a base block
+    const PREFERRED_FACES = [
+      "_front",
+      "_side",
+      "_top",
+      "_end",
+      "_upper",
+      "_lower",
+      "_head",
+      "_foot",
+      "_bottom",
+      "_front_lit"
+    ];
+
     const state = {
       items: [],
       itemMap: new Map(),
+      spriteMap: new Map(),
       recipes: {},
       query: "",
       filter: "all",
@@ -442,6 +497,15 @@
       return String(id ?? "").replace(/^gremcraft:/, "");
     }
 
+    function stripFaceSuffix(key) {
+      for (const suffix of FACE_SUFFIXES) {
+        if (key.endsWith(suffix)) {
+          return key.slice(0, -suffix.length);
+        }
+      }
+      return key;
+    }
+
     function humanizeKey(key) {
       return stripNamespace(key)
         .replace(/^item_/, "")
@@ -449,35 +513,13 @@
         .replace(/\b\w/g, (c) => c.toUpperCase());
     }
 
-    function resolveItemKey(rawId, itemMap) {
-      const base = stripNamespace(rawId);
-      if (itemMap.has(base)) return base;
-      if (itemMap.has(`item_${base}`)) return `item_${base}`;
-      if (base === "log") return itemMap.has("log_side") ? "log_side" : base;
-      if (base === "birch_log") return itemMap.has("log_birch_side") ? "log_birch_side" : base;
-      if (base === "spruce_log") return itemMap.has("log_spruce_side") ? "log_spruce_side" : base;
-      if (base === "wool") return itemMap.has("wool_white") ? "wool_white" : base;
-      return base;
-    }
-
-    function resolveToken(token, tags, itemMap) {
-      if (!token || !String(token).trim()) return null;
-      const trimmed = String(token).trim();
-
-      if (trimmed.startsWith("#")) {
-        const tagName = trimmed.slice(1);
-        const members = tags[tagName] || [];
-        const firstKey = members.length > 0 ? resolveItemKey(members[0], itemMap) : null;
-        return {
-          key: firstKey,
-          label: humanizeKey(tagName),
-          note: tagName === "planks"
-        };
+    function pickRepresentative(groupKeys, baseKey) {
+      if (groupKeys.includes(baseKey)) return baseKey;
+      for (const suffix of PREFERRED_FACES) {
+        const candidate = `${baseKey}${suffix}`;
+        if (groupKeys.includes(candidate)) return candidate;
       }
-
-      const key = resolveItemKey(trimmed, itemMap);
-      const label = itemMap.get(key)?.name ?? humanizeKey(key);
-      return { key, label, note: false };
+      return groupKeys[0];
     }
 
     function parseAtlas(atlasData, sheetWidth, sheetHeight) {
@@ -488,14 +530,13 @@
       const totalH = sheetHeight || rows * tileSize;
       const tilesObj = atlasData.tiles && typeof atlasData.tiles === "object" ? atlasData.tiles : {};
 
-      return Object.entries(tilesObj).map(([key, coords]) => {
+      const spriteMap = new Map();
+      const groups = new Map();
+
+      for (const [rawKey, coords] of Object.entries(tilesObj)) {
         const [col, row] = Array.isArray(coords) ? coords : [0, 0];
-        const isItem = key.startsWith("item_");
-        return {
-          key,
-          name: humanizeKey(key),
-          kind: isItem ? "item" : "block",
-          crafted: false,
+        const spriteInfo = {
+          key: rawKey,
           frame: {
             x: col * tileSize,
             y: row * tileSize,
@@ -505,17 +546,88 @@
           sheetW: totalW,
           sheetH: totalH
         };
-      });
+        spriteMap.set(rawKey, spriteInfo);
+
+        const groupKey = rawKey.startsWith("item_") ? rawKey : stripFaceSuffix(rawKey);
+        if (!groups.has(groupKey)) {
+          groups.set(groupKey, []);
+        }
+        groups.get(groupKey).push(rawKey);
+      }
+
+      const items = [];
+      for (const [groupKey, rawKeys] of groups.entries()) {
+        const repKey = pickRepresentative(rawKeys, groupKey);
+        const repSprite = spriteMap.get(repKey);
+        const isItem = groupKey.startsWith("item_");
+
+        // Also register groupKey in spriteMap using its representative frame
+        if (!spriteMap.has(groupKey) && repSprite) {
+          spriteMap.set(groupKey, { ...repSprite, key: groupKey });
+        }
+
+        items.push({
+          key: groupKey,
+          spriteKey: repKey,
+          variants: rawKeys,
+          name: humanizeKey(groupKey),
+          kind: isItem ? "item" : "block",
+          crafted: false,
+          frame: repSprite.frame,
+          sheetW: totalW,
+          sheetH: totalH
+        });
+      }
+
+      return { items, spriteMap };
     }
 
-    function buildRecipeMap(recipesData, itemMap) {
+    function resolveItemKey(rawId, itemMap, spriteMap) {
+      const base = stripNamespace(rawId);
+      if (itemMap.has(base)) return base;
+      if (itemMap.has(`item_${base}`)) return `item_${base}`;
+
+      const grouped = stripFaceSuffix(base);
+      if (itemMap.has(grouped)) return grouped;
+
+      if (base === "log" && itemMap.has("log_side")) return "log_side";
+      if (base === "birch_log" && itemMap.has("log_birch_side")) return "log_birch_side";
+      if (base === "spruce_log" && itemMap.has("log_spruce_side")) return "log_spruce_side";
+      if (base === "wool" && itemMap.has("wool_white")) return "wool_white";
+
+      // If a recipe references a specific face tile directly, keep its sprite lookup intact
+      if (spriteMap.has(base)) return base;
+      return grouped;
+    }
+
+    function resolveToken(token, tags, itemMap, spriteMap) {
+      if (!token || !String(token).trim()) return null;
+      const trimmed = String(token).trim();
+
+      if (trimmed.startsWith("#")) {
+        const tagName = trimmed.slice(1);
+        const members = tags[tagName] || [];
+        const firstKey = members.length > 0 ? resolveItemKey(members[0], itemMap, spriteMap) : null;
+        return {
+          key: firstKey,
+          label: humanizeKey(tagName),
+          note: tagName === "planks"
+        };
+      }
+
+      const key = resolveItemKey(trimmed, itemMap, spriteMap);
+      const label = itemMap.get(key)?.name ?? humanizeKey(key);
+      return { key, label, note: false };
+    }
+
+    function buildRecipeMap(recipesData, itemMap, spriteMap) {
       const map = {};
       const tags = recipesData?.tags ?? {};
       const craftingList = Array.isArray(recipesData?.recipes) ? recipesData.recipes : [];
       const smeltingList = Array.isArray(recipesData?.smelting) ? recipesData.smelting : [];
 
       for (const r of craftingList) {
-        const outKey = resolveItemKey(r.result?.item, itemMap);
+        const outKey = resolveItemKey(r.result?.item, itemMap, spriteMap);
         if (!outKey) continue;
 
         const slots = Array.from({ length: 9 }, () => null);
@@ -528,14 +640,14 @@
               if (colIdx >= 3) return;
               const ingredientId = r.key?.[ch];
               if (!ingredientId) return;
-              slots[rowIdx * 3 + colIdx] = resolveToken(ingredientId, tags, itemMap);
+              slots[rowIdx * 3 + colIdx] = resolveToken(ingredientId, tags, itemMap, spriteMap);
             });
           });
         } else if (Array.isArray(r.ingredients)) {
           let idx = 0;
           for (const ing of r.ingredients) {
             const count = ing.count ?? 1;
-            const resolved = resolveToken(ing.item, tags, itemMap);
+            const resolved = resolveToken(ing.item, tags, itemMap, spriteMap);
             for (let c = 0; c < count && idx < 9; c++, idx++) {
               slots[idx] = resolved ? { ...resolved } : null;
             }
@@ -553,18 +665,18 @@
         };
       }
 
-      const furnaceKey = itemMap.has("furnace_front")
-        ? "furnace_front"
-        : itemMap.has("furnace_side")
-          ? "furnace_side"
+      const furnaceKey = itemMap.has("furnace")
+        ? "furnace"
+        : spriteMap.has("furnace_front")
+          ? "furnace_front"
           : null;
       const coalKey = itemMap.has("item_coal") ? "item_coal" : null;
 
       for (const s of smeltingList) {
-        const outKey = resolveItemKey(s.output, itemMap);
+        const outKey = resolveItemKey(s.output, itemMap, spriteMap);
         if (!outKey || map[outKey]) continue;
 
-        const inKey = resolveItemKey(s.input, itemMap);
+        const inKey = resolveItemKey(s.input, itemMap, spriteMap);
         const inName = itemMap.get(inKey)?.name ?? humanizeKey(inKey);
         const slots = Array.from({ length: 9 }, () => null);
         slots[1] = { key: inKey, label: inName, note: false };
@@ -587,7 +699,7 @@
     }
 
     function createSprite(name, size) {
-      const entry = state.itemMap.get(name);
+      const entry = state.spriteMap.get(name) ?? state.itemMap.get(name);
       if (!entry || !entry.sheetW || !entry.sheetH) {
         const fallback = document.createElement("span");
         fallback.className = "sprite-fallback";
@@ -616,8 +728,11 @@
         if (state.filter === "block" && item.kind !== "block") return false;
         if (state.filter === "item" && item.kind !== "item") return false;
         if (state.filter === "crafted" && !item.crafted) return false;
-        if (q && !item.name.toLowerCase().includes(q) && !item.key.toLowerCase().includes(q)) {
-          return false;
+        if (q) {
+          const matchesName = item.name.toLowerCase().includes(q);
+          const matchesKey = item.key.toLowerCase().includes(q);
+          const matchesVariant = item.variants?.some((v) => v.toLowerCase().includes(q));
+          if (!matchesName && !matchesKey && !matchesVariant) return false;
         }
         return true;
       });
@@ -676,9 +791,11 @@
         btn.type = "button";
         btn.className = `item-btn${active ? " active" : ""}`;
         btn.setAttribute("aria-pressed", String(active));
-        btn.title = item.name;
+        btn.title = item.variants?.length > 1
+          ? `${item.name} (${item.variants.join(", ")})`
+          : item.name;
 
-        btn.appendChild(createSprite(item.key, 40));
+        btn.appendChild(createSprite(item.spriteKey, 40));
 
         const sr = document.createElement("span");
         sr.className = "sr-only";
@@ -711,7 +828,7 @@
 
         const preview = document.createElement("span");
         preview.className = "preview-box";
-        preview.appendChild(createSprite(item.key, 40));
+        preview.appendChild(createSprite(item.spriteKey, 40));
 
         const info = document.createElement("div");
         const h2 = document.createElement("h2");
@@ -729,6 +846,29 @@
         header.appendChild(preview);
         header.appendChild(info);
         recipePanelEl.appendChild(header);
+
+        if (item.variants && item.variants.length > 1) {
+          const vRow = document.createElement("div");
+          vRow.className = "variants-row";
+
+          const vLabel = document.createElement("span");
+          vLabel.className = "variants-label";
+          vLabel.textContent = "Faces:";
+          vRow.appendChild(vLabel);
+
+          for (const vKey of item.variants) {
+            const chip = document.createElement("span");
+            chip.className = "variant-chip";
+            chip.title = vKey;
+            chip.appendChild(createSprite(vKey, 16));
+            const txt = document.createElement("span");
+            txt.textContent = vKey.replace(`${item.key}_`, "") || vKey;
+            chip.appendChild(txt);
+            vRow.appendChild(chip);
+          }
+
+          recipePanelEl.appendChild(vRow);
+        }
       } else {
         const header = document.createElement("div");
         header.className = "recipe-header-empty";
@@ -865,9 +1005,9 @@
           recipesRes.json()
         ]);
 
-        const items = parseAtlas(atlasData, imgDims.width, imgDims.height);
+        const { items, spriteMap } = parseAtlas(atlasData, imgDims.width, imgDims.height);
         const itemMap = new Map(items.map((item) => [item.key, item]));
-        const recipes = buildRecipeMap(recipesData, itemMap);
+        const recipes = buildRecipeMap(recipesData, itemMap, spriteMap);
 
         for (const item of items) {
           if (recipes[item.key]) {
@@ -877,6 +1017,7 @@
 
         state.items = items;
         state.itemMap = itemMap;
+        state.spriteMap = spriteMap;
         state.recipes = recipes;
 
         tileCountEl.textContent = `${state.items.length} tiles. Click one to fill the crafting table.`;
