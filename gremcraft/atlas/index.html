@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GremCraft — Atlas</title>
+  <title>GremCraft : Atlas</title>
   <style>
     :root {
       --bg: #14110e;
@@ -427,9 +427,6 @@
       items: [],
       itemMap: new Map(),
       recipes: {},
-      sheetWidth: 0,
-      sheetHeight: 0,
-      defaultTileSize: 16,
       query: "",
       filter: "all",
       selected: null
@@ -441,104 +438,148 @@
     const catalogPanelEl = document.getElementById("catalog-panel");
     const recipePanelEl = document.getElementById("recipe-panel");
 
+    function stripNamespace(id) {
+      return String(id ?? "").replace(/^gremcraft:/, "");
+    }
+
     function humanizeKey(key) {
-      return key
-        .replace(/\.[^.]+$/, "")
+      return stripNamespace(key)
+        .replace(/^item_/, "")
         .replace(/[_-]+/g, " ")
         .replace(/\b\w/g, (c) => c.toUpperCase());
     }
 
-    function normalizeFrame(entry, index, defaultTileSize, cols) {
-      const f = entry.frame || entry;
-      const w = f.w ?? f.width ?? defaultTileSize;
-      const h = f.h ?? f.height ?? defaultTileSize;
+    function resolveItemKey(rawId, itemMap) {
+      const base = stripNamespace(rawId);
+      if (itemMap.has(base)) return base;
+      if (itemMap.has(`item_${base}`)) return `item_${base}`;
+      if (base === "log") return itemMap.has("log_side") ? "log_side" : base;
+      if (base === "birch_log") return itemMap.has("log_birch_side") ? "log_birch_side" : base;
+      if (base === "spruce_log") return itemMap.has("log_spruce_side") ? "log_spruce_side" : base;
+      if (base === "wool") return itemMap.has("wool_white") ? "wool_white" : base;
+      return base;
+    }
 
-      let x = f.x;
-      let y = f.y;
+    function resolveToken(token, tags, itemMap) {
+      if (!token || !String(token).trim()) return null;
+      const trimmed = String(token).trim();
 
-      // Support grid coordinates (col/row) or linear index if pixel x/y aren't given
-      if (x === undefined || y === undefined) {
-        if (entry.col !== undefined && entry.row !== undefined) {
-          x = entry.col * w;
-          y = entry.row * h;
-        } else if (cols > 0) {
-          x = (index % cols) * w;
-          y = Math.floor(index / cols) * h;
-        } else {
-          x = 0;
-          y = 0;
-        }
+      if (trimmed.startsWith("#")) {
+        const tagName = trimmed.slice(1);
+        const members = tags[tagName] || [];
+        const firstKey = members.length > 0 ? resolveItemKey(members[0], itemMap) : null;
+        return {
+          key: firstKey,
+          label: humanizeKey(tagName),
+          note: tagName === "planks"
+        };
       }
 
-      return { x, y, w, h };
+      const key = resolveItemKey(trimmed, itemMap);
+      const label = itemMap.get(key)?.name ?? humanizeKey(key);
+      return { key, label, note: false };
     }
 
     function parseAtlas(atlasData, sheetWidth, sheetHeight) {
-      const defaultTileSize =
-        atlasData.tileSize ??
-        atlasData.tileWidth ??
-        atlasData.meta?.tileSize ??
-        16;
+      const tileSize = atlasData.tile_size ?? 16;
+      const cols = atlasData.columns ?? (sheetWidth && tileSize ? Math.floor(sheetWidth / tileSize) : 8);
+      const rows = atlasData.rows ?? (sheetHeight && tileSize ? Math.floor(sheetHeight / tileSize) : 24);
+      const totalW = sheetWidth || cols * tileSize;
+      const totalH = sheetHeight || rows * tileSize;
+      const tilesObj = atlasData.tiles && typeof atlasData.tiles === "object" ? atlasData.tiles : {};
 
-      const metaW = atlasData.meta?.size?.w ?? atlasData.width ?? sheetWidth;
-      const metaH = atlasData.meta?.size?.h ?? atlasData.height ?? sheetHeight;
-      const cols = metaW && defaultTileSize ? Math.floor(metaW / defaultTileSize) : 0;
-
-      let rawEntries = [];
-      if (Array.isArray(atlasData)) {
-        rawEntries = atlasData;
-      } else if (Array.isArray(atlasData.items)) {
-        rawEntries = atlasData.items;
-      } else if (Array.isArray(atlasData.tiles)) {
-        rawEntries = atlasData.tiles;
-      } else if (atlasData.frames && typeof atlasData.frames === "object") {
-        rawEntries = Object.entries(atlasData.frames).map(([key, val]) => ({
-          key,
-          ...val
-        }));
-      } else if (atlasData.sprites && typeof atlasData.sprites === "object") {
-        rawEntries = Object.entries(atlasData.sprites).map(([key, val]) => ({
-          key,
-          ...val
-        }));
-      } else if (typeof atlasData === "object" && atlasData !== null) {
-        rawEntries = Object.entries(atlasData)
-          .filter(([k]) => !["meta", "tileSize", "tileWidth", "tileHeight", "width", "height"].includes(k))
-          .map(([key, val]) => ({
-            key,
-            ...(typeof val === "object" ? val : {})
-          }));
-      }
-
-      return rawEntries.map((entry, index) => {
-        const key = entry.key ?? entry.id ?? entry.name ?? `tile_${index}`;
-        const frame = normalizeFrame(entry, index, defaultTileSize, cols);
+      return Object.entries(tilesObj).map(([key, coords]) => {
+        const [col, row] = Array.isArray(coords) ? coords : [0, 0];
+        const isItem = key.startsWith("item_");
         return {
           key,
-          name: entry.name ?? humanizeKey(key),
-          kind: entry.kind ?? entry.type ?? "block",
-          crafted: Boolean(entry.crafted),
-          frame,
-          sheetW: metaW || sheetWidth,
-          sheetH: metaH || sheetHeight
+          name: humanizeKey(key),
+          kind: isItem ? "item" : "block",
+          crafted: false,
+          frame: {
+            x: col * tileSize,
+            y: row * tileSize,
+            w: tileSize,
+            h: tileSize
+          },
+          sheetW: totalW,
+          sheetH: totalH
         };
       });
     }
 
-    function parseRecipes(recipesData) {
-      if (!recipesData) return {};
-      if (Array.isArray(recipesData)) {
-        const map = {};
-        for (const r of recipesData) {
-          const k = r.resultKey ?? r.key ?? r.id ?? r.output;
-          if (k) map[k] = r;
+    function buildRecipeMap(recipesData, itemMap) {
+      const map = {};
+      const tags = recipesData?.tags ?? {};
+      const craftingList = Array.isArray(recipesData?.recipes) ? recipesData.recipes : [];
+      const smeltingList = Array.isArray(recipesData?.smelting) ? recipesData.smelting : [];
+
+      for (const r of craftingList) {
+        const outKey = resolveItemKey(r.result?.item, itemMap);
+        if (!outKey) continue;
+
+        const slots = Array.from({ length: 9 }, () => null);
+
+        if (r.type === "shaped" && Array.isArray(r.grid)) {
+          r.grid.forEach((rowStr, rowIdx) => {
+            if (rowIdx >= 3) return;
+            const chars = Array.isArray(rowStr) ? rowStr : String(rowStr).split("");
+            chars.forEach((ch, colIdx) => {
+              if (colIdx >= 3) return;
+              const ingredientId = r.key?.[ch];
+              if (!ingredientId) return;
+              slots[rowIdx * 3 + colIdx] = resolveToken(ingredientId, tags, itemMap);
+            });
+          });
+        } else if (Array.isArray(r.ingredients)) {
+          let idx = 0;
+          for (const ing of r.ingredients) {
+            const count = ing.count ?? 1;
+            const resolved = resolveToken(ing.item, tags, itemMap);
+            for (let c = 0; c < count && idx < 9; c++, idx++) {
+              slots[idx] = resolved ? { ...resolved } : null;
+            }
+          }
         }
-        return map;
+
+        const outName = itemMap.get(outKey)?.name ?? humanizeKey(outKey);
+        map[outKey] = {
+          resultKey: outKey,
+          resultCount: r.result?.count ?? 1,
+          caption: r.type === "shapeless"
+            ? `Shapeless recipe for ${outName}.`
+            : `Crafted on a crafting grid (${r.id ?? outKey}).`,
+          slots
+        };
       }
-      if (recipesData.recipes && typeof recipesData.recipes === "object") {
-        return recipesData.recipes;
+
+      const furnaceKey = itemMap.has("furnace_front")
+        ? "furnace_front"
+        : itemMap.has("furnace_side")
+          ? "furnace_side"
+          : null;
+      const coalKey = itemMap.has("item_coal") ? "item_coal" : null;
+
+      for (const s of smeltingList) {
+        const outKey = resolveItemKey(s.output, itemMap);
+        if (!outKey || map[outKey]) continue;
+
+        const inKey = resolveItemKey(s.input, itemMap);
+        const inName = itemMap.get(inKey)?.name ?? humanizeKey(inKey);
+        const slots = Array.from({ length: 9 }, () => null);
+        slots[1] = { key: inKey, label: inName, note: false };
+        if (furnaceKey) slots[4] = { key: furnaceKey, label: "Furnace", note: false };
+        if (coalKey) slots[7] = { key: coalKey, label: "Coal (Fuel)", note: false };
+
+        map[outKey] = {
+          resultKey: outKey,
+          resultCount: 1,
+          caption: `Smelted from ${inName} in a furnace${s.ticks ? ` (${s.ticks} ticks)` : ""}.`,
+          slots
+        };
       }
-      return recipesData;
+
+      return map;
     }
 
     function craftFor(key) {
@@ -660,12 +701,7 @@
     function renderRecipePanel() {
       const item = state.itemMap.get(state.selected) ?? null;
       const craft = item ? craftFor(item.key) : null;
-      const rawSlots = craft?.slots ?? [];
-      const slots = Array.from({ length: 9 }, (_, i) => {
-        const s = rawSlots[i] ?? null;
-        if (!s) return null;
-        return typeof s === "string" ? { key: s, label: state.itemMap.get(s)?.name ?? humanizeKey(s) } : s;
-      });
+      const slots = craft?.slots ?? Array.from({ length: 9 }, () => null);
 
       recipePanelEl.innerHTML = "";
 
@@ -740,9 +776,8 @@
 
       const output = document.createElement("div");
       output.className = "output-slot";
-      const resultKey = craft?.resultKey ?? (craft ? item?.key : null);
-      if (resultKey) {
-        output.appendChild(createSprite(resultKey, 40));
+      if (craft?.resultKey) {
+        output.appendChild(createSprite(craft.resultKey, 40));
       }
       if (craft && craft.resultCount > 1) {
         const badge = document.createElement("span");
@@ -830,14 +865,19 @@
           recipesRes.json()
         ]);
 
-        state.sheetWidth = imgDims.width;
-        state.sheetHeight = imgDims.height;
-        state.recipes = parseRecipes(recipesData);
-        state.items = parseAtlas(atlasData, imgDims.width, imgDims.height).map((item) => ({
-          ...item,
-          crafted: item.crafted || Boolean(state.recipes[item.key])
-        }));
-        state.itemMap = new Map(state.items.map((item) => [item.key, item]));
+        const items = parseAtlas(atlasData, imgDims.width, imgDims.height);
+        const itemMap = new Map(items.map((item) => [item.key, item]));
+        const recipes = buildRecipeMap(recipesData, itemMap);
+
+        for (const item of items) {
+          if (recipes[item.key]) {
+            item.crafted = true;
+          }
+        }
+
+        state.items = items;
+        state.itemMap = itemMap;
+        state.recipes = recipes;
 
         tileCountEl.textContent = `${state.items.length} tiles. Click one to fill the crafting table.`;
         renderCatalog();
@@ -845,7 +885,7 @@
       } catch (err) {
         console.error(err);
         tileCountEl.textContent = "Failed to load atlas data.";
-        catalogPanelEl.innerHTML = `<p class="status-msg">Could not load <code>atlas.png</code>, <code>atlas.json</code>, or <code>recipes.json</code>. Make sure you are serving this directory over HTTP (not <code>file://</code>).</p>`;
+        catalogPanelEl.innerHTML = `<p class="status-msg">Could not load <code>atlas.png</code>, <code>atlas.json</code>, or <code>recipes.json</code>.</p>`;
       }
     }
 
