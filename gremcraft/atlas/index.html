@@ -293,6 +293,10 @@
     .step-chip.active { opacity: 1; font-weight: 700; background: rgba(255, 140, 40, 0.25); }
     .step-chip:disabled { cursor: default; opacity: 0.3; }
 
+    .crop-section { margin: 0 0 12px; }
+    .crop-label { display: block; font-size: 0.85rem; margin-bottom: 4px; }
+    .crop-slider { width: 100%; }
+
     .variants-row {
       display: flex;
       flex-wrap: wrap;
@@ -579,6 +583,10 @@
     function normalizeGroupKey(rawKey) {
       let k = stripNamespace(rawKey);
 
+      // Crop growth stages (wheat_0 ... wheat_7) belong to one crop entry.
+      const cropMatch = k.match(/^(wheat)_\d+$/);
+      if (cropMatch) return cropMatch[1];
+
       const doorMatch = k.match(/^door_([a-z0-9_]+?)(?:_(?:lower|upper))?$/);
       if (doorMatch) {
         return `${doorMatch[1]}_door`;
@@ -681,8 +689,8 @@
 
     function resolveItemKey(rawId, itemMap, spriteMap) {
       const base = stripNamespace(rawId);
-      if (itemMap.has(base)) return base;
       if (itemMap.has(`item_${base}`)) return `item_${base}`;
+      if (itemMap.has(base)) return base;
 
       const grouped = normalizeGroupKey(base);
       if (itemMap.has(grouped)) return grouped;
@@ -748,12 +756,40 @@
         entry.factors = { ...entry.factors, ...def };
       }
 
+      // Blocks that are only the "lit" state of another block (e.g. Lit Furnace) are not separate entries.
+      const litOf = new Map();
+      for (const b of blocks) {
+        if (b.lit_variant) litOf.set(stripNamespace(b.lit_variant), stripNamespace(b.id));
+      }
+
       for (const blk of blocks) {
         const baseId = stripNamespace(blk.id);
         const groupedId = normalizeGroupKey(baseId);
 
+        if (litOf.has(baseId)) {
+          // Drop the stray "furnace_front_lit"-style entry if the atlas grouping created one,
+          // and record the lit state on its parent block instead.
+          const parent = itemMap.get(litOf.get(baseId));
+          if (parent) {
+            parent.lit = {
+              name: blk.name,
+              light: blk.light_emission,
+              frontTile: blk.tiles?.front
+            };
+          }
+          for (const k of [baseId, groupedId]) {
+            const stray = itemMap.get(k);
+            if (stray && stray !== parent) {
+              const idx = items.indexOf(stray);
+              if (idx !== -1) items.splice(idx, 1);
+              itemMap.delete(k);
+            }
+          }
+          continue;
+        }
+
         const standaloneItemKey = `item_${baseId}`;
-        if (itemMap.has(standaloneItemKey) && standaloneItemKey !== baseId) {
+        if (!blk.no_item && itemMap.has(standaloneItemKey) && standaloneItemKey !== baseId) {
           const standalone = itemMap.get(standaloneItemKey);
           const idx = items.indexOf(standalone);
           if (idx !== -1) items.splice(idx, 1);
@@ -807,6 +843,19 @@
         }
 
         entry.factors = { ...entry.factors, ...blk };
+
+        if (blk.crop && blk.crop.tiles && blk.crop.stages > 0) {
+          const stageTiles = [];
+          for (let i = 0; i < blk.crop.stages; i++) {
+            const t = `${blk.crop.tiles}${i}`;
+            if (spriteMap.has(t)) stageTiles.push(t);
+          }
+          if (stageTiles.length > 0) {
+            entry.cropTiles = stageTiles;
+            entry.cropStage = stageTiles.length - 1;
+            entry.variants = stageTiles;
+          }
+        }
       }
     }
 
@@ -846,6 +895,14 @@
       }
       if (f.fuel_ticks !== undefined) {
         rows.push({ label: "Fuel", value: `${f.fuel_ticks} ticks` });
+      }
+      if (item.lit) {
+        rows.push({
+          label: "Lit State",
+          value: item.lit.light !== undefined
+            ? `${item.lit.name ?? "Lit"} · light ${item.lit.light}`
+            : (item.lit.name ?? "Lit")
+        });
       }
       if (f.use) {
         rows.push({ label: "Use Action", value: humanizeKey(f.use) });
@@ -1212,7 +1269,40 @@
         header.appendChild(info);
         recipePanelEl.appendChild(header);
 
-        if (item.variants && item.variants.length > 1) {
+        if (item.cropTiles && item.cropTiles.length > 1) {
+          const maxStage = item.cropTiles.length - 1;
+          const sec = document.createElement("div");
+          sec.className = "crop-section";
+
+          const lab = document.createElement("label");
+          lab.className = "crop-label";
+          lab.htmlFor = "crop-slider";
+          const stageTxt = document.createElement("span");
+          stageTxt.textContent = `Growth stage: ${item.cropStage} / ${maxStage}`;
+          lab.appendChild(stageTxt);
+
+          const slider = document.createElement("input");
+          slider.type = "range";
+          slider.id = "crop-slider";
+          slider.className = "crop-slider";
+          slider.min = "0";
+          slider.max = String(maxStage);
+          slider.step = "1";
+          slider.value = String(item.cropStage);
+          slider.addEventListener("input", () => {
+            const v = Number(slider.value);
+            item.cropStage = v;
+            item.spriteKey = item.cropTiles[v];
+            item.frame = state.spriteMap.get(item.spriteKey).frame;
+            stageTxt.textContent = `Growth stage: ${v} / ${maxStage}`;
+            preview.replaceChildren(createSprite(item.spriteKey, 40));
+            renderCatalog();
+          });
+
+          sec.appendChild(lab);
+          sec.appendChild(slider);
+          recipePanelEl.appendChild(sec);
+        } else if (item.variants && item.variants.length > 1) {
           const vRow = document.createElement("div");
           vRow.className = "variants-row";
 
