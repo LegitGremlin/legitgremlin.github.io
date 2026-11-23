@@ -1,7 +1,7 @@
 {
  "tile_size": 16,
  "columns": 8,
- "rows": 24,
+ "rows": 32,
  "tiles": {
   "grass_top": [
    0,
@@ -347,309 +347,493 @@
    6,
    12
   ],
-  "item_helmet_leather": [
+  "item_pickaxe_steel": [
    7,
    12
   ],
-  "item_chestplate_leather": [
+  "item_axe_steel": [
    0,
    13
   ],
-  "item_leggings_leather": [
+  "item_shovel_steel": [
    1,
    13
   ],
-  "item_boots_leather": [
+  "item_sword_steel": [
    2,
    13
   ],
-  "item_helmet_iron": [
+  "item_pickaxe_titanium": [
    3,
    13
   ],
-  "item_chestplate_iron": [
+  "item_axe_titanium": [
    4,
    13
   ],
-  "item_leggings_iron": [
+  "item_shovel_titanium": [
    5,
    13
   ],
-  "item_boots_iron": [
+  "item_sword_titanium": [
    6,
    13
   ],
-  "item_helmet_gold": [
+  "item_pickaxe_ember": [
    7,
    13
   ],
-  "item_chestplate_gold": [
+  "item_axe_ember": [
    0,
    14
   ],
-  "item_leggings_gold": [
+  "item_shovel_ember": [
    1,
    14
   ],
-  "item_boots_gold": [
+  "item_sword_ember": [
    2,
    14
   ],
-  "item_helmet_diamond": [
+  "item_helmet_leather": [
    3,
    14
   ],
-  "item_chestplate_diamond": [
+  "item_chestplate_leather": [
    4,
    14
   ],
-  "item_leggings_diamond": [
+  "item_leggings_leather": [
    5,
    14
   ],
-  "item_boots_diamond": [
+  "item_boots_leather": [
    6,
    14
+  ],
+  "item_helmet_iron": [
+   7,
+   14
+  ],
+  "item_chestplate_iron": [
+   0,
+   15
+  ],
+  "item_leggings_iron": [
+   1,
+   15
+  ],
+  "item_boots_iron": [
+   2,
+   15
+  ],
+  "item_helmet_gold": [
+   3,
+   15
+  ],
+  "item_chestplate_gold": [
+   4,
+   15
+  ],
+  "item_leggings_gold": [
+   5,
+   15
+  ],
+  "item_boots_gold": [
+   6,
+   15
+  ],
+  "item_helmet_diamond": [
+   7,
+   15
+  ],
+  "item_chestplate_diamond": [
+   0,
+   16
+  ],
+  "item_leggings_diamond": [
+   1,
+   16
+  ],
+  "item_boots_diamond": [
+   2,
+   16
+  ],
+  "item_helmet_steel": [
+   3,
+   16
+  ],
+  "item_chestplate_steel": [
+   4,
+   16
+  ],
+  "item_leggings_steel": [
+   5,
+   16
+  ],
+  "item_boots_steel": [
+   6,
+   16
+  ],
+  "item_helmet_titanium": [
+   7,
+   16
+  ],
+  "item_chestplate_titanium": [
+   0,
+   17
+  ],
+  "item_leggings_titanium": [
+   1,
+   17
+  ],
+  "item_boots_titanium": [
+   2,
+   17
+  ],
+  "item_helmet_ember": [
+   3,
+   17
+  ],
+  "item_chestplate_ember": [
+   4,
+   17
+  ],
+  "item_leggings_ember": [
+   5,
+   17
+  ],
+  "item_boots_ember": [
+   6,
+   17
   ],
   "planks_birch": [
    0,
-   15
+   18
   ],
   "planks_spruce": [
    1,
-   15
+   18
   ],
   "log_birch_side": [
    2,
-   15
+   18
   ],
   "log_birch_top": [
    3,
-   15
+   18
   ],
   "log_spruce_side": [
    4,
-   15
+   18
   ],
   "log_spruce_top": [
    5,
-   15
+   18
   ],
   "leaves_birch": [
    6,
-   15
+   18
   ],
   "leaves_spruce": [
    7,
-   15
+   18
   ],
   "grass_side_snowed": [
    0,
-   16
+   19
   ],
   "wool_white": [
    1,
-   16
+   19
   ],
   "farmland_top": [
    2,
-   16
+   19
   ],
   "tall_grass": [
    3,
-   16
+   19
   ],
   "wheat_0": [
    4,
-   16
+   19
   ],
   "wheat_1": [
    5,
-   16
+   19
   ],
   "wheat_2": [
    6,
-   16
+   19
   ],
   "wheat_3": [
    7,
-   16
+   19
   ],
   "wheat_4": [
    0,
-   17
+   20
   ],
   "wheat_5": [
    1,
-   17
+   20
   ],
   "wheat_6": [
    2,
-   17
+   20
   ],
   "wheat_7": [
    3,
-   17
+   20
   ],
   "item_wheat_seeds": [
    0,
-   18
+   21
   ],
   "item_wheat": [
    1,
-   18
+   21
   ],
   "item_bread": [
    2,
-   18
+   21
   ],
   "item_bed": [
    3,
-   18
+   21
   ],
   "item_porkchop_raw": [
    4,
-   18
+   21
   ],
   "item_porkchop_cooked": [
    5,
-   18
+   21
   ],
   "item_beef_raw": [
    6,
-   18
+   21
   ],
   "item_steak": [
    7,
-   18
+   21
   ],
   "item_mutton_raw": [
    0,
-   19
+   22
   ],
   "item_mutton_cooked": [
    1,
-   19
+   22
   ],
   "item_hoe_wood": [
    2,
-   19
+   22
   ],
   "item_hoe_stone": [
    3,
-   19
+   22
   ],
   "item_hoe_iron": [
    4,
-   19
+   22
   ],
   "item_hoe_gold": [
    5,
-   19
+   22
   ],
   "item_hoe_diamond": [
    6,
-   19
+   22
+  ],
+  "item_hoe_steel": [
+   7,
+   22
+  ],
+  "item_hoe_titanium": [
+   0,
+   23
+  ],
+  "item_hoe_ember": [
+   1,
+   23
   ],
   "item_fence_oak": [
-   7,
-   19
+   2,
+   23
   ],
   "item_gate_oak": [
-   0,
-   20
+   3,
+   23
   ],
   "item_fence_birch": [
-   1,
-   20
+   4,
+   23
   ],
   "item_gate_birch": [
-   2,
-   20
+   5,
+   23
   ],
   "item_fence_spruce": [
-   3,
-   20
+   6,
+   23
   ],
   "item_gate_spruce": [
-   4,
-   20
+   7,
+   23
   ],
   "compacted_silt": [
    0,
-   21
+   24
   ],
   "ashstone": [
    1,
-   21
+   24
   ],
   "ember_crystal": [
    2,
-   21
+   24
   ],
   "ruin_bricks": [
    3,
-   21
+   24
   ],
   "ruin_carved": [
    4,
-   21
+   24
   ],
   "altar_top": [
    5,
-   21
+   24
   ],
   "altar_side": [
    6,
-   21
+   24
   ],
   "door_oak_lower": [
    7,
-   21
+   24
   ],
   "door_oak_upper": [
    0,
-   22
+   25
   ],
   "door_birch_lower": [
    1,
-   22
+   25
   ],
   "door_birch_upper": [
    2,
-   22
+   25
   ],
   "door_spruce_lower": [
    3,
-   22
+   25
   ],
   "door_spruce_upper": [
    4,
-   22
+   25
   ],
   "item_tablet_fragment": [
    0,
-   23
+   26
   ],
   "item_ancient_tablet": [
    1,
-   23
+   26
   ],
   "item_ashen_heart": [
    2,
-   23
+   26
   ],
   "item_oak_door": [
    3,
-   23
+   26
   ],
   "item_birch_door": [
    4,
-   23
+   26
   ],
   "item_spruce_door": [
    5,
-   23
+   26
+  ],
+  "obsidian": [
+   0,
+   27
+  ],
+  "steel_ore": [
+   1,
+   27
+  ],
+  "titanium_ore": [
+   2,
+   27
+  ],
+  "hellforge_side": [
+   3,
+   27
+  ],
+  "hellforge_top": [
+   4,
+   27
+  ],
+  "hellforge_front": [
+   5,
+   27
+  ],
+  "anvil_top": [
+   6,
+   27
+  ],
+  "anvil_side": [
+   7,
+   27
+  ],
+  "item_bucket": [
+   0,
+   28
+  ],
+  "item_water_bucket": [
+   1,
+   28
+  ],
+  "item_lava_bucket": [
+   2,
+   28
+  ],
+  "item_steel_ingot": [
+   3,
+   28
+  ],
+  "item_titanium_ingot": [
+   4,
+   28
+  ],
+  "item_molten_steel": [
+   5,
+   28
+  ],
+  "item_ember_compound": [
+   6,
+   28
+  ],
+  "item_chilled_ember_compound": [
+   7,
+   28
+  ],
+  "item_ember_alloy": [
+   0,
+   29
+  ],
+  "item_hammer": [
+   1,
+   29
+  ],
+  "item_sign": [
+   2,
+   29
   ]
  }
 }

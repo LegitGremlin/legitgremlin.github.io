@@ -178,6 +178,76 @@
    "max_stack": 1
   },
   {
+   "id": "gremcraft:bucket",
+   "name": "Bucket",
+   "sprite": "item_bucket",
+   "max_stack": 16,
+   "use": "bucket_empty"
+  },
+  {
+   "id": "gremcraft:water_bucket",
+   "name": "Water Bucket",
+   "sprite": "item_water_bucket",
+   "max_stack": 1,
+   "use": "bucket_water"
+  },
+  {
+   "id": "gremcraft:lava_bucket",
+   "name": "Lava Bucket",
+   "sprite": "item_lava_bucket",
+   "max_stack": 1,
+   "use": "bucket_lava",
+   "fuel_ticks": 20000
+  },
+  {
+   "id": "gremcraft:steel_ingot",
+   "name": "Steel Ingot",
+   "sprite": "item_steel_ingot",
+   "max_stack": 64,
+   "lore": "Step 1 - Hellish Liquefaction: melt it in a Hellforge"
+  },
+  {
+   "id": "gremcraft:titanium_ingot",
+   "name": "Titanium Ingot",
+   "sprite": "item_titanium_ingot",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:molten_steel",
+   "name": "Molten Steel",
+   "sprite": "item_molten_steel",
+   "max_stack": 64,
+   "lore": "Step 2 - Infusion: add a diamond in the Hellforge"
+  },
+  {
+   "id": "gremcraft:ember_compound",
+   "name": "Ember Compound",
+   "sprite": "item_ember_compound",
+   "max_stack": 64,
+   "lore": "Step 3 - Quenching: throw it into water"
+  },
+  {
+   "id": "gremcraft:chilled_ember_compound",
+   "name": "Chilled Ember Compound",
+   "sprite": "item_chilled_ember_compound",
+   "max_stack": 64,
+   "lore": "Step 4 - Forging: hammer it on an Anvil"
+  },
+  {
+   "id": "gremcraft:ember_alloy",
+   "name": "Ember Alloy",
+   "sprite": "item_ember_alloy",
+   "max_stack": 64,
+   "lore": "Liquefaction, Infusion, Quenching, Forging"
+  },
+  {
+   "id": "gremcraft:hammer",
+   "name": "Smith's Hammer",
+   "sprite": "item_hammer",
+   "max_stack": 1,
+   "durability": 128
+  },
+  {
    "id": "gremcraft:pickaxe_wood",
    "name": "Wooden Pickaxe",
    "sprite": "item_pickaxe_wood",
@@ -488,6 +558,192 @@
    "use": "till"
   },
   {
+   "id": "gremcraft:pickaxe_steel",
+   "name": "Steel Pickaxe",
+   "sprite": "item_pickaxe_steel",
+   "max_stack": 1,
+   "durability": 700,
+   "damage": 4,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 2,
+    "speed": 7.0
+   }
+  },
+  {
+   "id": "gremcraft:axe_steel",
+   "name": "Steel Axe",
+   "sprite": "item_axe_steel",
+   "max_stack": 1,
+   "durability": 700,
+   "damage": 5,
+   "tool": {
+    "kind": "axe",
+    "tier": 2,
+    "speed": 7.0
+   }
+  },
+  {
+   "id": "gremcraft:shovel_steel",
+   "name": "Steel Shovel",
+   "sprite": "item_shovel_steel",
+   "max_stack": 1,
+   "durability": 700,
+   "damage": 3,
+   "tool": {
+    "kind": "shovel",
+    "tier": 2,
+    "speed": 7.0
+   }
+  },
+  {
+   "id": "gremcraft:sword_steel",
+   "name": "Steel Sword",
+   "sprite": "item_sword_steel",
+   "max_stack": 1,
+   "durability": 700,
+   "damage": 6,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_steel",
+   "name": "Steel Hoe",
+   "sprite": "item_hoe_steel",
+   "max_stack": 1,
+   "durability": 700,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 2,
+    "speed": 7.0
+   },
+   "use": "till"
+  },
+  {
+   "id": "gremcraft:pickaxe_titanium",
+   "name": "Titanium Pickaxe",
+   "sprite": "item_pickaxe_titanium",
+   "max_stack": 1,
+   "durability": 1100,
+   "damage": 5,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 2,
+    "speed": 9.0
+   }
+  },
+  {
+   "id": "gremcraft:axe_titanium",
+   "name": "Titanium Axe",
+   "sprite": "item_axe_titanium",
+   "max_stack": 1,
+   "durability": 1100,
+   "damage": 6,
+   "tool": {
+    "kind": "axe",
+    "tier": 2,
+    "speed": 9.0
+   }
+  },
+  {
+   "id": "gremcraft:shovel_titanium",
+   "name": "Titanium Shovel",
+   "sprite": "item_shovel_titanium",
+   "max_stack": 1,
+   "durability": 1100,
+   "damage": 4,
+   "tool": {
+    "kind": "shovel",
+    "tier": 2,
+    "speed": 9.0
+   }
+  },
+  {
+   "id": "gremcraft:sword_titanium",
+   "name": "Titanium Sword",
+   "sprite": "item_sword_titanium",
+   "max_stack": 1,
+   "durability": 1100,
+   "damage": 7,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_titanium",
+   "name": "Titanium Hoe",
+   "sprite": "item_hoe_titanium",
+   "max_stack": 1,
+   "durability": 1100,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 2,
+    "speed": 9.0
+   },
+   "use": "till"
+  },
+  {
+   "id": "gremcraft:pickaxe_ember",
+   "name": "Ember Pickaxe",
+   "sprite": "item_pickaxe_ember",
+   "max_stack": 1,
+   "durability": 3200,
+   "damage": 7,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 4,
+    "speed": 12.0
+   }
+  },
+  {
+   "id": "gremcraft:axe_ember",
+   "name": "Ember Axe",
+   "sprite": "item_axe_ember",
+   "max_stack": 1,
+   "durability": 3200,
+   "damage": 8,
+   "tool": {
+    "kind": "axe",
+    "tier": 4,
+    "speed": 12.0
+   }
+  },
+  {
+   "id": "gremcraft:shovel_ember",
+   "name": "Ember Shovel",
+   "sprite": "item_shovel_ember",
+   "max_stack": 1,
+   "durability": 3200,
+   "damage": 6,
+   "tool": {
+    "kind": "shovel",
+    "tier": 4,
+    "speed": 12.0
+   }
+  },
+  {
+   "id": "gremcraft:sword_ember",
+   "name": "Ember Sword",
+   "sprite": "item_sword_ember",
+   "max_stack": 1,
+   "durability": 3200,
+   "damage": 9,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_ember",
+   "name": "Ember Hoe",
+   "sprite": "item_hoe_ember",
+   "max_stack": 1,
+   "durability": 3200,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 4,
+    "speed": 12.0
+   },
+   "use": "till"
+  },
+  {
    "id": "gremcraft:helmet_leather",
    "name": "Leather Helmet",
    "sprite": "item_helmet_leather",
@@ -661,6 +917,138 @@
    "armor": {
     "slot": "feet",
     "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:helmet_steel",
+   "name": "Steel Helmet",
+   "sprite": "item_helmet_steel",
+   "max_stack": 1,
+   "durability": 250,
+   "armor": {
+    "slot": "head",
+    "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_steel",
+   "name": "Steel Chestplate",
+   "sprite": "item_chestplate_steel",
+   "max_stack": 1,
+   "durability": 360,
+   "armor": {
+    "slot": "chest",
+    "points": 6
+   }
+  },
+  {
+   "id": "gremcraft:leggings_steel",
+   "name": "Steel Leggings",
+   "sprite": "item_leggings_steel",
+   "max_stack": 1,
+   "durability": 340,
+   "armor": {
+    "slot": "legs",
+    "points": 5
+   }
+  },
+  {
+   "id": "gremcraft:boots_steel",
+   "name": "Steel Boots",
+   "sprite": "item_boots_steel",
+   "max_stack": 1,
+   "durability": 290,
+   "armor": {
+    "slot": "feet",
+    "points": 2
+   }
+  },
+  {
+   "id": "gremcraft:helmet_titanium",
+   "name": "Titanium Helmet",
+   "sprite": "item_helmet_titanium",
+   "max_stack": 1,
+   "durability": 300,
+   "armor": {
+    "slot": "head",
+    "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_titanium",
+   "name": "Titanium Chestplate",
+   "sprite": "item_chestplate_titanium",
+   "max_stack": 1,
+   "durability": 430,
+   "armor": {
+    "slot": "chest",
+    "points": 7
+   }
+  },
+  {
+   "id": "gremcraft:leggings_titanium",
+   "name": "Titanium Leggings",
+   "sprite": "item_leggings_titanium",
+   "max_stack": 1,
+   "durability": 400,
+   "armor": {
+    "slot": "legs",
+    "points": 5
+   }
+  },
+  {
+   "id": "gremcraft:boots_titanium",
+   "name": "Titanium Boots",
+   "sprite": "item_boots_titanium",
+   "max_stack": 1,
+   "durability": 350,
+   "armor": {
+    "slot": "feet",
+    "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:helmet_ember",
+   "name": "Ember Helmet",
+   "sprite": "item_helmet_ember",
+   "max_stack": 1,
+   "durability": 660,
+   "armor": {
+    "slot": "head",
+    "points": 4
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_ember",
+   "name": "Ember Chestplate",
+   "sprite": "item_chestplate_ember",
+   "max_stack": 1,
+   "durability": 960,
+   "armor": {
+    "slot": "chest",
+    "points": 8
+   }
+  },
+  {
+   "id": "gremcraft:leggings_ember",
+   "name": "Ember Leggings",
+   "sprite": "item_leggings_ember",
+   "max_stack": 1,
+   "durability": 900,
+   "armor": {
+    "slot": "legs",
+    "points": 6
+   }
+  },
+  {
+   "id": "gremcraft:boots_ember",
+   "name": "Ember Boots",
+   "sprite": "item_boots_ember",
+   "max_stack": 1,
+   "durability": 780,
+   "armor": {
+    "slot": "feet",
+    "points": 4
    }
   }
  ]

@@ -801,6 +801,387 @@
    }
   },
   {
+   "id": "gremcraft:pickaxe_steel",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:steel_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_steel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_steel",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:steel_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_steel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_steel",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:steel_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_steel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_steel",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:steel_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_steel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_steel",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:steel_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_steel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:pickaxe_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:titanium_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:titanium_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:titanium_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:titanium_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:titanium_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:pickaxe_ember",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:ember_alloy",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_ember",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_ember",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:ember_alloy",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_ember",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_ember",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:ember_alloy",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_ember",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_ember",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:ember_alloy",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_ember",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_ember",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:ember_alloy",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_ember",
+    "count": 1
+   }
+  },
+  {
    "id": "gremcraft:helmet_leather",
    "type": "shaped",
    "grid": [
@@ -1205,6 +1586,312 @@
    },
    "result": {
     "item": "gremcraft:boots_diamond",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_steel",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:steel_ingot"
+   },
+   "result": {
+    "item": "gremcraft:helmet_steel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_steel",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:steel_ingot"
+   },
+   "result": {
+    "item": "gremcraft:chestplate_steel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:leggings_steel",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:steel_ingot"
+   },
+   "result": {
+    "item": "gremcraft:leggings_steel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:boots_steel",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:steel_ingot"
+   },
+   "result": {
+    "item": "gremcraft:boots_steel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:titanium_ingot"
+   },
+   "result": {
+    "item": "gremcraft:helmet_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:titanium_ingot"
+   },
+   "result": {
+    "item": "gremcraft:chestplate_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:leggings_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:titanium_ingot"
+   },
+   "result": {
+    "item": "gremcraft:leggings_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:boots_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:titanium_ingot"
+   },
+   "result": {
+    "item": "gremcraft:boots_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_ember",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:ember_alloy"
+   },
+   "result": {
+    "item": "gremcraft:helmet_ember",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_ember",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:ember_alloy"
+   },
+   "result": {
+    "item": "gremcraft:chestplate_ember",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:leggings_ember",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:ember_alloy"
+   },
+   "result": {
+    "item": "gremcraft:leggings_ember",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:boots_ember",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:ember_alloy"
+   },
+   "result": {
+    "item": "gremcraft:boots_ember",
     "count": 1
    }
   },
@@ -1798,6 +2485,110 @@
    }
   },
   {
+   "id": "gremcraft:bucket",
+   "type": "shaped",
+   "grid": [
+    [
+     "I",
+     " ",
+     "I"
+    ],
+    [
+     " ",
+     "I",
+     " "
+    ]
+   ],
+   "key": {
+    "I": "gremcraft:iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:bucket",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hammer",
+   "type": "shaped",
+   "grid": [
+    [
+     "I",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "I": "gremcraft:iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hammer",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:anvil",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "S",
+     "S"
+    ],
+    [
+     " ",
+     "I",
+     " "
+    ],
+    [
+     "I",
+     "I",
+     "I"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:steel_ingot",
+    "I": "gremcraft:iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:anvil",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hellforge",
+   "type": "shaped",
+   "grid": [
+    [
+     "R",
+     "T",
+     "R"
+    ],
+    [
+     "T",
+     "F",
+     "T"
+    ],
+    [
+     "R",
+     "T",
+     "R"
+    ]
+   ],
+   "key": {
+    "R": "gremcraft:ruin_bricks",
+    "T": "gremcraft:titanium_ingot",
+    "F": "gremcraft:furnace"
+   },
+   "result": {
+    "item": "gremcraft:hellforge",
+    "count": 1
+   }
+  },
+  {
    "id": "gremcraft:bed",
    "type": "shaped",
    "grid": [
@@ -1819,6 +2610,35 @@
    "result": {
     "item": "gremcraft:bed",
     "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sign",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "P",
+     "P"
+    ],
+    [
+     "P",
+     "P",
+     "P"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "P": "#planks",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sign",
+    "count": 3
    }
   }
  ],
@@ -1844,6 +2664,16 @@
    "ticks": 200
   },
   {
+   "input": "gremcraft:steel_ore",
+   "output": "gremcraft:steel_ingot",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:titanium_ore",
+   "output": "gremcraft:titanium_ingot",
+   "ticks": 200
+  },
+  {
    "input": "gremcraft:porkchop_raw",
    "output": "gremcraft:porkchop_cooked",
    "ticks": 200
@@ -1857,6 +2687,32 @@
    "input": "gremcraft:mutton_raw",
    "output": "gremcraft:mutton_cooked",
    "ticks": 200
+  }
+ ],
+ "forge": [
+  {
+   "inputs": [
+    "gremcraft:steel_ingot"
+   ],
+   "output": "gremcraft:molten_steel",
+   "ticks": 300
+  },
+  {
+   "inputs": [
+    "gremcraft:molten_steel",
+    "gremcraft:diamond"
+   ],
+   "output": "gremcraft:ember_compound",
+   "ticks": 400
+  }
+ ],
+ "anvil": [
+  {
+   "input": "gremcraft:chilled_ember_compound",
+   "tool": "gremcraft:hammer",
+   "output": "gremcraft:ember_alloy",
+   "count": 1,
+   "damage": 1
   }
  ]
 }

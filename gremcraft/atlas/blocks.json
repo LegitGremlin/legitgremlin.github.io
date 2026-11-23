@@ -1097,6 +1097,102 @@
    "interact": "altar",
    "light_emission": 8,
    "emissive": true
+  },
+  {
+   "id": "gremcraft:obsidian",
+   "numeric": 209,
+   "name": "Obsidian",
+   "tiles": {
+    "all": "obsidian"
+   },
+   "hardness": 50.0,
+   "tool": "pickaxe",
+   "harvest_level": 3,
+   "requires_tool": true,
+   "min_tier": 3
+  },
+  {
+   "id": "gremcraft:steel_ore",
+   "numeric": 210,
+   "name": "Steel Ore",
+   "tiles": {
+    "all": "steel_ore"
+   },
+   "hardness": 3.5,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:titanium_ore",
+   "numeric": 211,
+   "name": "Titanium Ore",
+   "tiles": {
+    "all": "titanium_ore"
+   },
+   "hardness": 4.0,
+   "tool": "pickaxe",
+   "harvest_level": 2,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:hellforge",
+   "numeric": 212,
+   "name": "Hellforge",
+   "tiles": {
+    "top": "hellforge_top",
+    "bottom": "ruin_bricks",
+    "side": "hellforge_side",
+    "front": "hellforge_front"
+   },
+   "hardness": 4.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true,
+   "interact": "hellforge",
+   "tile_entity": "hellforge",
+   "light_emission": 9,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:anvil",
+   "numeric": 213,
+   "name": "Anvil",
+   "tiles": {
+    "top": "anvil_top",
+    "bottom": "anvil_side",
+    "side": "anvil_side"
+   },
+   "hardness": 5.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true,
+   "render": "shape",
+   "shape": "anvil",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "anvil",
+   "tile_entity": "anvil"
+  },
+  {
+   "id": "gremcraft:sign",
+   "numeric": 214,
+   "name": "Sign",
+   "tiles": {
+    "all": "planks"
+   },
+   "hardness": 1.0,
+   "tool": "axe",
+   "render": "shape",
+   "shape": "sign",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "interact": "sign",
+   "tile_entity": "sign",
+   "item_sprite": "item_sign",
+   "fuel_ticks": 200
   }
  ]
 }
