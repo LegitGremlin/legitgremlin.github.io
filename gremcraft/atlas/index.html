@@ -270,6 +270,29 @@
       font-size: 0.875rem;
     }
 
+    .step-chain {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0 0 12px;
+      padding: 0;
+    }
+    .step-chip {
+      font: inherit;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid currentColor;
+      background: transparent;
+      color: inherit;
+      opacity: 0.65;
+      cursor: pointer;
+    }
+    .step-chip:hover:not(:disabled) { opacity: 1; }
+    .step-chip.active { opacity: 1; font-weight: 700; background: rgba(255, 140, 40, 0.25); }
+    .step-chip:disabled { cursor: default; opacity: 0.3; }
+
     .variants-row {
       display: flex;
       flex-wrap: wrap;
@@ -490,7 +513,22 @@
       ["all", "All"],
       ["block", "Blocks"],
       ["item", "Items"],
-      ["crafted", "Craftable"]
+      ["crafted", "Craftable"],
+      ["steps", "Forge Steps"]
+    ];
+
+    // The four-stage Ember Alloy pipeline, in order.
+    const STEP_NAMES = {
+      1: "Hellish Liquefaction",
+      2: "Infusion",
+      3: "Quenching",
+      4: "Forging"
+    };
+
+    // Quenching is a world interaction (throw the item into water), so it is not a
+    // station recipe in the game's recipes.json. Used unless recipes.json has a "quench" list.
+    const DEFAULT_QUENCH = [
+      { input: "gremcraft:ember_compound", output: "gremcraft:chilled_ember_compound", medium: "water" }
     ];
 
     const EXCLUDED_TILE_PATTERNS = [/^crack_\d+$/];
@@ -952,6 +990,69 @@
         };
       }
 
+      // ---- Ember Alloy steps: Liquefaction, Infusion (hellforge), Quenching (water), Forging (anvil) ----
+      const slotFor = (id, label) => {
+        const key = resolveItemKey(id, itemMap, spriteMap);
+        if (!key) return null;
+        return { key, label: label ?? itemMap.get(key)?.name ?? humanizeKey(key), note: false };
+      };
+      const addStep = (outId, n, slots, caption, count = 1) => {
+        const outKey = resolveItemKey(outId, itemMap, spriteMap);
+        if (!outKey || map[outKey]) return;
+        map[outKey] = {
+          resultKey: outKey,
+          resultCount: count,
+          caption,
+          slots,
+          step: { n, name: STEP_NAMES[n] },
+          station: n <= 2 ? "Hellforge" : n === 3 ? "Water" : "Anvil"
+        };
+      };
+      const nameOf = (id) => {
+        const k = resolveItemKey(id, itemMap, spriteMap);
+        return itemMap.get(k)?.name ?? humanizeKey(k ?? stripNamespace(id));
+      };
+      const ticksTxt = (t) => (t ? ` (${t} ticks)` : "");
+
+      for (const f of Array.isArray(recipesData?.forge) ? recipesData.forge : []) {
+        const inputs = Array.isArray(f.inputs) ? f.inputs : [];
+        if (inputs.length === 0) continue;
+        const n = inputs.length === 1 ? 1 : 2;
+        const slots = Array.from({ length: 9 }, () => null);
+        inputs.slice(0, 3).forEach((id, i) => { slots[i] = slotFor(id); });
+        slots[4] = slotFor("hellforge", "Hellforge");
+        const list = inputs.map(nameOf).join(" + ");
+        addStep(
+          f.output, n, slots,
+          n === 1
+            ? `Step 1 of 4 \u00b7 Hellish Liquefaction: melt ${list} in a Hellforge${ticksTxt(f.ticks)}. The hellforge only burns below y=0.`
+            : `Step 2 of 4 \u00b7 Infusion: add ${inputs.slice(1).map(nameOf).join(" + ")} to ${nameOf(inputs[0])} in a Hellforge${ticksTxt(f.ticks)}.`
+        );
+      }
+
+      const quenchList = Array.isArray(recipesData?.quench) ? recipesData.quench : DEFAULT_QUENCH;
+      for (const q of quenchList) {
+        const slots = Array.from({ length: 9 }, () => null);
+        slots[1] = slotFor(q.input);
+        slots[4] = slotFor(q.medium ?? "water", "Water");
+        addStep(
+          q.output, 3, slots,
+          `Step 3 of 4 \u00b7 Quenching: throw ${nameOf(q.input)} into water to chill it.`
+        );
+      }
+
+      for (const a of Array.isArray(recipesData?.anvil) ? recipesData.anvil : []) {
+        const slots = Array.from({ length: 9 }, () => null);
+        slots[1] = slotFor(a.input);
+        slots[4] = slotFor("anvil", "Anvil");
+        if (a.tool) slots[7] = slotFor(a.tool, `${nameOf(a.tool)} (tool)`);
+        addStep(
+          a.output, 4, slots,
+          `Step 4 of 4 \u00b7 Forging: strike ${nameOf(a.input)} with ${a.tool ? nameOf(a.tool) : "a hammer"} on an Anvil${a.damage ? ` (uses ${a.damage} durability)` : ""}.`,
+          a.count ?? 1
+        );
+      }
+
       return map;
     }
 
@@ -989,6 +1090,7 @@
         if (state.filter === "block" && item.kind !== "block") return false;
         if (state.filter === "item" && item.kind !== "item") return false;
         if (state.filter === "crafted" && !item.crafted) return false;
+        if (state.filter === "steps" && !state.recipes[item.key]?.step) return false;
         if (q) {
           const matchesName = item.name.toLowerCase().includes(q);
           const matchesKey = item.key.toLowerCase().includes(q);
@@ -1099,7 +1201,9 @@
         const meta = document.createElement("p");
         meta.className = "recipe-meta";
         meta.textContent = `${item.kind === "item" ? "Item" : "Block"}${
-          item.crafted || craft ? " · has recipe" : " · no recipe"
+          craft?.step
+            ? ` · Step ${craft.step.n}: ${craft.step.name}`
+            : item.crafted || craft ? " · has recipe" : " · no recipe"
         }`;
 
         info.appendChild(h2);
@@ -1129,6 +1233,34 @@
           }
 
           recipePanelEl.appendChild(vRow);
+        }
+
+        if (craft?.step) {
+          const stepper = document.createElement("ol");
+          stepper.className = "step-chain";
+          stepper.setAttribute("aria-label", "Ember Alloy steps");
+          for (const [num, name] of Object.entries(STEP_NAMES)) {
+            const n = Number(num);
+            const target = Object.values(state.recipes).find((r) => r.step?.n === n);
+            const li = document.createElement("li");
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = `step-chip${n === craft.step.n ? " active" : ""}`;
+            b.textContent = `${n}. ${name}`;
+            if (n === craft.step.n) b.setAttribute("aria-current", "step");
+            if (target) {
+              b.addEventListener("click", () => {
+                state.selected = target.resultKey;
+                renderCatalog();
+                renderRecipePanel();
+              });
+            } else {
+              b.disabled = true;
+            }
+            li.appendChild(b);
+            stepper.appendChild(li);
+          }
+          recipePanelEl.appendChild(stepper);
         }
 
         const factorRows = getFactorItems(item);
@@ -1185,7 +1317,7 @@
 
       const grid = document.createElement("div");
       grid.className = "crafting-grid";
-      grid.setAttribute("aria-label", "Crafting table");
+      grid.setAttribute("aria-label", craft?.step ? `${craft.station} (${craft.step.name})` : "Crafting table");
 
       for (const slot of slots) {
         const cell = document.createElement("div");
@@ -1230,7 +1362,7 @@
       if (item && craft) {
         caption.textContent = craft.caption ?? "Crafting recipe.";
       } else if (item) {
-        caption.textContent = "This tile is not a crafting or furnace result.";
+        caption.textContent = "This tile is not a crafting, furnace, or forge-step result.";
       } else {
         caption.textContent = "Output appears beside the table.";
       }
