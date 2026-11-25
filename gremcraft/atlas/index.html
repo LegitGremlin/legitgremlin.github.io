@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GremCraft : Atlas</title>
+  <title>GremCraft : Atlas &amp; Recipes</title>
   <style>
     :root {
       --bg: #14110e;
@@ -372,6 +372,7 @@
     }
 
     .crafting-row {
+      flex-wrap: wrap;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -463,7 +464,7 @@
 
     .sprite {
       display: inline-block;
-      background-image: url("./atlas.png");
+      background-image: var(--atlas-url, url("./atlas.png"));
       background-repeat: no-repeat;
       image-rendering: pixelated;
       image-rendering: crisp-edges;
@@ -487,7 +488,7 @@
     <header>
       <div>
         <p class="eyebrow">GREMCRAFT</p>
-        <h1>Atlas</h1>
+        <h1>Atlas &amp; Recipes</h1>
         <p class="subtitle" id="tile-count">Loading atlas…</p>
       </div>
       <label class="search-label">
@@ -517,9 +518,28 @@
       ["all", "All"],
       ["block", "Blocks"],
       ["item", "Items"],
-      ["crafted", "Craftable"],
-      ["steps", "Forge Steps"]
+      ["craft", "Crafting"],
+      ["smelt", "Smelting"],
+      ["press", "Pressing"],
+      ["saw", "Sawing"],
+      ["refine", "Refining"],
+      ["drill", "Drilling"],
+      ["forge", "Forge Steps"]
     ];
+
+    // How an item can be obtained. (Mining / ore drops are intentionally not listed.)
+    const METHODS = {
+      craft: "Crafting",
+      smelt: "Smelting",
+      forge: "Forge",
+      press: "Pressing",
+      saw: "Sawing",
+      refine: "Refining",
+      drill: "Drilling"
+    };
+
+    // Where to look for the game data: next to this file, or in the project's data/ folder.
+    const DATA_BASES = ["./", "../data/", "./data/"];
 
     // The four-stage Ember Alloy pipeline, in order.
     const STEP_NAMES = {
@@ -531,6 +551,15 @@
 
     // Quenching is a world interaction (throw the item into water), so it is not a
     // station recipe in the game's recipes.json. Used unless recipes.json has a "quench" list.
+    const DEFAULT_DRILL = [
+      {
+        station: "gremcraft:drill_rig",
+        inputs: ["gremcraft:barrel", "gremcraft:drill_bit"],
+        output: "gremcraft:crude_oil_barrel",
+        note: "Build the derrick over an oil deposit, load a drill bit and empty barrels, and the rig pumps oil into barrels."
+      }
+    ];
+
     const DEFAULT_QUENCH = [
       { input: "gremcraft:ember_compound", output: "gremcraft:chilled_ember_compound", medium: "water" }
     ];
@@ -563,7 +592,10 @@
       recipes: {},
       query: "",
       filter: "all",
-      selected: null
+      selected: null,
+      variant: {},
+      engineFuel: new Set(),
+      base: "./"
     };
 
     const tileCountEl = document.getElementById("tile-count");
@@ -893,7 +925,7 @@
           value: `+${f.food.hunger} hunger · ${f.food.saturation} sat`
         });
       }
-      if (f.fuel_ticks !== undefined) {
+      if (f.fuel_ticks) {
         rows.push({ label: "Fuel", value: `${f.fuel_ticks} ticks` });
       }
       if (item.lit) {
@@ -906,6 +938,33 @@
       }
       if (f.use) {
         rows.push({ label: "Use Action", value: humanizeKey(f.use) });
+      }
+      if (f.drill_tier !== undefined) {
+        rows.push({ label: "Drill Tier", value: `Tier ${f.drill_tier}` });
+      }
+      if (f.energy && typeof f.energy === "object") {
+        const e = f.energy;
+        const bits = [humanizeKey(e.type ?? "energy weapon")];
+        if (e.damage !== undefined) bits.push(`${e.damage} dmg`);
+        if (e.cost !== undefined) bits.push(`${e.cost} charge/shot`);
+        if (e.range !== undefined) bits.push(`${e.range} range`);
+        rows.push({ label: "Energy Weapon", value: bits.join(" · "), wide: true });
+      } else if (typeof f.energy === "number") {
+        rows.push({ label: "Energy", value: String(f.energy) });
+      }
+      if (f.kinetic && typeof f.kinetic === "object") {
+        const k = f.kinetic;
+        rows.push({ label: "Kinetic Role", value: humanizeKey(k.type) });
+        if (k.stress !== undefined) rows.push({ label: "Stress Use", value: `${k.stress} SU` });
+      }
+      if (f.contact_damage) {
+        rows.push({ label: "Contact Damage", value: String(f.contact_damage) });
+      }
+      if (f.climbable) {
+        rows.push({ label: "Climbable", value: "Yes" });
+      }
+      if (state.engineFuel.has(f.id)) {
+        rows.push({ label: "Engine Fuel", value: "Burns in a Combustion Engine" });
       }
       if (f.places) {
         rows.push({ label: "Places", value: humanizeKey(f.places) });
@@ -978,6 +1037,7 @@
 
     function buildRecipeMap(recipesData, itemMap, spriteMap) {
       const map = {};
+      const add = (key, recipe) => { (map[key] ||= []).push(recipe); };
       const tags = recipesData?.tags ?? {};
       const craftingList = Array.isArray(recipesData?.recipes) ? recipesData.recipes : [];
       const smeltingList = Array.isArray(recipesData?.smelting) ? recipesData.smelting : [];
@@ -1011,14 +1071,16 @@
         }
 
         const outName = itemMap.get(outKey)?.name ?? humanizeKey(outKey);
-        map[outKey] = {
+        add(outKey, {
+          method: "craft",
+          station: "Crafting table",
           resultKey: outKey,
           resultCount: r.result?.count ?? 1,
           caption: r.type === "shapeless"
             ? `Shapeless recipe for ${outName}.`
             : `Crafted on a crafting grid (${r.id ?? outKey}).`,
           slots
-        };
+        });
       }
 
       const furnaceKey = itemMap.has("furnace")
@@ -1030,7 +1092,7 @@
 
       for (const s of smeltingList) {
         const outKey = resolveItemKey(s.output, itemMap, spriteMap);
-        if (!outKey || map[outKey]) continue;
+        if (!outKey) continue;
 
         const inKey = resolveItemKey(s.input, itemMap, spriteMap);
         const inName = itemMap.get(inKey)?.name ?? humanizeKey(inKey);
@@ -1039,12 +1101,14 @@
         if (furnaceKey) slots[4] = { key: furnaceKey, label: "Furnace", note: false };
         if (coalKey) slots[7] = { key: coalKey, label: "Coal (Fuel)", note: false };
 
-        map[outKey] = {
+        add(outKey, {
+          method: "smelt",
+          station: "Furnace",
           resultKey: outKey,
           resultCount: 1,
           caption: `Smelted from ${inName} in a furnace${s.ticks ? ` (${s.ticks} ticks)` : ""}.`,
           slots
-        };
+        });
       }
 
       // ---- Ember Alloy steps: Liquefaction, Infusion (hellforge), Quenching (water), Forging (anvil) ----
@@ -1055,15 +1119,16 @@
       };
       const addStep = (outId, n, slots, caption, count = 1) => {
         const outKey = resolveItemKey(outId, itemMap, spriteMap);
-        if (!outKey || map[outKey]) return;
-        map[outKey] = {
+        if (!outKey) return;
+        add(outKey, {
+          method: "forge",
           resultKey: outKey,
           resultCount: count,
           caption,
           slots,
           step: { n, name: STEP_NAMES[n] },
           station: n <= 2 ? "Hellforge" : n === 3 ? "Water" : "Anvil"
-        };
+        });
       };
       const nameOf = (id) => {
         const k = resolveItemKey(id, itemMap, spriteMap);
@@ -1110,11 +1175,105 @@
         );
       }
 
+      // ---- Industrial machines ----
+      const stressOf = (id) => {
+        const k = resolveItemKey(id, itemMap, spriteMap);
+        return itemMap.get(k)?.factors?.kinetic?.stress;
+      };
+      const powerTxt = (stationId) => {
+        const su = stressOf(stationId);
+        return su
+          ? ` Needs ${su} SU of rotation (hand crank, waterwheel or combustion engine, through shafts and gears).`
+          : "";
+      };
+      const machine = (method, stationId, stationLabel, input, outputs, ticks, verb) => {
+        const slots = Array.from({ length: 9 }, () => null);
+        slots[1] = slotFor(input);
+        slots[4] = slotFor(stationId, stationLabel);
+        const [first, ...rest] = outputs;
+        const outKey = resolveItemKey(first.item, itemMap, spriteMap);
+        if (!outKey) return;
+        add(outKey, {
+          method,
+          station: stationLabel,
+          resultKey: outKey,
+          resultCount: first.count ?? 1,
+          extras: rest.map((o) => ({
+            key: resolveItemKey(o.item, itemMap, spriteMap),
+            count: o.count ?? 1,
+            label: nameOf(o.item)
+          })),
+          caption: `${verb} ${nameOf(input)} in a ${stationLabel}${ticksTxt(ticks)}.${powerTxt(stationId)}`,
+          slots
+        });
+        // by-products are obtainable this way as well
+        for (const o of rest) {
+          const k = resolveItemKey(o.item, itemMap, spriteMap);
+          if (!k) continue;
+          add(k, {
+            method,
+            station: stationLabel,
+            resultKey: k,
+            resultCount: o.count ?? 1,
+            extras: [{ key: outKey, count: first.count ?? 1, label: nameOf(first.item) }],
+            caption: `By-product: ${verb} ${nameOf(input)} in a ${stationLabel}${ticksTxt(ticks)} to also get ${nameOf(first.item)}.${powerTxt(stationId)}`,
+            slots
+          });
+        }
+      };
+
+      for (const p of Array.isArray(recipesData?.press) ? recipesData.press : []) {
+        machine("press", "sheet_press", "Sheet Press", p.input, [{ item: p.output, count: p.count ?? 1 }], p.ticks, "Press");
+      }
+      for (const w of Array.isArray(recipesData?.saw) ? recipesData.saw : []) {
+        machine("saw", "mechanical_saw", "Mechanical Saw", w.input, [{ item: w.output, count: w.count ?? 1 }], w.ticks, "Cut");
+      }
+      for (const r of Array.isArray(recipesData?.refine) ? recipesData.refine : []) {
+        const outs = Array.isArray(r.outputs) ? r.outputs : [];
+        if (outs.length) machine("refine", "refinery", "Refinery", r.input, outs, r.ticks, "Refine");
+      }
+
+      const drillList = Array.isArray(recipesData?.drill) ? recipesData.drill : DEFAULT_DRILL;
+      for (const d of drillList) {
+        const outKey = resolveItemKey(d.output, itemMap, spriteMap);
+        if (!outKey) continue;
+        const slots = Array.from({ length: 9 }, () => null);
+        (d.inputs ?? []).slice(0, 3).forEach((id, i) => { slots[i] = slotFor(id); });
+        slots[4] = slotFor(d.station, nameOf(d.station));
+        add(outKey, {
+          method: "drill",
+          station: nameOf(d.station),
+          resultKey: outKey,
+          resultCount: d.count ?? 1,
+          caption: d.note ?? `Obtained with a ${nameOf(d.station)}.`,
+          slots
+        });
+      }
+
+      for (const id of Array.isArray(recipesData?.engine_fuel) ? recipesData.engine_fuel : []) {
+        state.engineFuel.add(id);
+      }
+
       return map;
     }
 
+    function variantsFor(key) {
+      return state.recipes[key] || [];
+    }
+
     function craftFor(key) {
-      return state.recipes[key] || null;
+      const list = variantsFor(key);
+      if (!list.length) return null;
+      const i = Math.min(state.variant[key] ?? 0, list.length - 1);
+      return list[i];
+    }
+
+    function variantLabel(r, list) {
+      const base = r.step ? `${r.step.n}. ${r.step.name}` : (METHODS[r.method] ?? "Recipe");
+      const same = list.filter((x) => x.method === r.method).length > 1;
+      if (!same) return base;
+      const first = r.slots.find((sl) => sl && sl.key && !/^(sheet_press|mechanical_saw|refinery|furnace|hellforge|anvil|drill_rig)$/.test(sl.key));
+      return `${base}: ${first?.label ?? ""}`.trim();
     }
 
     function createSprite(name, size) {
@@ -1146,8 +1305,9 @@
       return state.items.filter((item) => {
         if (state.filter === "block" && item.kind !== "block") return false;
         if (state.filter === "item" && item.kind !== "item") return false;
-        if (state.filter === "crafted" && !item.crafted) return false;
-        if (state.filter === "steps" && !state.recipes[item.key]?.step) return false;
+        if (!["all", "block", "item"].includes(state.filter)) {
+          if (!variantsFor(item.key).some((r) => r.method === state.filter)) return false;
+        }
         if (q) {
           const matchesName = item.name.toLowerCase().includes(q);
           const matchesKey = item.key.toLowerCase().includes(q);
@@ -1260,7 +1420,7 @@
         meta.textContent = `${item.kind === "item" ? "Item" : "Block"}${
           craft?.step
             ? ` · Step ${craft.step.n}: ${craft.step.name}`
-            : item.crafted || craft ? " · has recipe" : " · no recipe"
+            : craft ? ` · ${METHODS[craft.method] ?? "has recipe"}` : " · no recipe"
         }`;
 
         info.appendChild(h2);
@@ -1268,6 +1428,28 @@
         header.appendChild(preview);
         header.appendChild(info);
         recipePanelEl.appendChild(header);
+
+        const allVariants = variantsFor(item.key);
+        if (allVariants.length > 1) {
+          const tabs = document.createElement("ol");
+          tabs.className = "step-chain";
+          tabs.setAttribute("aria-label", "Ways to obtain this item");
+          allVariants.forEach((r, i) => {
+            const li = document.createElement("li");
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className = `step-chip${r === craft ? " active" : ""}`;
+            b.textContent = variantLabel(r, allVariants);
+            if (r === craft) b.setAttribute("aria-current", "true");
+            b.addEventListener("click", () => {
+              state.variant[item.key] = i;
+              renderRecipePanel();
+            });
+            li.appendChild(b);
+            tabs.appendChild(li);
+          });
+          recipePanelEl.appendChild(tabs);
+        }
 
         if (item.cropTiles && item.cropTiles.length > 1) {
           const maxStage = item.cropTiles.length - 1;
@@ -1331,7 +1513,7 @@
           stepper.setAttribute("aria-label", "Ember Alloy steps");
           for (const [num, name] of Object.entries(STEP_NAMES)) {
             const n = Number(num);
-            const target = Object.values(state.recipes).find((r) => r.step?.n === n);
+            const target = Object.values(state.recipes).flat().find((r) => r.step?.n === n);
             const li = document.createElement("li");
             const b = document.createElement("button");
             b.type = "button";
@@ -1341,6 +1523,7 @@
             if (target) {
               b.addEventListener("click", () => {
                 state.selected = target.resultKey;
+                state.variant[target.resultKey] = variantsFor(target.resultKey).indexOf(target);
                 renderCatalog();
                 renderRecipePanel();
               });
@@ -1407,7 +1590,7 @@
 
       const grid = document.createElement("div");
       grid.className = "crafting-grid";
-      grid.setAttribute("aria-label", craft?.step ? `${craft.station} (${craft.step.name})` : "Crafting table");
+      grid.setAttribute("aria-label", craft?.step ? `${craft.station} (${craft.step.name})` : (craft?.station ?? "Crafting table"));
 
       for (const slot of slots) {
         const cell = document.createElement("div");
@@ -1445,6 +1628,20 @@
       row.appendChild(grid);
       row.appendChild(arrow);
       row.appendChild(output);
+      for (const ex of craft?.extras ?? []) {
+        if (!ex.key) continue;
+        const exOut = document.createElement("div");
+        exOut.className = "output-slot";
+        exOut.title = ex.label;
+        exOut.appendChild(createSprite(ex.key, 40));
+        if (ex.count > 1) {
+          const badge = document.createElement("span");
+          badge.className = "result-count";
+          badge.textContent = String(ex.count);
+          exOut.appendChild(badge);
+        }
+        row.appendChild(exOut);
+      }
       recipePanelEl.appendChild(row);
 
       const caption = document.createElement("p");
@@ -1452,7 +1649,7 @@
       if (item && craft) {
         caption.textContent = craft.caption ?? "Crafting recipe.";
       } else if (item) {
-        caption.textContent = "This tile is not a crafting, furnace, or forge-step result.";
+        caption.textContent = "No recipe: this tile is not crafted, smelted, pressed, sawed, refined, drilled or forged.";
       } else {
         caption.textContent = "Output appears beside the table.";
       }
@@ -1507,6 +1704,16 @@
       }
     }
 
+    async function findBase() {
+      for (const b of DATA_BASES) {
+        try {
+          const r = await fetch(`${b}recipes.json`);
+          if (r.ok) return b;
+        } catch { /* try the next one */ }
+      }
+      return DATA_BASES[0];
+    }
+
     async function init() {
       renderFilters();
       renderRecipePanel();
@@ -1517,12 +1724,15 @@
       });
 
       try {
+        const base = await findBase();
+        state.base = base;
+        document.documentElement.style.setProperty("--atlas-url", `url("${base}atlas.png")`);
         const [atlasRes, recipesRes, blocksData, itemsData, imgDims] = await Promise.all([
-          fetch("./atlas.json"),
-          fetch("./recipes.json"),
-          fetchJsonOptional("./blocks.json"),
-          fetchJsonOptional("./items.json"),
-          loadImageDimensions("./atlas.png")
+          fetch(`${base}atlas.json`),
+          fetch(`${base}recipes.json`),
+          fetchJsonOptional(`${base}blocks.json`),
+          fetchJsonOptional(`${base}items.json`),
+          loadImageDimensions(`${base}atlas.png`)
         ]);
 
         if (!atlasRes.ok) throw new Error(`atlas.json HTTP ${atlasRes.status}`);
@@ -1545,6 +1755,7 @@
             item.crafted = true;
           }
         }
+
 
         state.items = items;
         state.itemMap = itemMap;
