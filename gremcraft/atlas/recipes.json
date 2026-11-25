@@ -3,10 +3,1136 @@
   "planks": [
    "gremcraft:planks",
    "gremcraft:birch_planks",
-   "gremcraft:spruce_planks"
+   "gremcraft:spruce_planks",
+   "gremcraft:palm_planks",
+   "gremcraft:redwood_planks",
+   "gremcraft:fungal_planks"
   ]
  },
  "recipes": [
+  {
+   "id": "gremcraft:palm_planks",
+   "type": "shapeless",
+   "ingredients": [
+    {
+     "item": "gremcraft:palm_log",
+     "count": 1
+    }
+   ],
+   "result": {
+    "item": "gremcraft:palm_planks",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:redwood_planks",
+   "type": "shapeless",
+   "ingredients": [
+    {
+     "item": "gremcraft:redwood_log",
+     "count": 1
+    }
+   ],
+   "result": {
+    "item": "gremcraft:redwood_planks",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:fungal_planks",
+   "type": "shapeless",
+   "ingredients": [
+    {
+     "item": "gremcraft:fungal_stem",
+     "count": 1
+    }
+   ],
+   "result": {
+    "item": "gremcraft:fungal_planks",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:shaft",
+   "type": "shaped",
+   "grid": [
+    [
+     "S"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shaft",
+    "count": 3
+   }
+  },
+  {
+   "id": "gremcraft:gear",
+   "type": "shaped",
+   "grid": [
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     "S",
+     "P",
+     "S"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:stick",
+    "P": "#planks"
+   },
+   "result": {
+    "item": "gremcraft:gear",
+    "count": 2
+   }
+  },
+  {
+   "id": "gremcraft:waterwheel",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "S",
+     "P"
+    ],
+    [
+     "S",
+     "T",
+     "S"
+    ],
+    [
+     "P",
+     "S",
+     "P"
+    ]
+   ],
+   "key": {
+    "P": "#planks",
+    "S": "gremcraft:stick",
+    "T": "gremcraft:shaft"
+   },
+   "result": {
+    "item": "gremcraft:waterwheel",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hand_crank",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "P",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "T",
+     " "
+    ]
+   ],
+   "key": {
+    "P": "#planks",
+    "S": "gremcraft:stick",
+    "T": "gremcraft:shaft"
+   },
+   "result": {
+    "item": "gremcraft:hand_crank",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sheet_press",
+   "type": "shaped",
+   "grid": [
+    [
+     "I",
+     "I",
+     "I"
+    ],
+    [
+     "C",
+     "G",
+     "C"
+    ],
+    [
+     "I",
+     "I",
+     "I"
+    ]
+   ],
+   "key": {
+    "I": "gremcraft:iron_ingot",
+    "C": "gremcraft:cobblestone",
+    "G": "gremcraft:gear"
+   },
+   "result": {
+    "item": "gremcraft:sheet_press",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:mechanical_saw",
+   "type": "shaped",
+   "grid": [
+    [
+     "I",
+     "I",
+     "I"
+    ],
+    [
+     "I",
+     "G",
+     "I"
+    ],
+    [
+     "C",
+     "C",
+     "C"
+    ]
+   ],
+   "key": {
+    "I": "gremcraft:iron_ingot",
+    "C": "gremcraft:cobblestone",
+    "G": "gremcraft:gear"
+   },
+   "result": {
+    "item": "gremcraft:mechanical_saw",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:copper_block",
+   "type": "shaped",
+   "grid": [
+    [
+     "C",
+     "C",
+     "C"
+    ],
+    [
+     "C",
+     "C",
+     "C"
+    ],
+    [
+     "C",
+     "C",
+     "C"
+    ]
+   ],
+   "key": {
+    "C": "gremcraft:copper_ingot"
+   },
+   "result": {
+    "item": "gremcraft:copper_block",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:copper_ingots_from_block",
+   "type": "shapeless",
+   "ingredients": [
+    {
+     "item": "gremcraft:copper_block",
+     "count": 1
+    }
+   ],
+   "result": {
+    "item": "gremcraft:copper_ingot",
+    "count": 9
+   }
+  },
+  {
+   "id": "gremcraft:copper_coil",
+   "type": "shaped",
+   "grid": [
+    [
+     "W",
+     "W",
+     "W"
+    ],
+    [
+     "W",
+     "R",
+     "W"
+    ],
+    [
+     "W",
+     "W",
+     "W"
+    ]
+   ],
+   "key": {
+    "W": "gremcraft:copper_wire",
+    "R": "gremcraft:iron_rod"
+   },
+   "result": {
+    "item": "gremcraft:copper_coil",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:electromagnet",
+   "type": "shaped",
+   "grid": [
+    [
+     "C",
+     "M",
+     "C"
+    ]
+   ],
+   "key": {
+    "C": "gremcraft:copper_coil",
+    "M": "gremcraft:magnetite"
+   },
+   "result": {
+    "item": "gremcraft:electromagnet",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:circuit_board",
+   "type": "shaped",
+   "grid": [
+    [
+     "W",
+     "P",
+     "W"
+    ],
+    [
+     "P",
+     "I",
+     "P"
+    ],
+    [
+     "W",
+     "P",
+     "W"
+    ]
+   ],
+   "key": {
+    "W": "gremcraft:copper_wire",
+    "P": "gremcraft:plastic_sheet",
+    "I": "gremcraft:iron_plate"
+   },
+   "result": {
+    "item": "gremcraft:circuit_board",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:advanced_circuit",
+   "type": "shaped",
+   "grid": [
+    [
+     "G",
+     "S",
+     "G"
+    ],
+    [
+     " ",
+     "C",
+     " "
+    ],
+    [
+     "G",
+     "S",
+     "G"
+    ]
+   ],
+   "key": {
+    "G": "gremcraft:gold_wire",
+    "S": "gremcraft:sunstone",
+    "C": "gremcraft:circuit_board"
+   },
+   "result": {
+    "item": "gremcraft:advanced_circuit",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:glass_flask",
+   "type": "shaped",
+   "grid": [
+    [
+     " ",
+     "G",
+     " "
+    ],
+    [
+     "G",
+     " ",
+     "G"
+    ],
+    [
+     " ",
+     "G",
+     " "
+    ]
+   ],
+   "key": {
+    "G": "gremcraft:glass"
+   },
+   "result": {
+    "item": "gremcraft:glass_flask",
+    "count": 2
+   }
+  },
+  {
+   "id": "gremcraft:focus_lens",
+   "type": "shaped",
+   "grid": [
+    [
+     "G",
+     "G",
+     "G"
+    ],
+    [
+     "G",
+     "D",
+     "G"
+    ],
+    [
+     "G",
+     "G",
+     "G"
+    ]
+   ],
+   "key": {
+    "G": "gremcraft:desert_glass",
+    "D": "gremcraft:diamond"
+   },
+   "result": {
+    "item": "gremcraft:focus_lens",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:laser_emitter",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "F",
+     "S"
+    ],
+    [
+     "C",
+     "U",
+     "C"
+    ],
+    [
+     "S",
+     "B",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:steel_plate",
+    "F": "gremcraft:focus_lens",
+    "C": "gremcraft:copper_coil",
+    "U": "gremcraft:sunstone",
+    "B": "gremcraft:circuit_board"
+   },
+   "result": {
+    "item": "gremcraft:laser_emitter",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:power_cell_empty",
+   "type": "shaped",
+   "grid": [
+    [
+     "T",
+     "C",
+     "T"
+    ],
+    [
+     "C",
+     "M",
+     "C"
+    ],
+    [
+     "T",
+     "C",
+     "T"
+    ]
+   ],
+   "key": {
+    "T": "gremcraft:titanium_plate",
+    "C": "gremcraft:copper_coil",
+    "M": "gremcraft:magnetite"
+   },
+   "result": {
+    "item": "gremcraft:depleted_cell",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:laser_pistol",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "E",
+     "S"
+    ],
+    [
+     "I",
+     "B",
+     "I"
+    ],
+    [
+     " ",
+     "R",
+     " "
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:steel_plate",
+    "E": "gremcraft:laser_emitter",
+    "I": "gremcraft:iron_plate",
+    "B": "gremcraft:circuit_board",
+    "R": "gremcraft:steel_rod"
+   },
+   "result": {
+    "item": "gremcraft:laser_pistol",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:laser_rifle",
+   "type": "shaped",
+   "grid": [
+    [
+     "T",
+     "L",
+     "T"
+    ],
+    [
+     "A",
+     "P",
+     "M"
+    ],
+    [
+     "R",
+     "T",
+     "R"
+    ]
+   ],
+   "key": {
+    "T": "gremcraft:titanium_plate",
+    "L": "gremcraft:refraction_lens",
+    "A": "gremcraft:advanced_circuit",
+    "P": "gremcraft:laser_pistol",
+    "M": "gremcraft:electromagnet",
+    "R": "gremcraft:titanium_rod"
+   },
+   "result": {
+    "item": "gremcraft:laser_rifle",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:plasma_cannon",
+   "type": "shaped",
+   "grid": [
+    [
+     "T",
+     "E",
+     "T"
+    ],
+    [
+     "S",
+     "K",
+     "S"
+    ],
+    [
+     "R",
+     "A",
+     "R"
+    ]
+   ],
+   "key": {
+    "T": "gremcraft:titanium_plate",
+    "E": "gremcraft:laser_emitter",
+    "S": "gremcraft:steel_plate",
+    "K": "gremcraft:sovereign_core",
+    "R": "gremcraft:steel_rod",
+    "A": "gremcraft:advanced_circuit"
+   },
+   "result": {
+    "item": "gremcraft:plasma_cannon",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:combustion_engine",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "S",
+     "S"
+    ],
+    [
+     "C",
+     "E",
+     "C"
+    ],
+    [
+     "S",
+     "F",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:steel_plate",
+    "C": "gremcraft:copper_coil",
+    "E": "gremcraft:electromagnet",
+    "F": "gremcraft:furnace"
+   },
+   "result": {
+    "item": "gremcraft:combustion_engine",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:refinery",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "B",
+     "S"
+    ],
+    [
+     "S",
+     "C",
+     "S"
+    ],
+    [
+     "S",
+     "F",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:steel_plate",
+    "B": "gremcraft:bucket",
+    "C": "gremcraft:circuit_board",
+    "F": "gremcraft:furnace"
+   },
+   "result": {
+    "item": "gremcraft:refinery",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:charging_station",
+   "type": "shaped",
+   "grid": [
+    [
+     "T",
+     "C",
+     "T"
+    ],
+    [
+     "C",
+     "E",
+     "C"
+    ],
+    [
+     "S",
+     "S",
+     "S"
+    ]
+   ],
+   "key": {
+    "T": "gremcraft:titanium_plate",
+    "C": "gremcraft:copper_coil",
+    "E": "gremcraft:electromagnet",
+    "S": "gremcraft:steel_plate"
+   },
+   "result": {
+    "item": "gremcraft:charging_station",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:derrick_frame",
+   "type": "shaped",
+   "grid": [
+    [
+     "R",
+     "P",
+     "R"
+    ],
+    [
+     "P",
+     " ",
+     "P"
+    ],
+    [
+     "R",
+     "P",
+     "R"
+    ]
+   ],
+   "key": {
+    "R": "gremcraft:steel_rod",
+    "P": "gremcraft:steel_plate"
+   },
+   "result": {
+    "item": "gremcraft:derrick_frame",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:drill_rig",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "C",
+     "S"
+    ],
+    [
+     "G",
+     "E",
+     "G"
+    ],
+    [
+     "S",
+     "F",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:steel_plate",
+    "C": "gremcraft:circuit_board",
+    "G": "gremcraft:gear",
+    "E": "gremcraft:electromagnet",
+    "F": "gremcraft:furnace"
+   },
+   "result": {
+    "item": "gremcraft:drill_rig",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:drill_pipe",
+   "type": "shaped",
+   "grid": [
+    [
+     "R"
+    ],
+    [
+     "R"
+    ]
+   ],
+   "key": {
+    "R": "gremcraft:steel_rod"
+   },
+   "result": {
+    "item": "gremcraft:drill_pipe",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:drill_bit",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "D",
+     "P"
+    ],
+    [
+     " ",
+     "P",
+     " "
+    ],
+    [
+     " ",
+     "R",
+     " "
+    ]
+   ],
+   "key": {
+    "P": "gremcraft:steel_plate",
+    "D": "gremcraft:diamond",
+    "R": "gremcraft:steel_rod"
+   },
+   "result": {
+    "item": "gremcraft:drill_bit",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:drill_bit_titanium",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "D",
+     "P"
+    ],
+    [
+     " ",
+     "P",
+     " "
+    ],
+    [
+     " ",
+     "R",
+     " "
+    ]
+   ],
+   "key": {
+    "P": "gremcraft:titanium_plate",
+    "D": "gremcraft:diamond",
+    "R": "gremcraft:titanium_rod"
+   },
+   "result": {
+    "item": "gremcraft:drill_bit_titanium",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:barrel",
+   "type": "shaped",
+   "grid": [
+    [
+     "P",
+     "P"
+    ],
+    [
+     "P",
+     "P"
+    ]
+   ],
+   "key": {
+    "P": "gremcraft:steel_plate"
+   },
+   "result": {
+    "item": "gremcraft:barrel",
+    "count": 2
+   }
+  },
+  {
+   "id": "gremcraft:dune_sigil",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "G",
+     "S"
+    ],
+    [
+     "G",
+     "F",
+     "G"
+    ],
+    [
+     "S",
+     "G",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:sunstone",
+    "G": "gremcraft:desert_glass",
+    "F": "gremcraft:oasis_flask"
+   },
+   "result": {
+    "item": "gremcraft:dune_sigil",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:warden_totem",
+   "type": "shaped",
+   "grid": [
+    [
+     "M",
+     "H",
+     "M"
+    ],
+    [
+     "H",
+     "V",
+     "H"
+    ],
+    [
+     "M",
+     "H",
+     "M"
+    ]
+   ],
+   "key": {
+    "M": "gremcraft:canopy_moss",
+    "H": "gremcraft:redwood_heartwood",
+    "V": "gremcraft:vine_rope"
+   },
+   "result": {
+    "item": "gremcraft:warden_totem",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:prism_core",
+   "type": "shaped",
+   "grid": [
+    [
+     "C",
+     "G",
+     "C"
+    ],
+    [
+     "G",
+     "D",
+     "G"
+    ],
+    [
+     "C",
+     "G",
+     "C"
+    ]
+   ],
+   "key": {
+    "C": "gremcraft:saltglass_crystal",
+    "G": "gremcraft:desert_glass",
+    "D": "gremcraft:diamond"
+   },
+   "result": {
+    "item": "gremcraft:prism_core",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:dune_visor",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "L",
+     "S"
+    ],
+    [
+     "S",
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:dune_silk",
+    "L": "gremcraft:dune_heart"
+   },
+   "result": {
+    "item": "gremcraft:helmet_dune",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:moss_lantern",
+   "type": "shaped",
+   "grid": [
+    [
+     "M",
+     "M"
+    ],
+    [
+     "M",
+     "M"
+    ]
+   ],
+   "key": {
+    "M": "gremcraft:canopy_moss"
+   },
+   "result": {
+    "item": "gremcraft:moss_lantern",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:spore_lantern",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "S"
+    ],
+    [
+     "S",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:luminous_spores"
+   },
+   "result": {
+    "item": "gremcraft:spore_lantern",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:ceramic_bricks",
+   "type": "shaped",
+   "grid": [
+    [
+     "B",
+     "B"
+    ],
+    [
+     "B",
+     "B"
+    ]
+   ],
+   "key": {
+    "B": "gremcraft:ceramic_brick"
+   },
+   "result": {
+    "item": "gremcraft:ceramic_bricks",
+    "count": 2
+   }
+  },
+  {
+   "id": "gremcraft:sandstone_bricks",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "S"
+    ],
+    [
+     "S",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:sunscar_sandstone"
+   },
+   "result": {
+    "item": "gremcraft:sandstone_bricks",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:saltglass_bricks",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "S"
+    ],
+    [
+     "S",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:saltglass"
+   },
+   "result": {
+    "item": "gremcraft:saltglass_bricks",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:rust_bricks",
+   "type": "shaped",
+   "grid": [
+    [
+     "S",
+     "S"
+    ],
+    [
+     "S",
+     "S"
+    ]
+   ],
+   "key": {
+    "S": "gremcraft:rust_stone"
+   },
+   "result": {
+    "item": "gremcraft:rust_bricks",
+    "count": 4
+   }
+  },
+  {
+   "id": "gremcraft:rope_ladder",
+   "type": "shaped",
+   "grid": [
+    [
+     "R",
+     " ",
+     "R"
+    ],
+    [
+     "R",
+     "R",
+     "R"
+    ],
+    [
+     "R",
+     " ",
+     "R"
+    ]
+   ],
+   "key": {
+    "R": "gremcraft:vine_rope"
+   },
+   "result": {
+    "item": "gremcraft:rope_ladder",
+    "count": 3
+   }
+  },
+  {
+   "id": "gremcraft:saltglass_from_crystals",
+   "type": "shaped",
+   "grid": [
+    [
+     "C",
+     "C"
+    ],
+    [
+     "C",
+     "C"
+    ]
+   ],
+   "key": {
+    "C": "gremcraft:saltglass_crystal"
+   },
+   "result": {
+    "item": "gremcraft:saltglass",
+    "count": 2
+   }
+  },
   {
    "id": "gremcraft:planks",
    "type": "shapeless",
@@ -1182,6 +2308,260 @@
    }
   },
   {
+   "id": "gremcraft:pickaxe_heartwood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:redwood_heartwood",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_heartwood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_heartwood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:redwood_heartwood",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_heartwood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_heartwood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:redwood_heartwood",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_heartwood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_heartwood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:redwood_heartwood",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_heartwood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_heartwood",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:redwood_heartwood",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_heartwood",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:pickaxe_highgrade",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ],
+    [
+     " ",
+     "S",
+     " "
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:high_grade_iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:pickaxe_highgrade",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:axe_highgrade",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     "H",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:high_grade_iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:axe_highgrade",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:shovel_highgrade",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "S"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:high_grade_iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:shovel_highgrade",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:sword_highgrade",
+   "type": "shaped",
+   "grid": [
+    [
+     "H"
+    ],
+    [
+     "H"
+    ],
+    [
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:high_grade_iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:sword_highgrade",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:hoe_highgrade",
+   "type": "shaped",
+   "grid": [
+    [
+     "H",
+     "H"
+    ],
+    [
+     " ",
+     "S"
+    ],
+    [
+     " ",
+     "S"
+    ]
+   ],
+   "key": {
+    "H": "gremcraft:high_grade_iron_ingot",
+    "S": "gremcraft:stick"
+   },
+   "result": {
+    "item": "gremcraft:hoe_highgrade",
+    "count": 1
+   }
+  },
+  {
    "id": "gremcraft:helmet_leather",
    "type": "shaped",
    "grid": [
@@ -1896,6 +3276,210 @@
    }
   },
   {
+   "id": "gremcraft:helmet_highgrade",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:high_grade_iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:helmet_highgrade",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_highgrade",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:high_grade_iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:chestplate_highgrade",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:leggings_highgrade",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:high_grade_iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:leggings_highgrade",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:boots_highgrade",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:high_grade_iron_ingot"
+   },
+   "result": {
+    "item": "gremcraft:boots_highgrade",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:helmet_dune",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:dune_silk"
+   },
+   "result": {
+    "item": "gremcraft:helmet_dune",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_dune",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     "X",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:dune_silk"
+   },
+   "result": {
+    "item": "gremcraft:chestplate_dune",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:leggings_dune",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     "X",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:dune_silk"
+   },
+   "result": {
+    "item": "gremcraft:leggings_dune",
+    "count": 1
+   }
+  },
+  {
+   "id": "gremcraft:boots_dune",
+   "type": "shaped",
+   "grid": [
+    [
+     "X",
+     " ",
+     "X"
+    ],
+    [
+     "X",
+     " ",
+     "X"
+    ]
+   ],
+   "key": {
+    "X": "gremcraft:dune_silk"
+   },
+   "result": {
+    "item": "gremcraft:boots_dune",
+    "count": 1
+   }
+  },
+  {
    "id": "gremcraft:bread",
    "type": "shaped",
    "grid": [
@@ -2431,24 +4015,24 @@
    "type": "shaped",
    "grid": [
     [
+     "R",
      "B",
-     "R",
-     "B"
-    ],
-    [
-     "R",
-     "D",
      "R"
     ],
     [
      "B",
-     "R",
+     "D",
      "B"
+    ],
+    [
+     "R",
+     "B",
+     "R"
     ]
    ],
    "key": {
+    "R": "gremcraft:ruin_bricks",
     "B": "gremcraft:bone",
-    "R": "gremcraft:redstone",
     "D": "gremcraft:diamond"
    },
    "result": {
@@ -2687,6 +4271,31 @@
    "input": "gremcraft:mutton_raw",
    "output": "gremcraft:mutton_cooked",
    "ticks": 200
+  },
+  {
+   "input": "gremcraft:raw_copper",
+   "output": "gremcraft:copper_ingot",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:high_grade_iron_ore",
+   "output": "gremcraft:high_grade_iron_ingot",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:sunscar_sand",
+   "output": "gremcraft:desert_glass",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:sinkclay_lump",
+   "output": "gremcraft:ceramic_brick",
+   "ticks": 200
+  },
+  {
+   "input": "gremcraft:tar_sand",
+   "output": "gremcraft:tar_clump",
+   "ticks": 200
   }
  ],
  "forge": [
@@ -2713,6 +4322,170 @@
    "output": "gremcraft:ember_alloy",
    "count": 1,
    "damage": 1
+  }
+ ],
+ "press": [
+  {
+   "input": "gremcraft:copper_ingot",
+   "output": "gremcraft:copper_plate",
+   "ticks": 80
+  },
+  {
+   "input": "gremcraft:iron_ingot",
+   "output": "gremcraft:iron_plate",
+   "ticks": 80
+  },
+  {
+   "input": "gremcraft:steel_ingot",
+   "output": "gremcraft:steel_plate",
+   "ticks": 80
+  },
+  {
+   "input": "gremcraft:titanium_ingot",
+   "output": "gremcraft:titanium_plate",
+   "ticks": 80
+  },
+  {
+   "input": "gremcraft:gold_ingot",
+   "output": "gremcraft:gold_plate",
+   "ticks": 80
+  },
+  {
+   "input": "gremcraft:high_grade_iron_ingot",
+   "output": "gremcraft:iron_plate",
+   "ticks": 80
+  }
+ ],
+ "saw": [
+  {
+   "input": "gremcraft:copper_plate",
+   "output": "gremcraft:copper_wire",
+   "count": 4,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:gold_plate",
+   "output": "gremcraft:gold_wire",
+   "count": 4,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:iron_plate",
+   "output": "gremcraft:iron_rod",
+   "count": 3,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:steel_plate",
+   "output": "gremcraft:steel_rod",
+   "count": 3,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:titanium_plate",
+   "output": "gremcraft:titanium_rod",
+   "count": 3,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:log",
+   "output": "gremcraft:planks",
+   "count": 6,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:birch_log",
+   "output": "gremcraft:birch_planks",
+   "count": 6,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:spruce_log",
+   "output": "gremcraft:spruce_planks",
+   "count": 6,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:palm_log",
+   "output": "gremcraft:palm_planks",
+   "count": 6,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:redwood_log",
+   "output": "gremcraft:redwood_planks",
+   "count": 6,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:fungal_stem",
+   "output": "gremcraft:fungal_planks",
+   "count": 6,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:saltglass",
+   "output": "gremcraft:saltglass_crystal",
+   "count": 3,
+   "ticks": 60
+  },
+  {
+   "input": "gremcraft:planks",
+   "output": "gremcraft:stick",
+   "count": 6,
+   "ticks": 60
+  }
+ ],
+ "refine": [
+  {
+   "input": "gremcraft:crude_oil_barrel",
+   "outputs": [
+    {
+     "item": "gremcraft:refined_fuel_barrel",
+     "count": 1
+    },
+    {
+     "item": "gremcraft:plastic_sheet",
+     "count": 2
+    }
+   ],
+   "ticks": 240
+  },
+  {
+   "input": "gremcraft:tar_clump",
+   "outputs": [
+    {
+     "item": "gremcraft:plastic_sheet",
+     "count": 1
+    }
+   ],
+   "ticks": 160
+  }
+ ],
+ "engine_fuel": [
+  "gremcraft:coal",
+  "gremcraft:refined_fuel_barrel",
+  "gremcraft:crude_oil_bucket",
+  "gremcraft:lava_bucket",
+  "gremcraft:tar_clump"
+ ],
+ "drill": [
+  {
+   "station": "gremcraft:drill_rig",
+   "inputs": [
+    "gremcraft:barrel",
+    "gremcraft:drill_bit"
+   ],
+   "output": "gremcraft:crude_oil_barrel",
+   "note": "Build the derrick over an oil deposit, load a drill bit and empty barrels, and the rig drills down and pumps oil into barrels."
+  },
+  {
+   "station": "gremcraft:bucket",
+   "inputs": [
+    "gremcraft:bucket"
+   ],
+   "output": "gremcraft:crude_oil_bucket",
+   "note": "Scoop crude oil that a drill has opened up (or a surface seep) with an empty bucket."
   }
  ]
 }

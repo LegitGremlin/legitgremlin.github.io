@@ -370,20 +370,21 @@
    "tile_entity": "furnace"
   },
   {
-   "id": "gremcraft:redstone_ore",
+   "id": "gremcraft:copper_ore",
    "numeric": 73,
-   "name": "Redstone Ore",
+   "name": "Copper Ore",
    "tiles": {
-    "all": "redstone_ore"
+    "all": "copper_ore"
    },
    "hardness": 3.0,
    "tool": "pickaxe",
-   "harvest_level": 2,
+   "harvest_level": 1,
    "requires_tool": true,
    "drops": [
     {
-     "item": "gremcraft:redstone",
-     "count": 4
+     "item": "gremcraft:raw_copper",
+     "min": 1,
+     "max": 3
     }
    ]
   },
@@ -1193,6 +1194,1524 @@
    "tile_entity": "sign",
    "item_sprite": "item_sign",
    "fuel_ticks": 200
+  },
+  {
+   "id": "gremcraft:copper_block",
+   "numeric": 215,
+   "name": "Block of Copper",
+   "tiles": {
+    "all": "copper_block"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:shaft",
+   "numeric": 216,
+   "name": "Shaft",
+   "tiles": {
+    "all": "shaft"
+   },
+   "hardness": 1.0,
+   "tool": "axe",
+   "render": "none",
+   "shape": "shaft",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "kinetic": {
+    "type": "shaft",
+    "axes": "axis"
+   },
+   "track": "kin",
+   "item_sprite": "item_shaft",
+   "fuel_ticks": 100
+  },
+  {
+   "id": "gremcraft:gear",
+   "numeric": 217,
+   "name": "Gear",
+   "tiles": {
+    "all": "gear"
+   },
+   "hardness": 1.5,
+   "tool": "axe",
+   "render": "none",
+   "shape": "gear",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "kinetic": {
+    "type": "gear",
+    "axes": "axis"
+   },
+   "track": "kin",
+   "item_sprite": "item_gear",
+   "fuel_ticks": 200
+  },
+  {
+   "id": "gremcraft:waterwheel",
+   "numeric": 218,
+   "name": "Waterwheel",
+   "tiles": {
+    "all": "waterwheel"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "render": "none",
+   "shape": "wheel",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "kinetic": {
+    "type": "wheel",
+    "axes": "axis"
+   },
+   "track": "kin",
+   "item_sprite": "item_waterwheel",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:hand_crank",
+   "numeric": 219,
+   "name": "Hand Crank",
+   "tiles": {
+    "all": "hand_crank"
+   },
+   "hardness": 1.0,
+   "tool": "axe",
+   "render": "none",
+   "shape": "crank",
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "kinetic": {
+    "type": "crank",
+    "axes": "axis"
+   },
+   "track": "kin",
+   "interact": "crank",
+   "item_sprite": "item_hand_crank",
+   "fuel_ticks": 100
+  },
+  {
+   "id": "gremcraft:combustion_engine",
+   "numeric": 220,
+   "name": "Combustion Engine",
+   "tiles": {
+    "top": "engine_top",
+    "bottom": "engine_top",
+    "side": "engine_side",
+    "front": "engine_front"
+   },
+   "hardness": 4.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "interact": "engine",
+   "tile_entity": "engine",
+   "track": "kin",
+   "kinetic": {
+    "type": "engine",
+    "axes": "facing"
+   },
+   "light_emission": 0
+  },
+  {
+   "id": "gremcraft:sheet_press",
+   "numeric": 221,
+   "name": "Sheet Press",
+   "tiles": {
+    "top": "press_top",
+    "bottom": "press_bottom",
+    "side": "press_side",
+    "front": "press_front"
+   },
+   "hardness": 3.5,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "interact": "press",
+   "tile_entity": "press",
+   "track": "kin",
+   "kinetic": {
+    "type": "consumer",
+    "axes": "all",
+    "stress": 8
+   }
+  },
+  {
+   "id": "gremcraft:mechanical_saw",
+   "numeric": 222,
+   "name": "Mechanical Saw",
+   "tiles": {
+    "top": "saw_top",
+    "bottom": "press_bottom",
+    "side": "saw_side",
+    "front": "saw_front"
+   },
+   "hardness": 3.5,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "interact": "saw",
+   "tile_entity": "saw",
+   "track": "kin",
+   "kinetic": {
+    "type": "consumer",
+    "axes": "all",
+    "stress": 8
+   }
+  },
+  {
+   "id": "gremcraft:refinery",
+   "numeric": 223,
+   "name": "Oil Refinery",
+   "tiles": {
+    "top": "refinery_top",
+    "bottom": "press_bottom",
+    "side": "refinery_side",
+    "front": "refinery_front"
+   },
+   "hardness": 4.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "interact": "refinery",
+   "tile_entity": "refinery",
+   "track": "kin",
+   "kinetic": {
+    "type": "consumer",
+    "axes": "all",
+    "stress": 12
+   }
+  },
+  {
+   "id": "gremcraft:charging_station",
+   "numeric": 224,
+   "name": "Charging Station",
+   "tiles": {
+    "top": "charger_top",
+    "bottom": "press_bottom",
+    "side": "charger_side",
+    "front": "charger_front"
+   },
+   "hardness": 4.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "interact": "charger",
+   "tile_entity": "charger",
+   "track": "kin",
+   "kinetic": {
+    "type": "consumer",
+    "axes": "all",
+    "stress": 16
+   },
+   "light_emission": 4
+  },
+  {
+   "id": "gremcraft:derrick_frame",
+   "numeric": 225,
+   "name": "Derrick Frame",
+   "tiles": {
+    "all": "derrick_frame"
+   },
+   "hardness": 4.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "cull_same": true
+  },
+  {
+   "id": "gremcraft:drill_rig",
+   "numeric": 226,
+   "name": "Drill Rig",
+   "tiles": {
+    "top": "rig_top",
+    "bottom": "press_bottom",
+    "side": "rig_side",
+    "front": "rig_front"
+   },
+   "hardness": 5.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "interact": "drill_rig",
+   "tile_entity": "drill",
+   "track": "kin",
+   "kinetic": {
+    "type": "consumer",
+    "axes": "all",
+    "stress": 24
+   }
+  },
+  {
+   "id": "gremcraft:drill_pipe",
+   "numeric": 227,
+   "name": "Drill Pipe",
+   "tiles": {
+    "all": "drill_pipe"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "render": "box",
+   "box": [
+    5,
+    0,
+    5,
+    11,
+    16,
+    11
+   ],
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0
+  },
+  {
+   "id": "gremcraft:drill_bit_block",
+   "numeric": 228,
+   "name": "Drill Bit",
+   "tiles": {
+    "all": "drill_bit_block"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "render": "box",
+   "box": [
+    3,
+    0,
+    3,
+    13,
+    16,
+    13
+   ],
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "no_item": true,
+   "drops": [
+    {
+     "item": "gremcraft:drill_pipe"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:crude_oil",
+   "numeric": 229,
+   "name": "Crude Oil",
+   "tiles": {
+    "all": "crude_oil"
+   },
+   "hardness": -1,
+   "render": "fluid",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 6,
+   "alpha": 1.0,
+   "swim": "oil",
+   "selectable": false,
+   "replaceable": true,
+   "no_item": true,
+   "bucket": "gremcraft:crude_oil_bucket"
+  },
+  {
+   "id": "gremcraft:tar_sand",
+   "numeric": 230,
+   "name": "Tar Sand",
+   "tiles": {
+    "all": "tar_sand"
+   },
+   "hardness": 0.8,
+   "tool": "shovel",
+   "drops": [
+    {
+     "item": "gremcraft:tar_clump",
+     "min": 1,
+     "max": 2
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:sunscar_sand",
+   "numeric": 232,
+   "name": "Sunscar Sand",
+   "tiles": {
+    "all": "sunscar_sand"
+   },
+   "hardness": 0.5,
+   "tool": "shovel"
+  },
+  {
+   "id": "gremcraft:sunscar_sandstone",
+   "numeric": 233,
+   "name": "Sunscar Sandstone",
+   "tiles": {
+    "all": "sunscar_sandstone"
+   },
+   "hardness": 1.6,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:sunscar_mesa",
+   "numeric": 234,
+   "name": "Banded Mesa Rock",
+   "tiles": {
+    "top": "sunscar_mesa_top",
+    "bottom": "sunscar_mesa",
+    "side": "sunscar_mesa"
+   },
+   "hardness": 1.8,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:sandstone_bricks",
+   "numeric": 235,
+   "name": "Sandstone Bricks",
+   "tiles": {
+    "all": "sandstone_bricks"
+   },
+   "hardness": 2.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:chiseled_sandstone",
+   "numeric": 236,
+   "name": "Chiseled Sandstone",
+   "tiles": {
+    "all": "chiseled_sandstone"
+   },
+   "hardness": 2.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:desert_glass",
+   "numeric": 237,
+   "name": "Desert Glass",
+   "tiles": {
+    "all": "desert_glass"
+   },
+   "hardness": 0.4,
+   "opaque": false,
+   "light_opacity": 0,
+   "cull_same": true,
+   "drops": []
+  },
+  {
+   "id": "gremcraft:sunstone_ore",
+   "numeric": 238,
+   "name": "Sunstone Ore",
+   "tiles": {
+    "all": "sunstone_ore"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 2,
+   "requires_tool": true,
+   "light_emission": 7,
+   "emissive": true,
+   "drops": [
+    {
+     "item": "gremcraft:sunstone",
+     "min": 1,
+     "max": 3
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:palm_log",
+   "numeric": 239,
+   "name": "Palm Log",
+   "tiles": {
+    "top": "palm_log_top",
+    "bottom": "palm_log_top",
+    "side": "palm_log_side"
+   },
+   "hardness": 2.0,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:palm_leaves",
+   "numeric": 240,
+   "name": "Palm Leaves",
+   "tiles": {
+    "all": "palm_leaves"
+   },
+   "hardness": 0.2,
+   "opaque": false,
+   "light_opacity": 1,
+   "cull_same": true,
+   "drops": []
+  },
+  {
+   "id": "gremcraft:palm_planks",
+   "numeric": 241,
+   "name": "Palmwood Planks",
+   "tiles": {
+    "all": "palm_planks"
+   },
+   "hardness": 1.6,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:oasis_water",
+   "numeric": 242,
+   "name": "Oasis Water",
+   "tiles": {
+    "all": "oasis_water"
+   },
+   "hardness": -1,
+   "render": "fluid",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 2,
+   "alpha": 0.55,
+   "swim": "water",
+   "selectable": false,
+   "replaceable": true,
+   "no_item": true,
+   "bucket": "gremcraft:oasis_water_bucket"
+  },
+  {
+   "id": "gremcraft:spring_moss",
+   "numeric": 243,
+   "name": "Spring Moss",
+   "tiles": {
+    "all": "spring_moss"
+   },
+   "hardness": 0.3,
+   "tool": "shovel"
+  },
+  {
+   "id": "gremcraft:oasis_crystal",
+   "numeric": 244,
+   "name": "Oasis Crystal",
+   "tiles": {
+    "all": "oasis_crystal"
+   },
+   "hardness": 1.2,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "light_emission": 9,
+   "emissive": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "cull_same": true,
+   "drops": [
+    {
+     "item": "gremcraft:oasis_shard",
+     "min": 1,
+     "max": 2
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:reeds",
+   "numeric": 245,
+   "name": "Reeds",
+   "tiles": {
+    "all": "reeds"
+   },
+   "hardness": 0.0,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": true,
+   "box": [
+    3,
+    0,
+    3,
+    13,
+    16,
+    13
+   ],
+   "light_emission": 0,
+   "emissive": false,
+   "support": [
+    "gremcraft:sunscar_sand",
+    "gremcraft:verdant_mud",
+    "gremcraft:dirt",
+    "gremcraft:grass",
+    "gremcraft:spring_moss",
+    "gremcraft:sinkclay"
+   ]
+  },
+  {
+   "id": "gremcraft:lily_pad",
+   "numeric": 246,
+   "name": "Lily Pad",
+   "tiles": {
+    "all": "lily_pad"
+   },
+   "hardness": 0.0,
+   "render": "box",
+   "box": [
+    0,
+    0,
+    0,
+    16,
+    1,
+    16
+   ],
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "support": [
+    "gremcraft:water",
+    "gremcraft:oasis_water"
+   ],
+   "replaceable": false
+  },
+  {
+   "id": "gremcraft:verdant_mud",
+   "numeric": 247,
+   "name": "Soft Mud",
+   "tiles": {
+    "all": "verdant_mud"
+   },
+   "hardness": 0.6,
+   "tool": "shovel",
+   "slow": true,
+   "drops": [
+    {
+     "item": "gremcraft:sinkclay_lump"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:glow_fungus",
+   "numeric": 248,
+   "name": "Glow Fungus",
+   "tiles": {
+    "all": "glow_fungus"
+   },
+   "hardness": 0.0,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": true,
+   "box": [
+    3,
+    0,
+    3,
+    13,
+    9,
+    13
+   ],
+   "light_emission": 10,
+   "emissive": true,
+   "support": [
+    "gremcraft:sunscar_sandstone",
+    "gremcraft:sinkclay",
+    "gremcraft:verdant_mud",
+    "gremcraft:spring_moss",
+    "gremcraft:stone",
+    "gremcraft:dirt"
+   ],
+   "drops": [
+    {
+     "item": "gremcraft:luminous_spores"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:crumbling_sandstone",
+   "numeric": 249,
+   "name": "Crumbling Sandstone",
+   "tiles": {
+    "all": "crumbling_sandstone"
+   },
+   "hardness": 1.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "crumble": true
+  },
+  {
+   "id": "gremcraft:spike_trap",
+   "numeric": 250,
+   "name": "Spike Trap",
+   "tiles": {
+    "all": "spike_trap"
+   },
+   "hardness": 1.5,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "render": "box",
+   "box": [
+    1,
+    0,
+    1,
+    15,
+    5,
+    15
+   ],
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "contact_damage": 3.0
+  },
+  {
+   "id": "gremcraft:eternal_sand",
+   "numeric": 251,
+   "name": "Eternal Sand",
+   "tiles": {
+    "all": "eternal_sand"
+   },
+   "hardness": 0.6,
+   "tool": "shovel",
+   "light_emission": 5,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:sunken_altar",
+   "numeric": 252,
+   "name": "Sunken Altar",
+   "tiles": {
+    "top": "sunken_altar_top",
+    "bottom": "sandstone_bricks",
+    "side": "sunken_altar_side"
+   },
+   "hardness": 5.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true,
+   "interact": "altar",
+   "light_emission": 6,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:desert_flower",
+   "numeric": 253,
+   "name": "Desert Bloom",
+   "tiles": {
+    "all": "desert_flower"
+   },
+   "hardness": 0.0,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": true,
+   "box": [
+    2,
+    0,
+    2,
+    14,
+    14,
+    14
+   ],
+   "light_emission": 0,
+   "emissive": false,
+   "support": [
+    "gremcraft:sunscar_sand",
+    "gremcraft:spring_moss",
+    "gremcraft:dirt",
+    "gremcraft:grass"
+   ]
+  },
+  {
+   "id": "gremcraft:cactus",
+   "numeric": 254,
+   "name": "Cactus",
+   "tiles": {
+    "top": "cactus_top",
+    "bottom": "cactus_top",
+    "side": "cactus_side"
+   },
+   "hardness": 0.4,
+   "render": "box",
+   "box": [
+    1,
+    0,
+    1,
+    15,
+    16,
+    15
+   ],
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "contact_damage": 1.0,
+   "tool": "axe"
+  },
+  {
+   "id": "gremcraft:redwood_log",
+   "numeric": 255,
+   "name": "Redwood Log",
+   "tiles": {
+    "top": "redwood_log_top",
+    "bottom": "redwood_log_top",
+    "side": "redwood_log_side"
+   },
+   "hardness": 3.0,
+   "tool": "axe",
+   "fuel_ticks": 400
+  },
+  {
+   "id": "gremcraft:redwood_heartwood",
+   "numeric": 256,
+   "name": "Redwood Heartwood",
+   "tiles": {
+    "all": "redwood_heartwood"
+   },
+   "hardness": 4.0,
+   "tool": "axe",
+   "fuel_ticks": 600
+  },
+  {
+   "id": "gremcraft:redwood_leaves",
+   "numeric": 257,
+   "name": "Redwood Leaves",
+   "tiles": {
+    "all": "redwood_leaves"
+   },
+   "hardness": 0.2,
+   "opaque": false,
+   "light_opacity": 1,
+   "cull_same": true,
+   "drops": []
+  },
+  {
+   "id": "gremcraft:rust_leaves",
+   "numeric": 258,
+   "name": "Rust Leaves",
+   "tiles": {
+    "all": "rust_leaves"
+   },
+   "hardness": 0.2,
+   "opaque": false,
+   "light_opacity": 1,
+   "cull_same": true,
+   "drops": []
+  },
+  {
+   "id": "gremcraft:redwood_planks",
+   "numeric": 259,
+   "name": "Redwood Planks",
+   "tiles": {
+    "all": "redwood_planks"
+   },
+   "hardness": 2.4,
+   "tool": "axe",
+   "fuel_ticks": 300
+  },
+  {
+   "id": "gremcraft:canopy_moss",
+   "numeric": 260,
+   "name": "Canopy Moss",
+   "tiles": {
+    "all": "canopy_moss"
+   },
+   "hardness": 0.3,
+   "tool": "axe",
+   "drops": [
+    {
+     "item": "gremcraft:canopy_moss"
+    }
+   ],
+   "fuel_ticks": 100
+  },
+  {
+   "id": "gremcraft:moss_grass",
+   "numeric": 261,
+   "name": "Mossy Ground",
+   "tiles": {
+    "top": "moss_grass_top",
+    "bottom": "dirt",
+    "side": "moss_grass_side"
+   },
+   "hardness": 0.6,
+   "tool": "shovel",
+   "drops": [
+    {
+     "item": "gremcraft:dirt"
+    }
+   ],
+   "till_to": "gremcraft:farmland"
+  },
+  {
+   "id": "gremcraft:fern",
+   "numeric": 262,
+   "name": "Fern",
+   "tiles": {
+    "all": "fern"
+   },
+   "hardness": 0.0,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": true,
+   "box": [
+    1,
+    0,
+    1,
+    15,
+    14,
+    15
+   ],
+   "light_emission": 0,
+   "emissive": false,
+   "support": [
+    "gremcraft:moss_grass",
+    "gremcraft:dirt",
+    "gremcraft:grass",
+    "gremcraft:verdant_mud"
+   ],
+   "drops": []
+  },
+  {
+   "id": "gremcraft:vine",
+   "numeric": 263,
+   "name": "Hanging Vine",
+   "tiles": {
+    "all": "vine"
+   },
+   "hardness": 0.2,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": false,
+   "box": [
+    2,
+    0,
+    2,
+    14,
+    16,
+    14
+   ],
+   "light_emission": 0,
+   "emissive": false,
+   "drops": [
+    {
+     "item": "gremcraft:vine_rope"
+    }
+   ],
+   "climbable": true
+  },
+  {
+   "id": "gremcraft:rope_ladder",
+   "numeric": 264,
+   "name": "Rope Ladder",
+   "tiles": {
+    "all": "rope_ladder"
+   },
+   "hardness": 0.3,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": false,
+   "box": [
+    2,
+    0,
+    2,
+    14,
+    16,
+    14
+   ],
+   "light_emission": 0,
+   "emissive": false,
+   "climbable": true,
+   "fuel_ticks": 100
+  },
+  {
+   "id": "gremcraft:moss_lantern",
+   "numeric": 265,
+   "name": "Moss Lantern",
+   "tiles": {
+    "all": "moss_lantern"
+   },
+   "hardness": 0.4,
+   "tool": "axe",
+   "light_emission": 14,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:heartwood_altar",
+   "numeric": 266,
+   "name": "Heartwood Altar",
+   "tiles": {
+    "top": "heartwood_altar_top",
+    "bottom": "redwood_planks",
+    "side": "heartwood_altar_side"
+   },
+   "hardness": 5.0,
+   "tool": "axe",
+   "interact": "altar",
+   "light_emission": 6,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:salt_flat",
+   "numeric": 267,
+   "name": "Salt Flat",
+   "tiles": {
+    "all": "salt_flat"
+   },
+   "hardness": 0.7,
+   "tool": "shovel",
+   "drops": [
+    {
+     "item": "gremcraft:salt",
+     "min": 1,
+     "max": 2
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:salt_stone",
+   "numeric": 268,
+   "name": "Salt Stone",
+   "tiles": {
+    "all": "salt_stone"
+   },
+   "hardness": 1.4,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:salt_pillar",
+   "numeric": 269,
+   "name": "Salt Pillar",
+   "tiles": {
+    "top": "salt_pillar_top",
+    "bottom": "salt_pillar_top",
+    "side": "salt_pillar"
+   },
+   "hardness": 1.2,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "drops": [
+    {
+     "item": "gremcraft:salt",
+     "min": 2,
+     "max": 4
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:saltglass",
+   "numeric": 270,
+   "name": "Saltglass",
+   "tiles": {
+    "all": "saltglass"
+   },
+   "hardness": 0.5,
+   "opaque": false,
+   "light_opacity": 0,
+   "cull_same": true,
+   "shatter": true,
+   "drops": [
+    {
+     "item": "gremcraft:saltglass_crystal",
+     "min": 1,
+     "max": 2
+    }
+   ],
+   "alpha": 1.0
+  },
+  {
+   "id": "gremcraft:brine",
+   "numeric": 271,
+   "name": "Brine",
+   "tiles": {
+    "all": "brine"
+   },
+   "hardness": -1,
+   "render": "fluid",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 2,
+   "alpha": 0.8,
+   "swim": "water",
+   "selectable": false,
+   "replaceable": true,
+   "no_item": true,
+   "bucket": "gremcraft:brine_bucket",
+   "random_tick": true,
+   "evaporates": "gremcraft:salt_crust"
+  },
+  {
+   "id": "gremcraft:salt_crust",
+   "numeric": 272,
+   "name": "Salt Crust",
+   "tiles": {
+    "all": "salt_crust"
+   },
+   "hardness": 0.5,
+   "tool": "shovel",
+   "drops": [
+    {
+     "item": "gremcraft:salt",
+     "min": 1,
+     "max": 3
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:saltglass_bricks",
+   "numeric": 273,
+   "name": "Saltglass Bricks",
+   "tiles": {
+    "all": "saltglass_bricks"
+   },
+   "hardness": 2.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "opaque": false,
+   "light_opacity": 0,
+   "cull_same": true
+  },
+  {
+   "id": "gremcraft:prism_altar",
+   "numeric": 274,
+   "name": "Prism Altar",
+   "tiles": {
+    "top": "prism_altar_top",
+    "bottom": "saltglass_bricks",
+    "side": "prism_altar_side"
+   },
+   "hardness": 5.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true,
+   "interact": "altar",
+   "light_emission": 8,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:salt_skeleton",
+   "numeric": 275,
+   "name": "Salt-Crusted Bones",
+   "tiles": {
+    "all": "salt_skeleton"
+   },
+   "hardness": 0.8,
+   "render": "box",
+   "box": [
+    1,
+    0,
+    1,
+    15,
+    5,
+    15
+   ],
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "drops": [
+    {
+     "item": "gremcraft:bone",
+     "min": 1,
+     "max": 3
+    },
+    {
+     "item": "gremcraft:salt",
+     "min": 0,
+     "max": 2
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:sinkclay",
+   "numeric": 276,
+   "name": "Sinkclay",
+   "tiles": {
+    "all": "sinkclay"
+   },
+   "hardness": 0.8,
+   "tool": "shovel",
+   "drops": [
+    {
+     "item": "gremcraft:sinkclay_lump",
+     "min": 2,
+     "max": 3
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:fungal_stem",
+   "numeric": 277,
+   "name": "Fungal Stem",
+   "tiles": {
+    "top": "fungal_stem_top",
+    "bottom": "fungal_stem_top",
+    "side": "fungal_stem_side"
+   },
+   "hardness": 1.5,
+   "tool": "axe",
+   "fuel_ticks": 200
+  },
+  {
+   "id": "gremcraft:fungal_cap",
+   "numeric": 278,
+   "name": "Glowing Fungal Cap",
+   "tiles": {
+    "all": "fungal_cap"
+   },
+   "hardness": 0.4,
+   "tool": "axe",
+   "light_emission": 11,
+   "emissive": true,
+   "opaque": false,
+   "light_opacity": 1,
+   "cull_same": true,
+   "drops": [
+    {
+     "item": "gremcraft:luminous_spores",
+     "min": 0,
+     "max": 2
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:luminous_fungus",
+   "numeric": 279,
+   "name": "Luminous Fungus",
+   "tiles": {
+    "all": "luminous_fungus"
+   },
+   "hardness": 0.0,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": true,
+   "box": [
+    3,
+    0,
+    3,
+    13,
+    10,
+    13
+   ],
+   "light_emission": 12,
+   "emissive": true,
+   "support": [
+    "gremcraft:verdant_mud",
+    "gremcraft:sinkclay",
+    "gremcraft:fungal_stem",
+    "gremcraft:mossy_stone",
+    "gremcraft:dirt"
+   ],
+   "drops": [
+    {
+     "item": "gremcraft:luminous_spores",
+     "min": 1,
+     "max": 2
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:soft_clay",
+   "numeric": 280,
+   "name": "Soft Clay",
+   "tiles": {
+    "all": "soft_clay"
+   },
+   "hardness": 0.6,
+   "tool": "shovel",
+   "collapse": true,
+   "drops": [
+    {
+     "item": "gremcraft:sinkclay_lump"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:mossy_stone",
+   "numeric": 281,
+   "name": "Mossbound Stone",
+   "tiles": {
+    "all": "mossy_stone"
+   },
+   "hardness": 1.8,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:glow_orchid",
+   "numeric": 282,
+   "name": "Glow Orchid",
+   "tiles": {
+    "all": "glow_orchid"
+   },
+   "hardness": 0.0,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": true,
+   "box": [
+    2,
+    0,
+    2,
+    14,
+    14,
+    14
+   ],
+   "light_emission": 10,
+   "emissive": true,
+   "support": [
+    "gremcraft:mossy_stone",
+    "gremcraft:verdant_mud",
+    "gremcraft:sinkclay",
+    "gremcraft:moss_grass"
+   ]
+  },
+  {
+   "id": "gremcraft:fungal_planks",
+   "numeric": 283,
+   "name": "Fungal Planks",
+   "tiles": {
+    "all": "fungal_planks"
+   },
+   "hardness": 1.6,
+   "tool": "axe",
+   "fuel_ticks": 200
+  },
+  {
+   "id": "gremcraft:ceramic_bricks",
+   "numeric": 284,
+   "name": "Ceramic Bricks",
+   "tiles": {
+    "all": "ceramic_bricks"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:spore_lantern",
+   "numeric": 285,
+   "name": "Spore Lantern",
+   "tiles": {
+    "all": "spore_lantern"
+   },
+   "hardness": 0.5,
+   "light_emission": 14,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:rust_stone",
+   "numeric": 286,
+   "name": "Rust Stone",
+   "tiles": {
+    "all": "rust_stone"
+   },
+   "hardness": 2.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "drops": [
+    {
+     "item": "gremcraft:cobblestone"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:ironvein_stone",
+   "numeric": 287,
+   "name": "Ironvein Stone",
+   "tiles": {
+    "all": "ironvein_stone"
+   },
+   "hardness": 2.6,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "drops": [
+    {
+     "item": "gremcraft:iron_ore"
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:magnetic_stone",
+   "numeric": 288,
+   "name": "Magnetic Stone",
+   "tiles": {
+    "all": "magnetic_stone"
+   },
+   "hardness": 3.0,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true,
+   "track": "magnet"
+  },
+  {
+   "id": "gremcraft:magnetite_ore",
+   "numeric": 289,
+   "name": "Magnetite Ore",
+   "tiles": {
+    "all": "magnetite_ore"
+   },
+   "hardness": 3.5,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true,
+   "drops": [
+    {
+     "item": "gremcraft:magnetite",
+     "min": 1,
+     "max": 2
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:high_grade_iron_ore",
+   "numeric": 290,
+   "name": "High-Grade Iron Ore",
+   "tiles": {
+    "all": "high_grade_iron_ore"
+   },
+   "hardness": 4.0,
+   "tool": "pickaxe",
+   "harvest_level": 2,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:scrub",
+   "numeric": 291,
+   "name": "Wind-Blasted Scrub",
+   "tiles": {
+    "all": "scrub"
+   },
+   "hardness": 0.0,
+   "render": "plant",
+   "plant": "cross",
+   "solid": false,
+   "opaque": false,
+   "light_opacity": 0,
+   "replaceable": true,
+   "box": [
+    2,
+    0,
+    2,
+    14,
+    12,
+    14
+   ],
+   "light_emission": 0,
+   "emissive": false,
+   "support": [
+    "gremcraft:rust_stone",
+    "gremcraft:dirt",
+    "gremcraft:grass",
+    "gremcraft:ironvein_stone",
+    "gremcraft:stone"
+   ],
+   "drops": [
+    {
+     "item": "gremcraft:stick",
+     "chance": 0.5
+    }
+   ]
+  },
+  {
+   "id": "gremcraft:storm_anchor",
+   "numeric": 292,
+   "name": "Storm Anchor",
+   "tiles": {
+    "top": "storm_anchor_top",
+    "bottom": "storm_anchor_top",
+    "side": "storm_anchor_side"
+   },
+   "hardness": 6.0,
+   "tool": "pickaxe",
+   "harvest_level": 1,
+   "requires_tool": true,
+   "track": "anchor",
+   "tile_entity": "anchor",
+   "render": "box",
+   "box": [
+    3,
+    0,
+    3,
+    13,
+    16,
+    13
+   ],
+   "solid": true,
+   "opaque": false,
+   "light_opacity": 0
+  },
+  {
+   "id": "gremcraft:crucible_core",
+   "numeric": 293,
+   "name": "Magnetite Core",
+   "tiles": {
+    "all": "crucible_core"
+   },
+   "hardness": 5.0,
+   "tool": "pickaxe",
+   "harvest_level": 2,
+   "requires_tool": true,
+   "track": "magnet",
+   "light_emission": 8,
+   "emissive": true
+  },
+  {
+   "id": "gremcraft:sealed_vault",
+   "numeric": 294,
+   "name": "Sealed Vault Stone",
+   "tiles": {
+    "all": "sealed_vault"
+   },
+   "hardness": 6.0,
+   "tool": "pickaxe",
+   "harvest_level": 2,
+   "requires_tool": true
+  },
+  {
+   "id": "gremcraft:rust_bricks",
+   "numeric": 295,
+   "name": "Rust Bricks",
+   "tiles": {
+    "all": "rust_bricks"
+   },
+   "hardness": 2.2,
+   "tool": "pickaxe",
+   "harvest_level": 0,
+   "requires_tool": true
   }
  ]
 }

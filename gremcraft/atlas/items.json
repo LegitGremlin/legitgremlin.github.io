@@ -39,12 +39,6 @@
    "max_stack": 64
   },
   {
-   "id": "gremcraft:redstone",
-   "name": "Redstone",
-   "sprite": "item_redstone",
-   "max_stack": 64
-  },
-  {
    "id": "gremcraft:leather",
    "name": "Leather",
    "sprite": "item_leather",
@@ -744,6 +738,130 @@
    "use": "till"
   },
   {
+   "id": "gremcraft:pickaxe_heartwood",
+   "name": "Heartwood Pickaxe",
+   "sprite": "item_pickaxe_heartwood",
+   "max_stack": 1,
+   "durability": 520,
+   "damage": 3,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 1,
+    "speed": 5.0
+   }
+  },
+  {
+   "id": "gremcraft:axe_heartwood",
+   "name": "Heartwood Axe",
+   "sprite": "item_axe_heartwood",
+   "max_stack": 1,
+   "durability": 520,
+   "damage": 4,
+   "tool": {
+    "kind": "axe",
+    "tier": 1,
+    "speed": 5.0
+   }
+  },
+  {
+   "id": "gremcraft:shovel_heartwood",
+   "name": "Heartwood Shovel",
+   "sprite": "item_shovel_heartwood",
+   "max_stack": 1,
+   "durability": 520,
+   "damage": 2,
+   "tool": {
+    "kind": "shovel",
+    "tier": 1,
+    "speed": 5.0
+   }
+  },
+  {
+   "id": "gremcraft:sword_heartwood",
+   "name": "Heartwood Sword",
+   "sprite": "item_sword_heartwood",
+   "max_stack": 1,
+   "durability": 520,
+   "damage": 5,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_heartwood",
+   "name": "Heartwood Hoe",
+   "sprite": "item_hoe_heartwood",
+   "max_stack": 1,
+   "durability": 520,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 1,
+    "speed": 5.0
+   },
+   "use": "till"
+  },
+  {
+   "id": "gremcraft:pickaxe_highgrade",
+   "name": "High-Grade Iron Pickaxe",
+   "sprite": "item_pickaxe_highgrade",
+   "max_stack": 1,
+   "durability": 900,
+   "damage": 5,
+   "tool": {
+    "kind": "pickaxe",
+    "tier": 2,
+    "speed": 8.5
+   }
+  },
+  {
+   "id": "gremcraft:axe_highgrade",
+   "name": "High-Grade Iron Axe",
+   "sprite": "item_axe_highgrade",
+   "max_stack": 1,
+   "durability": 900,
+   "damage": 6,
+   "tool": {
+    "kind": "axe",
+    "tier": 2,
+    "speed": 8.5
+   }
+  },
+  {
+   "id": "gremcraft:shovel_highgrade",
+   "name": "High-Grade Iron Shovel",
+   "sprite": "item_shovel_highgrade",
+   "max_stack": 1,
+   "durability": 900,
+   "damage": 4,
+   "tool": {
+    "kind": "shovel",
+    "tier": 2,
+    "speed": 8.5
+   }
+  },
+  {
+   "id": "gremcraft:sword_highgrade",
+   "name": "High-Grade Iron Sword",
+   "sprite": "item_sword_highgrade",
+   "max_stack": 1,
+   "durability": 900,
+   "damage": 7,
+   "weapon": true
+  },
+  {
+   "id": "gremcraft:hoe_highgrade",
+   "name": "High-Grade Iron Hoe",
+   "sprite": "item_hoe_highgrade",
+   "max_stack": 1,
+   "durability": 900,
+   "damage": 1,
+   "tool": {
+    "kind": "hoe",
+    "tier": 2,
+    "speed": 8.5
+   },
+   "use": "till"
+  },
+  {
    "id": "gremcraft:helmet_leather",
    "name": "Leather Helmet",
    "sprite": "item_helmet_leather",
@@ -1049,6 +1167,560 @@
    "armor": {
     "slot": "feet",
     "points": 4
+   }
+  },
+  {
+   "id": "gremcraft:helmet_highgrade",
+   "name": "High-Grade Iron Helmet",
+   "sprite": "item_helmet_highgrade",
+   "max_stack": 1,
+   "durability": 230,
+   "armor": {
+    "slot": "head",
+    "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_highgrade",
+   "name": "High-Grade Iron Chestplate",
+   "sprite": "item_chestplate_highgrade",
+   "max_stack": 1,
+   "durability": 336,
+   "armor": {
+    "slot": "chest",
+    "points": 6
+   }
+  },
+  {
+   "id": "gremcraft:leggings_highgrade",
+   "name": "High-Grade Iron Leggings",
+   "sprite": "item_leggings_highgrade",
+   "max_stack": 1,
+   "durability": 315,
+   "armor": {
+    "slot": "legs",
+    "points": 5
+   }
+  },
+  {
+   "id": "gremcraft:boots_highgrade",
+   "name": "High-Grade Iron Boots",
+   "sprite": "item_boots_highgrade",
+   "max_stack": 1,
+   "durability": 273,
+   "armor": {
+    "slot": "feet",
+    "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:helmet_dune",
+   "name": "Dune Silk Helmet",
+   "sprite": "item_helmet_dune",
+   "max_stack": 1,
+   "durability": 160,
+   "armor": {
+    "slot": "head",
+    "points": 2
+   }
+  },
+  {
+   "id": "gremcraft:chestplate_dune",
+   "name": "Dune Silk Chestplate",
+   "sprite": "item_chestplate_dune",
+   "max_stack": 1,
+   "durability": 230,
+   "armor": {
+    "slot": "chest",
+    "points": 4
+   }
+  },
+  {
+   "id": "gremcraft:leggings_dune",
+   "name": "Dune Silk Leggings",
+   "sprite": "item_leggings_dune",
+   "max_stack": 1,
+   "durability": 215,
+   "armor": {
+    "slot": "legs",
+    "points": 3
+   }
+  },
+  {
+   "id": "gremcraft:boots_dune",
+   "name": "Dune Silk Boots",
+   "sprite": "item_boots_dune",
+   "max_stack": 1,
+   "durability": 185,
+   "armor": {
+    "slot": "feet",
+    "points": 2
+   }
+  },
+  {
+   "id": "gremcraft:raw_copper",
+   "name": "Raw Copper",
+   "sprite": "item_raw_copper",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:copper_ingot",
+   "name": "Copper Ingot",
+   "sprite": "item_copper_ingot",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:copper_plate",
+   "name": "Copper Plate",
+   "sprite": "item_copper_plate",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:copper_wire",
+   "name": "Copper Wire",
+   "sprite": "item_copper_wire",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:copper_coil",
+   "name": "Copper Coil",
+   "sprite": "item_copper_coil",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:iron_plate",
+   "name": "Iron Plate",
+   "sprite": "item_iron_plate",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:steel_plate",
+   "name": "Steel Plate",
+   "sprite": "item_steel_plate",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:titanium_plate",
+   "name": "Titanium Plate",
+   "sprite": "item_titanium_plate",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:gold_plate",
+   "name": "Gold Plate",
+   "sprite": "item_gold_plate",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:gold_wire",
+   "name": "Gold Wire",
+   "sprite": "item_gold_wire",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:iron_rod",
+   "name": "Iron Rod",
+   "sprite": "item_iron_rod",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:steel_rod",
+   "name": "Steel Rod",
+   "sprite": "item_steel_rod",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:titanium_rod",
+   "name": "Titanium Rod",
+   "sprite": "item_titanium_rod",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:high_grade_iron_ingot",
+   "name": "High-Grade Iron Ingot",
+   "sprite": "item_high_grade_iron_ingot",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:magnetite",
+   "name": "Magnetite",
+   "sprite": "item_magnetite",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:electromagnet",
+   "name": "Electromagnet",
+   "sprite": "item_electromagnet",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:plastic_sheet",
+   "name": "Plastic Sheet",
+   "sprite": "item_plastic_sheet",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:circuit_board",
+   "name": "Circuit Board",
+   "sprite": "item_circuit_board",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:advanced_circuit",
+   "name": "Advanced Circuit",
+   "sprite": "item_advanced_circuit",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:focus_lens",
+   "name": "Focus Lens",
+   "sprite": "item_focus_lens",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:laser_emitter",
+   "name": "Laser Emitter",
+   "sprite": "item_laser_emitter",
+   "max_stack": 64,
+   "fuel_ticks": 0
+  },
+  {
+   "id": "gremcraft:tar_clump",
+   "name": "Tar Clump",
+   "sprite": "item_tar_clump",
+   "max_stack": 64,
+   "fuel_ticks": 800
+  },
+  {
+   "id": "gremcraft:barrel",
+   "name": "Steel Barrel",
+   "sprite": "item_barrel",
+   "max_stack": 16
+  },
+  {
+   "id": "gremcraft:crude_oil_barrel",
+   "name": "Crude Oil Barrel",
+   "sprite": "item_crude_oil_barrel",
+   "max_stack": 16,
+   "returns": "gremcraft:barrel",
+   "lore": "Refine it in an Oil Refinery"
+  },
+  {
+   "id": "gremcraft:refined_fuel_barrel",
+   "name": "Refined Fuel Barrel",
+   "sprite": "item_refined_fuel_barrel",
+   "max_stack": 16,
+   "returns": "gremcraft:barrel",
+   "fuel_ticks": 24000,
+   "lore": "Engine fuel (24000 ticks), furnace fuel"
+  },
+  {
+   "id": "gremcraft:drill_bit",
+   "name": "Steel Drill Bit",
+   "sprite": "item_drill_bit",
+   "max_stack": 1,
+   "durability": 900,
+   "drill_tier": 2,
+   "lore": "Cuts up to tier 2 (iron-hard) rock"
+  },
+  {
+   "id": "gremcraft:drill_bit_titanium",
+   "name": "Titanium Drill Bit",
+   "sprite": "item_drill_bit_titanium",
+   "max_stack": 1,
+   "durability": 1800,
+   "drill_tier": 3,
+   "lore": "Cuts obsidian and compacted silt"
+  },
+  {
+   "id": "gremcraft:power_cell",
+   "name": "Power Cell",
+   "sprite": "item_power_cell",
+   "max_stack": 1,
+   "durability": 300,
+   "chargeable": true,
+   "lore": "Ammo for energy weapons - recharge in a Charging Station"
+  },
+  {
+   "id": "gremcraft:depleted_cell",
+   "name": "Depleted Power Cell",
+   "sprite": "item_depleted_cell",
+   "max_stack": 1,
+   "chargeable": true,
+   "lore": "Needs a Charging Station"
+  },
+  {
+   "id": "gremcraft:crude_oil_bucket",
+   "name": "Crude Oil Bucket",
+   "sprite": "item_crude_oil_bucket",
+   "max_stack": 1,
+   "use": "bucket_fluid",
+   "fluid": "gremcraft:crude_oil",
+   "returns": "gremcraft:bucket",
+   "fuel_ticks": 12000
+  },
+  {
+   "id": "gremcraft:brine_bucket",
+   "name": "Brine Bucket",
+   "sprite": "item_brine_bucket",
+   "max_stack": 1,
+   "use": "bucket_fluid",
+   "fluid": "gremcraft:brine",
+   "returns": "gremcraft:bucket"
+  },
+  {
+   "id": "gremcraft:oasis_water_bucket",
+   "name": "Oasis Water Bucket",
+   "sprite": "item_oasis_water_bucket",
+   "max_stack": 1,
+   "use": "bucket_fluid",
+   "fluid": "gremcraft:oasis_water",
+   "returns": "gremcraft:bucket"
+  },
+  {
+   "id": "gremcraft:glass_flask",
+   "name": "Glass Flask",
+   "sprite": "item_glass_flask",
+   "max_stack": 16,
+   "use": "flask_fill",
+   "lore": "Right-click oasis water to fill it"
+  },
+  {
+   "id": "gremcraft:oasis_flask",
+   "name": "Oasis Flask",
+   "sprite": "item_oasis_flask",
+   "max_stack": 16,
+   "returns": "gremcraft:glass_flask",
+   "food": {
+    "hunger": 2,
+    "saturation": 3.0,
+    "thirst": 20,
+    "heal": 4
+   },
+   "lore": "Cool, pure oasis water: quenches thirst and mends wounds"
+  },
+  {
+   "id": "gremcraft:sunstone",
+   "name": "Sunstone",
+   "sprite": "item_sunstone",
+   "max_stack": 64,
+   "lore": "Light-based crafting and advanced equipment"
+  },
+  {
+   "id": "gremcraft:oasis_shard",
+   "name": "Oasis Shard",
+   "sprite": "item_oasis_shard",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:dune_silk",
+   "name": "Dune Silk",
+   "sprite": "item_dune_silk",
+   "max_stack": 64,
+   "lore": "Harvested from desert weavers"
+  },
+  {
+   "id": "gremcraft:sovereign_core",
+   "name": "Sovereign Core",
+   "sprite": "item_sovereign_core",
+   "max_stack": 4,
+   "lore": "Advanced crafting component (Dune Sovereign)"
+  },
+  {
+   "id": "gremcraft:dune_heart",
+   "name": "Dune Heart",
+   "sprite": "item_dune_heart",
+   "max_stack": 1,
+   "lore": "Needed for specialised desert equipment (Dune Sovereign)"
+  },
+  {
+   "id": "gremcraft:dune_sigil",
+   "name": "Dune Sigil",
+   "sprite": "item_dune_sigil",
+   "max_stack": 1,
+   "lore": "Offer it at a Sunken Altar to wake the Dune Sovereign"
+  },
+  {
+   "id": "gremcraft:dune_visor_lens",
+   "name": "Sunstone Lens",
+   "sprite": "item_dune_visor_lens",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:vine_rope",
+   "name": "Vine Rope",
+   "sprite": "item_vine_rope",
+   "max_stack": 64,
+   "fuel_ticks": 100
+  },
+  {
+   "id": "gremcraft:heartwood_seed",
+   "name": "Heartwood Seed",
+   "sprite": "item_heartwood_seed",
+   "max_stack": 64,
+   "lore": "Dropped by the Canopy Warden"
+  },
+  {
+   "id": "gremcraft:warden_totem",
+   "name": "Warden Totem",
+   "sprite": "item_warden_totem",
+   "max_stack": 1,
+   "lore": "Offer it at a Heartwood Altar to wake the Canopy Warden"
+  },
+  {
+   "id": "gremcraft:vine_grapple",
+   "name": "Vine Grapple",
+   "sprite": "item_vine_grapple",
+   "max_stack": 1,
+   "durability": 250,
+   "use": "grapple",
+   "lore": "Right-click to swing towards a block (Canopy Warden)"
+  },
+  {
+   "id": "gremcraft:salt",
+   "name": "Salt",
+   "sprite": "item_salt",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:saltglass_crystal",
+   "name": "Saltglass Crystal",
+   "sprite": "item_saltglass_crystal",
+   "max_stack": 64,
+   "lore": "Alchemy reagent"
+  },
+  {
+   "id": "gremcraft:perfect_saltglass",
+   "name": "Perfect Saltglass",
+   "sprite": "item_perfect_saltglass",
+   "max_stack": 4
+  },
+  {
+   "id": "gremcraft:refraction_lens",
+   "name": "Refraction Lens",
+   "sprite": "item_refraction_lens",
+   "max_stack": 4,
+   "lore": "Optics for lasers (Saltglass Revenant)"
+  },
+  {
+   "id": "gremcraft:prism_core",
+   "name": "Prism Core",
+   "sprite": "item_prism_core",
+   "max_stack": 1,
+   "lore": "Offer it at a Prism Altar to wake the Saltglass Revenant"
+  },
+  {
+   "id": "gremcraft:saltglass_blade",
+   "name": "Saltglass Blade",
+   "sprite": "item_saltglass_blade",
+   "max_stack": 1,
+   "durability": 260,
+   "damage": 9,
+   "weapon": true,
+   "lore": "Razor sharp, brittle"
+  },
+  {
+   "id": "gremcraft:luminous_spores",
+   "name": "Luminous Spores",
+   "sprite": "item_luminous_spores",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:sinkclay_lump",
+   "name": "Sinkclay Lump",
+   "sprite": "item_sinkclay_lump",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:ceramic_brick",
+   "name": "Ceramic Brick",
+   "sprite": "item_ceramic_brick",
+   "max_stack": 64
+  },
+  {
+   "id": "gremcraft:laser_pistol",
+   "name": "Laser Pistol",
+   "sprite": "item_laser_pistol",
+   "max_stack": 1,
+   "damage": 6,
+   "weapon": false,
+   "use": "fire_energy",
+   "energy": {
+    "damage": 6,
+    "cost": 3,
+    "cooldown": 9,
+    "range": 42,
+    "pierce": 1,
+    "color": [
+     255,
+     60,
+     60
+    ],
+    "type": "laser"
+   }
+  },
+  {
+   "id": "gremcraft:laser_rifle",
+   "name": "Laser Rifle",
+   "sprite": "item_laser_rifle",
+   "max_stack": 1,
+   "damage": 11,
+   "use": "fire_energy",
+   "energy": {
+    "damage": 11,
+    "cost": 5,
+    "cooldown": 7,
+    "range": 72,
+    "pierce": 3,
+    "color": [
+     80,
+     255,
+     255
+    ],
+    "type": "laser"
+   }
+  },
+  {
+   "id": "gremcraft:plasma_cannon",
+   "name": "Plasma Cannon",
+   "sprite": "item_plasma_cannon",
+   "max_stack": 1,
+   "damage": 18,
+   "use": "fire_energy",
+   "energy": {
+    "damage": 18,
+    "cost": 22,
+    "cooldown": 30,
+    "range": 60,
+    "pierce": 1,
+    "color": [
+     255,
+     150,
+     40
+    ],
+    "type": "plasma",
+    "radius": 3.2,
+    "speed": 1.3
    }
   }
  ]
